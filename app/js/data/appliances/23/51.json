@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41Sx%2BZHLwXL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Refrigerator-Filter-Replacement-Whirlpool-UKF8001/dp/B01J0I0UKW/ref=zg_bs_appliances_83",
+    "price": "$35.99 $10.99",
+    "rank": "83",
+    "review": "4.7(4)",
+    "title": "Refrigerator-Filter-Replacement-Whirlpool-UKF8001"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31n3zOe1VcL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/WHS-65LSS1-Compact-Reversible-Refrigerator-Stainless/dp/B00MMRFNNS/ref=zg_bs_appliances_82",
+    "price": "$92.40 $92.14",
+    "rank": "82",
+    "review": "4.1(726)",
+    "title": "WHS-65LSS1-Compact-Reversible-Refrigerator-Stainless"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41TW4scohlL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Whirlpool-WMC20005YB-Black-Countertop-Microwave/dp/B005GSZB3M/ref=zg_bs_appliances_81",
+    "price": "$148.21",
+    "rank": "81",
+    "review": "4.0(260)",
+    "title": "Whirlpool-WMC20005YB-Black-Countertop-Microwave"
+  }
+]

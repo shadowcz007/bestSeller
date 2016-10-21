@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Catch</title>
+     <link rel="stylesheet" href="../css/photon.css">
+  </head>
+  <body>
+  <div class="indicator" ></div>
+  <div id="webview"></div>  
+  <div id="result"><br></div>
+ </body>
+  <script>
+var path=require('path');
+
+const {remote,ipcRenderer} = require('electron');
+
+var obj=remote.getGlobal('sharedObj');
+
+window.$ = window.jQuery = require(path.join(`${__dirname}`,'../js/libs/jquery.min.js'));
+var Catch=require(path.join(`${__dirname}`,'../js/catch.js'));
+
+Catch.spider(obj.dpf);
+
+
+ 
+ipcRenderer.on('catch-bestseller', function (event, arg) {
+  
+  console.log(arg) // prints
+
+})
+
+
+</script>
+</html>

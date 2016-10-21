@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41NrzFBJXPL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Champion-Mens-Long-Short-Pockets/dp/B002VLZH7M/ref=zg_bs_apparel_43",
+    "price": "$9.95 - $74.79",
+    "rank": "43",
+    "review": "4.3(3085)",
+    "title": "Champion-Mens-Long-Short-Pockets"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41htqB1NWdL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Capezio-Girls-Basics-Sleeve-Leotard/dp/B002R0FABA/ref=zg_bs_apparel_42",
+    "price": "$11.88 - $23.21",
+    "rank": "42",
+    "review": "4.4(960)",
+    "title": "Capezio-Girls-Basics-Sleeve-Leotard"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41muhmelN0L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/VIV-Collection-Womens-Chevron-Leggings/dp/B00LCDXMTK/ref=zg_bs_apparel_41",
+    "price": "$11.99",
+    "rank": "41",
+    "review": "4.4(1622)",
+    "title": "VIV-Collection-Womens-Chevron-Leggings"
+  }
+]

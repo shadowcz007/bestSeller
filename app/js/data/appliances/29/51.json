@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/21ZWS3uLPVL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/GE-Number-WB48X10056-Broiler-Large/dp/B004Q3XD1U/ref=zg_bs_appliances_83",
+    "price": "$21.00",
+    "rank": "83",
+    "review": "4.5(284)",
+    "title": "GE-Number-WB48X10056-Broiler-Large"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51%2B9PH3BUTL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Pure-Filters-Filter-Compatible-UKF8001/dp/B00UIZLE48/ref=zg_bs_appliances_82",
+    "price": "",
+    "rank": "82",
+    "review": "4.3(908)",
+    "title": "Pure-Filters-Filter-Compatible-UKF8001"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/612hW8KiCBL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Filter-W10413645A-EDR2RXD1-Replacement-Refrigerator/dp/B01GT4ZNW0/ref=zg_bs_appliances_81",
+    "price": "$55.00 $33.95",
+    "rank": "81",
+    "review": "5.0(7)",
+    "title": "Filter-W10413645A-EDR2RXD1-Replacement-Refrigerator"
+  }
+]

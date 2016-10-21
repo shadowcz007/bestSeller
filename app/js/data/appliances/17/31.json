@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41nWiAapgZL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-cu-ft-Countertop-Microwave-White/dp/B0052G14E8/ref=zg_bs_appliances_43",
+    "price": "$79.99 $57.37",
+    "rank": "43",
+    "review": "3.9(1908)",
+    "title": "Danby-cu-ft-Countertop-Microwave-White"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/418zHJGcpxL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Samsung-SKK-7A-Stacking-Front-Laundry/dp/B01EM69VT8/ref=zg_bs_appliances_42",
+    "price": "",
+    "rank": "42",
+    "review": "4.5(19)",
+    "title": "Samsung-SKK-7A-Stacking-Front-Laundry"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41pB3a7oqDL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-cu-ft-Countertop-Microwave-Black/dp/B004ZU09QQ/ref=zg_bs_appliances_41",
+    "price": "$119.99 $74.99",
+    "rank": "41",
+    "review": "3.9(1908)",
+    "title": "Danby-cu-ft-Countertop-Microwave-Black"
+  }
+]

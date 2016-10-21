@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51D6s3gNAtL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Crystala-GSWF-Refrigerator-Water-Filter/dp/B01HHFUBCC/ref=zg_bs_appliances_83",
+    "price": "$9.99",
+    "rank": "83",
+    "review": "4.5(16)",
+    "title": "Crystala-GSWF-Refrigerator-Water-Filter"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41LU3dhXJ%2BL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/NEW-Replacement-Part-Whirpool-Thermistat/dp/B00570RKTW/ref=zg_bs_appliances_82",
+    "price": "$9.58",
+    "rank": "82",
+    "review": "4.4(151)",
+    "title": "NEW-Replacement-Part-Whirpool-Thermistat"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41eO7xjZ0%2BL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Miele-Dishwasher-Freshener-Lemon-Scent/dp/B00XY9HQI8/ref=zg_bs_appliances_81",
+    "price": "$19.89",
+    "rank": "81",
+    "review": "3.9(79)",
+    "title": "Miele-Dishwasher-Freshener-Lemon-Scent"
+  }
+]

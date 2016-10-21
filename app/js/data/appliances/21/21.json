@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/21abAMgKghL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/GE-JVM3160RFSS-Range-Microwave-Stainless/dp/B00F2QFX5O/ref=zg_bs_appliances_23",
+    "price": "$243.95",
+    "rank": "23",
+    "review": "4.2(91)",
+    "title": "GE-JVM3160RFSS-Range-Microwave-Stainless"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41ZET%2BUpx9L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Haier-HLP21N-Pulsator-1-Cubic-Foot-Portable/dp/B002UYSHMM/ref=zg_bs_appliances_22",
+    "price": "$239.99 $233.96",
+    "rank": "22",
+    "review": "4.1(714)",
+    "title": "Haier-HLP21N-Pulsator-1-Cubic-Foot-Portable"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41oGyNhKQHL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Koolatron-KWC-4-Coca-Cola-Personal-Fridge/dp/B000JLNBW4/ref=zg_bs_appliances_21",
+    "price": "$49.99 $40.99",
+    "rank": "21",
+    "review": "3.8(1239)",
+    "title": "Koolatron-KWC-4-Coca-Cola-Personal-Fridge"
+  }
+]

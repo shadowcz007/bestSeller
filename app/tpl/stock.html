@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Stock</title>
+     <link rel="stylesheet" href="../css/photon.css">
+  </head>
+  <body>
+  <div class="indicator" ></div>
+  <button class="btn btn-mini btn-default" id='scatch'>开始</button>
+  <input class="form-control" type="text" placeholder="Max stock" id='max'>
+  <div id="webview"></div>  
+ 
+ </body>
+  <script>
+var path=require('path');
+
+const {remote,ipcRenderer} = require('electron');
+
+var obj=remote.getGlobal('sharedObj');
+
+window.$ = window.jQuery = require(path.join(`${__dirname}`,'../js/libs/jquery.min.js'));
+var Catch=require(path.join(`${__dirname}`,'../js/catch.js'));
+
+Catch.stock(obj.stockURL);
+
+/*
+ 
+ipcRenderer.on('catch_stock', function (event, arg) {
+  
+  console.log(arg) // prints
+
+})
+*/
+
+</script>
+</html>

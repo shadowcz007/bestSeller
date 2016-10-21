@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41SpECQWrNL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Compactor-Bags-Pre-Cuffed-Pack/dp/B00W27J16S/ref=zg_bs_appliances_63",
+    "price": "$79.95",
+    "rank": "63",
+    "review": "4.9(64)",
+    "title": "Compactor-Bags-Pre-Cuffed-Pack"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/21ZWS3uLPVL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/GE-Number-WB48X10056-Broiler-Large/dp/B004Q3XD1U/ref=zg_bs_appliances_62",
+    "price": "$21.00",
+    "rank": "62",
+    "review": "4.5(284)",
+    "title": "GE-Number-WB48X10056-Broiler-Large"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41kASsW49IL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-DAR044A5BSLDD-Compact-Refrigerator-Spotless/dp/B00O2MB7BS/ref=zg_bs_appliances_61",
+    "price": "$279.00 $202.99",
+    "rank": "61",
+    "review": "4.2(759)",
+    "title": "Danby-DAR044A5BSLDD-Compact-Refrigerator-Spotless"
+  }
+]

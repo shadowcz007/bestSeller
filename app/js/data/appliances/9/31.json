@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31w92YSFqXL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-DAR044A4BDD-Compact-Refrigerator-Cubic/dp/B00O2MB4AC/ref=zg_bs_appliances_43",
+    "price": "$249.00 $173.92",
+    "rank": "43",
+    "review": "4.2(759)",
+    "title": "Danby-DAR044A4BDD-Compact-Refrigerator-Cubic"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41nWiAapgZL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-cu-ft-Countertop-Microwave-White/dp/B0052G14E8/ref=zg_bs_appliances_42",
+    "price": "$79.99 $57.37",
+    "rank": "42",
+    "review": "3.9(1907)",
+    "title": "Danby-cu-ft-Countertop-Microwave-White"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31HQHQy%2B2zL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/WHS-65LW1-Compact-Reversible-Refrigerator-Freezer/dp/B00MVVI1Q6/ref=zg_bs_appliances_41",
+    "price": "$91.50 $79.99",
+    "rank": "41",
+    "review": "4.1(725)",
+    "title": "WHS-65LW1-Compact-Reversible-Refrigerator-Freezer"
+  }
+]

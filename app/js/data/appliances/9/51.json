@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41RpBrXjnmL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-DCR031B1BSLDD-Compact-Refrigerator-Steel/dp/B00O2N4LDS/ref=zg_bs_appliances_83",
+    "price": "$299.00 $182.23",
+    "rank": "83",
+    "review": "3.9(47)",
+    "title": "Danby-DCR031B1BSLDD-Compact-Refrigerator-Steel"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31haPmuVIzL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/midea-WHS-129C1-Single-Chest-Freezer/dp/B00MVVITWC/ref=zg_bs_appliances_82",
+    "price": "$169.99",
+    "rank": "82",
+    "review": "4.3(274)",
+    "title": "midea-WHS-129C1-Single-Chest-Freezer"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41UXqfVxMrL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/DEFLECTO-HR4W-Replacement-Vent-White/dp/B00314WY0G/ref=zg_bs_appliances_81",
+    "price": "$5.63",
+    "rank": "81",
+    "review": "4.4(110)",
+    "title": "DEFLECTO-HR4W-Replacement-Vent-White"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51QpbnwuC3L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/2-pack-Maytag-Refrigerator-UKF8001-Compatible/dp/B01I0H6Q52/ref=zg_bs_appliances_83",
+    "price": "$59.95 $28.95",
+    "rank": "83",
+    "review": "4.7(58)",
+    "title": "2-pack-Maytag-Refrigerator-UKF8001-Compatible"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31xkfI%2B7JCL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/GE-JVM7195SFSS-Range-Microwave-Stainless/dp/B00ENOTM94/ref=zg_bs_appliances_82",
+    "price": "$314.99",
+    "rank": "82",
+    "review": "4.0(203)",
+    "title": "GE-JVM7195SFSS-Range-Microwave-Stainless"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41qW8YfHQFL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Refrigerator-Replacement-Whirlpool-W10311524-Filters/dp/B01AXCVGFC/ref=zg_bs_appliances_81",
+    "price": "$18.20",
+    "rank": "81",
+    "review": "4.5(36)",
+    "title": "Refrigerator-Replacement-Whirlpool-W10311524-Filters"
+  }
+]

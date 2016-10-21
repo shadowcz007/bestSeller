@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31W0p5tMFSL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Samsung-MS11K3000AS-Countertop-Microwave-Interior/dp/B01D5UC036/ref=zg_bs_appliances_63",
+    "price": "$149.99 $129.99",
+    "rank": "63",
+    "review": "4.3(24)",
+    "title": "Samsung-MS11K3000AS-Countertop-Microwave-Interior"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41ywfIlcB1L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Ice-Machine-MachineTG22-Stainless-ThinkGizmos/dp/B01G5GB2NQ/ref=zg_bs_appliances_62",
+    "price": "$299.99 $169.99",
+    "rank": "62",
+    "review": "4.4(37)",
+    "title": "Ice-Machine-MachineTG22-Stainless-ThinkGizmos"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41Ev7e6Tc3L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Whirlpool-Kenmore-UltraFilter-Filters-Membrane/dp/B00JX2P2V8/ref=zg_bs_appliances_61",
+    "price": "$99.99",
+    "rank": "61",
+    "review": "4.6(43)",
+    "title": "Whirlpool-Kenmore-UltraFilter-Filters-Membrane"
+  }
+]

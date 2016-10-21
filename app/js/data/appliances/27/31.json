@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/418zHJGcpxL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Samsung-SKK-7A-Stacking-Front-Laundry/dp/B01EM69VT8/ref=zg_bs_appliances_43",
+    "price": "",
+    "rank": "43",
+    "review": "4.5(20)",
+    "title": "Samsung-SKK-7A-Stacking-Front-Laundry"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41OrKWvZBDL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Ice-Packs-Pcs-Reusable-Colorful/dp/B00GWDYD48/ref=zg_bs_appliances_42",
+    "price": "$18.99 $14.95",
+    "rank": "42",
+    "review": "4.4(273)",
+    "title": "Ice-Packs-Pcs-Reusable-Colorful"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41C2FzBTO1L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Bellemain-Kitchen-Silicone-Counters-Machines/dp/B01H42YPGG/ref=zg_bs_appliances_41",
+    "price": "$15.95 $10.00",
+    "rank": "41",
+    "review": "4.4(29)",
+    "title": "Bellemain-Kitchen-Silicone-Counters-Machines"
+  }
+]

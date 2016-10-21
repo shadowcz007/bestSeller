@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51FE652pp0L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/PACK-3392519-Whirlpool-KitchenAid-Thermofuse/dp/B00MZH0OPC/ref=zg_bs_appliances_43",
+    "price": "$5.05",
+    "rank": "43",
+    "review": "4.8(180)",
+    "title": "PACK-3392519-Whirlpool-KitchenAid-Thermofuse"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41Euvz0K76L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Avanti-Bottle-Thermoelectric-Counter-Cooler/dp/B004SUXZ5U/ref=zg_bs_appliances_42",
+    "price": "$129.00 $127.99",
+    "rank": "42",
+    "review": "4.2(467)",
+    "title": "Avanti-Bottle-Thermoelectric-Counter-Cooler"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/412znPR8iAL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Certified-Appliance-90-1028-3-wire-Dryer/dp/B00C7MWQS8/ref=zg_bs_appliances_41",
+    "price": "$17.31",
+    "rank": "41",
+    "review": "4.8(156)",
+    "title": "Certified-Appliance-90-1028-3-wire-Dryer"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41kASsW49IL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-DAR044A5BSLDD-Compact-Refrigerator-Spotless/dp/B00O2MB7BS/ref=zg_bs_appliances_63",
+    "price": "$279.00 $202.99",
+    "rank": "63",
+    "review": "4.2(759)",
+    "title": "Danby-DAR044A5BSLDD-Compact-Refrigerator-Spotless"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51%2B9e5rQ%2BXL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Maytag-Refrigerator-Filter-UKF8001-Compatible/dp/B01LZR75SY/ref=zg_bs_appliances_62",
+    "price": "$79.95 $31.95",
+    "rank": "62",
+    "review": "4.7(58)",
+    "title": "Maytag-Refrigerator-Filter-UKF8001-Compatible"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/315KZwsEHFL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Samsung-Counter-Microwave-Mirror-Finish/dp/B00NQFSSWS/ref=zg_bs_appliances_61",
+    "price": "$179.99",
+    "rank": "61",
+    "review": "3.9(348)",
+    "title": "Samsung-Counter-Microwave-Mirror-Finish"
+  }
+]

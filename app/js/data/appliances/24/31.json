@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31ytWmiotLL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Whynter-CUF-110B-Energy-Upright-Freezer/dp/B00M7GMEYK/ref=zg_bs_appliances_43",
+    "price": "$138.59 $133.59",
+    "rank": "43",
+    "review": "4.2(56)",
+    "title": "Whynter-CUF-110B-Energy-Upright-Freezer"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41Euvz0K76L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Avanti-Bottle-Thermoelectric-Counter-Cooler/dp/B004SUXZ5U/ref=zg_bs_appliances_42",
+    "price": "$129.00 $127.99",
+    "rank": "42",
+    "review": "4.2(467)",
+    "title": "Avanti-Bottle-Thermoelectric-Counter-Cooler"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31LP8sCHcAL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-DCR032C1BSLDD-Compact-Refrigerator-Spotless/dp/B00O2N4MEG/ref=zg_bs_appliances_41",
+    "price": "$199.00 $140.39",
+    "rank": "41",
+    "review": "4.2(759)",
+    "title": "Danby-DCR032C1BSLDD-Compact-Refrigerator-Spotless"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51%2B9PH3BUTL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Pure-Filters-Filter-Compatible-UKF8001/dp/B00UIZLE48/ref=zg_bs_appliances_63",
+    "price": "",
+    "rank": "63",
+    "review": "4.3(908)",
+    "title": "Pure-Filters-Filter-Compatible-UKF8001"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31u1JmdjRWL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Haier-12-Bottle-Curved-Smoked-Cellar/dp/B00DNSO2UK/ref=zg_bs_appliances_62",
+    "price": "$199.00 $121.00",
+    "rank": "62",
+    "review": "4.3(731)",
+    "title": "Haier-12-Bottle-Curved-Smoked-Cellar"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41Ev7e6Tc3L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Whirlpool-Kenmore-UltraFilter-Filters-Membrane/dp/B00JX2P2V8/ref=zg_bs_appliances_61",
+    "price": "$99.99",
+    "rank": "61",
+    "review": "4.6(43)",
+    "title": "Whirlpool-Kenmore-UltraFilter-Filters-Membrane"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31EvngZJu%2BL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Linkings-Beauty-Waterproof-Liquid-Lipstick/dp/B01LNMUANA/ref=zg_bs_appliances_23",
+    "price": "$5.25",
+    "rank": "23",
+    "review": "4.4(29)",
+    "title": "Linkings-Beauty-Waterproof-Liquid-Lipstick"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41hX8DFsr-L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/SmartWater-Comparable-Refrigerator-Water-Filter/dp/B00HT39PBQ/ref=zg_bs_appliances_22",
+    "price": "$10.90",
+    "rank": "22",
+    "review": "4.3(296)",
+    "title": "SmartWater-Comparable-Refrigerator-Water-Filter"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51mgLxJ8fJL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/PREMIUM-SmartWater-Replacement-Refrigerator-Cartridge/dp/B01HBPGP28/ref=zg_bs_appliances_21",
+    "price": "$19.95",
+    "rank": "21",
+    "review": "4.7(89)",
+    "title": "PREMIUM-SmartWater-Replacement-Refrigerator-Cartridge"
+  }
+]

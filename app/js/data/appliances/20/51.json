@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/412bVky-HkL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Compactor-FRIGIDAIRE-WHIRLPOOL-Rectangular-Compactors/dp/B00AVCBYK2/ref=zg_bs_appliances_83",
+    "price": "$59.99",
+    "rank": "83",
+    "review": "3.8(88)",
+    "title": "Compactor-FRIGIDAIRE-WHIRLPOOL-Rectangular-Compactors"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51QpbnwuC3L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/2-pack-Maytag-Refrigerator-UKF8001-Compatible/dp/B01I0H6Q52/ref=zg_bs_appliances_82",
+    "price": "$59.95 $28.95",
+    "rank": "82",
+    "review": "4.7(58)",
+    "title": "2-pack-Maytag-Refrigerator-UKF8001-Compatible"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51%2B9e5rQ%2BXL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Maytag-Refrigerator-Filter-UKF8001-Compatible/dp/B01LZR75SY/ref=zg_bs_appliances_81",
+    "price": "$79.95 $31.95",
+    "rank": "81",
+    "review": "4.7(58)",
+    "title": "Maytag-Refrigerator-Filter-UKF8001-Compatible"
+  }
+]

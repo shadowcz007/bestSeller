@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/411Yirfxq7L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/ToBeInStyle-Womens-Striped-Tights/dp/B00UIGMFEU/ref=zg_bs_apparel_63",
+    "price": "$9.95 - $11.95",
+    "rank": "63",
+    "review": "4.0(135)",
+    "title": "ToBeInStyle-Womens-Striped-Tights"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41PAnOMv-KL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Rubies-Costume-Inflatable-Full-Body/dp/B008M631IM/ref=zg_bs_apparel_62",
+    "price": "$20.99 - $65.63",
+    "rank": "62",
+    "review": "4.5(391)",
+    "title": "Rubies-Costume-Inflatable-Full-Body"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31dhYsvoL-L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/SEJORA-Fleece-Lined-Leggings-Slimming/dp/B016JVXO2E/ref=zg_bs_apparel_61",
+    "price": "$13.99 - $19.99",
+    "rank": "61",
+    "review": "4.2(1050)",
+    "title": "SEJORA-Fleece-Lined-Leggings-Slimming"
+  }
+]

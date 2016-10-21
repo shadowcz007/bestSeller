@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31d8UsCoj4L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Laundry-Alternative-Portable-Countertop-Dryer/dp/B002HT0958/ref=zg_bs_appliances_83",
+    "price": "$100.00 $69.99",
+    "rank": "83",
+    "review": "4.1(354)",
+    "title": "Laundry-Alternative-Portable-Countertop-Dryer"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41qW8YfHQFL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Refrigerator-Replacement-Whirlpool-W10311524-Filters/dp/B01AXCVGFC/ref=zg_bs_appliances_82",
+    "price": "$18.25",
+    "rank": "82",
+    "review": "4.5(36)",
+    "title": "Refrigerator-Replacement-Whirlpool-W10311524-Filters"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41ywfIlcB1L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Ice-Machine-MachineTG22-Stainless-ThinkGizmos/dp/B01G5GB2NQ/ref=zg_bs_appliances_81",
+    "price": "$299.99 $169.99",
+    "rank": "81",
+    "review": "4.4(37)",
+    "title": "Ice-Machine-MachineTG22-Stainless-ThinkGizmos"
+  }
+]

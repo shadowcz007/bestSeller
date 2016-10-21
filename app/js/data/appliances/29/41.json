@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31haPmuVIzL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/midea-WHS-129C1-Single-Chest-Freezer/dp/B00MVVITWC/ref=zg_bs_appliances_63",
+    "price": "$169.99",
+    "rank": "63",
+    "review": "4.3(274)",
+    "title": "midea-WHS-129C1-Single-Chest-Freezer"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31n3zOe1VcL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/WHS-65LSS1-Compact-Reversible-Refrigerator-Stainless/dp/B00MMRFNNS/ref=zg_bs_appliances_62",
+    "price": "$92.40 $92.14",
+    "rank": "62",
+    "review": "4.1(727)",
+    "title": "WHS-65LSS1-Compact-Reversible-Refrigerator-Stainless"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51EmfTJRJJL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/AKDY-Thermoelectric-Freestanding-Refrigerator-Operation/dp/B0128DDZC6/ref=zg_bs_appliances_61",
+    "price": "$329.00 $259.00",
+    "rank": "61",
+    "review": "4.1(52)",
+    "title": "AKDY-Thermoelectric-Freestanding-Refrigerator-Operation"
+  }
+]

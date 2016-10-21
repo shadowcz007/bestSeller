@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/410%2BcyXUKiL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Womens-Adult-Classic-Elastic-Layered/dp/B01HMH56RU/ref=zg_bs_apparel_63",
+    "price": "$4.99 - $11.99",
+    "rank": "63",
+    "review": "4.8(25)",
+    "title": "Womens-Adult-Classic-Elastic-Layered"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31SVa%2BKLEJL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/TUNIC-Hooded-Knight-Cosplay-Costume/dp/B015J8ZDZO/ref=zg_bs_apparel_62",
+    "price": "$17.99 - $29.99",
+    "rank": "62",
+    "review": "4.1(174)",
+    "title": "TUNIC-Hooded-Knight-Cosplay-Costume"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/G/01/x-site/icons/no-img-sm._V192198896_SL150_.gif",
+    "link": "https://www.amazon.com/Repel-Easy-Touch-Umbrella-DuPont/dp/B01K47MJCA/ref=zg_bs_apparel_61",
+    "price": "$19.95 - $23.95",
+    "rank": "61",
+    "review": "4.5(2416)",
+    "title": "Repel-Easy-Touch-Umbrella-DuPont"
+  }
+]

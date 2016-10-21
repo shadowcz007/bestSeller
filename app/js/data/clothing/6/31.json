@@ -1,0 +1,29 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51Xw6hYP19L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Funky-Junques-Womens-Slightly-Slouchy/dp/B01LBP66H8/ref=zg_bs_apparel_43",
+    "price": "$12.48 - $12.99",
+    "rank": "43",
+    "review": "4.8(8)",
+    "time": "2016-10-21T05:00:05.223Z",
+    "title": "Funky-Junques-Womens-Slightly-Slouchy"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41muhmelN0L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/VIV-Collection-Womens-Chevron-Leggings/dp/B00LCDXMTK/ref=zg_bs_apparel_42",
+    "price": "$11.99",
+    "rank": "42",
+    "review": "4.4(1623)",
+    "time": "2016-10-21T05:00:05.223Z",
+    "title": "VIV-Collection-Womens-Chevron-Leggings"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31XJKewKcAL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Natural-Uniforms-Unisex-Inch-Coat/dp/B00L9J00M4/ref=zg_bs_apparel_41",
+    "price": "$9.79 - $26.04",
+    "rank": "41",
+    "review": "4.0(543)",
+    "time": "2016-10-21T05:00:05.223Z",
+    "title": "Natural-Uniforms-Unisex-Inch-Coat"
+  }
+]

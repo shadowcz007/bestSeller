@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/416nAr420PL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Laundry-Alternative-Wonderwash-Non-electric-Portable/dp/B002C8HR9A/ref=zg_bs_appliances_43",
+    "price": "$45.00",
+    "rank": "43",
+    "review": "4.0(768)",
+    "title": "Laundry-Alternative-Wonderwash-Non-electric-Portable"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/412znPR8iAL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Certified-Appliance-90-1028-3-wire-Dryer/dp/B00C7MWQS8/ref=zg_bs_appliances_42",
+    "price": "$17.31",
+    "rank": "42",
+    "review": "4.8(155)",
+    "title": "Certified-Appliance-90-1028-3-wire-Dryer"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41pB3a7oqDL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-cu-ft-Countertop-Microwave-Black/dp/B004ZU09QQ/ref=zg_bs_appliances_41",
+    "price": "$119.99 $74.99",
+    "rank": "41",
+    "review": "3.9(1908)",
+    "title": "Danby-cu-ft-Countertop-Microwave-Black"
+  }
+]

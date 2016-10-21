@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41TNy%2BxgetL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Maytag-UKF8001-Compatible-Water-Filter/dp/B00KV0SKQK/ref=zg_bs_appliances_43",
+    "price": "$18.99",
+    "rank": "43",
+    "review": "4.2(572)",
+    "title": "Maytag-UKF8001-Compatible-Water-Filter"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41Euvz0K76L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Avanti-Bottle-Thermoelectric-Counter-Cooler/dp/B004SUXZ5U/ref=zg_bs_appliances_42",
+    "price": "$129.00 $127.99",
+    "rank": "42",
+    "review": "4.2(467)",
+    "title": "Avanti-Bottle-Thermoelectric-Counter-Cooler"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31EvngZJu%2BL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Linkings-Beauty-Waterproof-Liquid-Lipstick/dp/B01LNMUANA/ref=zg_bs_appliances_41",
+    "price": "$5.25",
+    "rank": "41",
+    "review": "4.4(29)",
+    "title": "Linkings-Beauty-Waterproof-Liquid-Lipstick"
+  }
+]

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>BestSellers</title>
+    <meta charset="utf-8">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="./css/photon.css">
+
+    
+  </head>
+  <body>
+  <div class="window">     
+      <div class="window-content">
+        <div class="pane-group ">
+          <div class="pane-sm sidebar">
+            <nav class="nav-group">
+            <br>
+              <h5 class="nav-group-title">Tools</h5>
+              <span class="nav-group-item button-tools" id="AnyDepartment">
+                <span class="icon icon-home"></span>
+                Any Department
+              </span>
+              <span class="nav-group-item button-tools" id="Setup">
+                <span class="icon icon-cog"></span>
+                Setup
+              </span>
+              <span class="nav-group-item button-tools" id="DataShow">
+                <span class="icon icon-folder"></span>
+                DataShow
+              </span>
+              <span class="nav-group-item button-tools" id="AirPlay">
+                <span class="icon icon-signal"></span>
+                AirPlay
+              </span>
+             <br>
+              <h5 class="nav-group-title">Import File</h5>
+              <div id="holder">
+                Drag your file here
+              </div>
+                <br>
+                <h5 class="nav-group-title">Search for ...</h5>
+                  <li class="list-group list-group-header">
+                <input class="form-control" type="text" placeholder="best sell">
+             </li>
+             <!-- Large button group -->
+              <div class="btn-group btn-add">
+                <button class="btn btn-large btn-default" id="add">
+                  <span class="icon icon-heart"></span>
+                </button>
+                 
+                <button class="btn btn-large btn-default">
+                  <span class="icon icon-star"></span>
+                </button>
+              </div>
+            </nav>
+          </div>
+        
+        <div class="pane-sm pane department">
+            <h2 class="title">BestSellers</h2>
+            <ul class="list-group" id="dpf">          
+            </ul>
+        </div>
+
+          <div class="pane department"> 
+              <h2 class="title">BestSellers</h2>
+              <div>
+
+                <button class="btn btn-mini btn-default">最新排名</button>
+                <button class="btn btn-mini btn-primary">排名变动</button>
+                <button class="btn btn-mini btn-positive">评论数</button>
+                <button class="btn btn-mini btn-negative">评分</button>
+                <button class="btn btn-mini btn-warning">价格</button>
+              
+              </div>
+              <ul class="list-group" id="bestsellers">          
+              </ul> 
+          </div>
+
+          <div class="pane add" style="display:none">
+              <ul class="list-group addlist" >          
+              </ul>
+
+              
+          </div> 
+          <div class="pane" style="display:none" id="data">
+          
+          </div>
+
+        </div>
+      </div>
+
+     
+      <footer class="toolbar toolbar-footer">
+        <h1 class="title">Footer</h1>
+      </footer>
+  </div>
+
+
+</body>
+<script>
+window.$ = window.jQuery = require('./js/libs/jquery.min.js');
+require('./js/index.js'); 
+ 
+  </script>
+ 
+</html>

@@ -1,0 +1,26 @@
+[
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/41US8dDPAAL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/Danby-DAR017A2BDD-Compact-Refrigerator-Cubic/dp/B00O2N3JDG/ref=zg_bs_appliances_63",
+    "price": "$129.00 $99.00",
+    "rank": "63",
+    "review": "4.2(759)",
+    "title": "Danby-DAR017A2BDD-Compact-Refrigerator-Cubic"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/31n3zOe1VcL._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/WHS-65LSS1-Compact-Reversible-Refrigerator-Stainless/dp/B00MMRFNNS/ref=zg_bs_appliances_62",
+    "price": "$92.40 $92.14",
+    "rank": "62",
+    "review": "4.1(727)",
+    "title": "WHS-65LSS1-Compact-Reversible-Refrigerator-Stainless"
+  },
+  {
+    "img": "https://images-na.ssl-images-amazon.com/images/I/51FE652pp0L._SL160_SL150_.jpg",
+    "link": "https://www.amazon.com/PACK-3392519-Whirlpool-KitchenAid-Thermofuse/dp/B00MZH0OPC/ref=zg_bs_appliances_61",
+    "price": "$5.05",
+    "rank": "61",
+    "review": "4.8(180)",
+    "title": "PACK-3392519-Whirlpool-KitchenAid-Thermofuse"
+  }
+]
