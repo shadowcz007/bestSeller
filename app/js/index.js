@@ -323,7 +323,7 @@ function catch_sched_stock(){
 
             console.log("Now:"+new Date());
 
-    var sched = later.parse.recur().every(20).minute(),
+    var sched = later.parse.recur().every(60).minute(),
                 t = later.setInterval(function() {          
                     console.log("运行一次--------------"+new Date());
                     ipcRenderer.send('catch_stock',url);        
