@@ -87,7 +87,7 @@ function webviewJS_Main(webview) {
             var ln=html.length;
                 console.log("监控商品数量－－－－－－－－"+ln);
             var j=0;
-            var TIME=10000,MAX;
+            var TIME=40000,MAX;
 
             if (obj.max) {
                 MAX=obj.max;
