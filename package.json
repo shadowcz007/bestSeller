@@ -20,8 +20,8 @@
     "electron": "^1.4.3"
   },
   "dependencies": {
-   
     "later": "^1.2.0",
+    "mongoose": "^4.6.4",
     "nconf": "^0.8.4"
   }
 }
