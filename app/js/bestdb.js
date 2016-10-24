@@ -39,7 +39,16 @@ var Schema=mongoose.Schema;
 
 
 
+function load(DP,callback){
+      var model= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js'));
+      
+      model.find({}, function (err, docs) {
+        // docs 此时只包含文档的部分键值
+        return callback(docs)
 
+      });
+
+}
 
 
 function update(DP,counts,data) {
@@ -47,7 +56,7 @@ function update(DP,counts,data) {
 	//loadPath(DP,'data/'+DP+'/'+counts+'/',updateRank);
 	updateRank(DP,'',data);
 
-function updateRank(){
+  function updateRank(){
   //console.log(arguments[0])
   	var bs_base=arguments[1];
    	var data=arguments[2];
@@ -202,6 +211,7 @@ function test (argument) {
 }
 module.exports = {
     update:update,
+    load:load,
     test:test
     
 };
