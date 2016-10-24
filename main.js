@@ -5,7 +5,7 @@ const ipcMain = require('electron').ipcMain
 const path=require('path');
 const fs = require('fs-extra');
 
-
+const bestdb=require('./app/js/bestdb.js');
 
 ipcMain._maxListeners=100; 
 console.log(ipcMain._maxListeners)
@@ -228,6 +228,7 @@ ipcMain.on('click-button', function (event, arg) {
 
 ipcMain.on('asynchronous-message', function (event, arg) {
   console.log(arg)  // prints "ping"
+
   event.sender.send('asynchronous-reply', '-----main-sender-send----pong---------')
 })
 
@@ -261,8 +262,8 @@ ipcMain.on('catch-result-save',function (event, arg) {
   //console.log("catch-result-save----------from-webview"+JSON.stringify(arg[1]).replace(/\\n/g,''));
   //console.log(path.join(`${__dirname}`,'app/js/data/test1.json'))
   let index=arg[0].replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'')+'/'+global.sharedObj.count+"/"+arg[0].replace(/.*pg=|&ajax.*=/ig,'');
-
-
+  let DP=arg[0].replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
+  let counts=global.sharedObj.count;
   let bs=JSON.stringify(arg[1]).replace(/\\n/g,'');
   let json=JSON.parse(bs);
   for (var i = json.length - 1; i >= 0; i--) {
@@ -270,6 +271,9 @@ ipcMain.on('catch-result-save',function (event, arg) {
   };
   fs.outputJson(path.join(`${__dirname}`,'app/js/data/'+index.toLowerCase()+'.json'),json);
   console.log("fsjout --------json------------from webview--"+path.join(`${__dirname}`,'app/js/data/'+index.toLowerCase()+'.json'))
+  
+  bestdb.update(DP,counts,json);
+
   //event.sender.send('catch-result-save-reply',[index,bs]);
 
 })
