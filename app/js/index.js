@@ -346,11 +346,8 @@ function catch_sched(){
   later.date.localTime();
 
   console.log("Now:"+new Date());
-
-  var sched = later.parse.recur().every(1).hour(),
-      t = later.setInterval(function() {
-          
-          console.log("运行一次--------------"+new Date());
+  function fn(){
+    console.log("运行一次--------------"+new Date());
 
             let html=$('.addlist').children();
             let ln=html.length;
@@ -379,10 +376,12 @@ function catch_sched(){
 
             };
   
-           
-      }, sched);
+  }
+
+  var sched = later.parse.recur().every(1).hour(),
+      t = later.setInterval(fn(), sched);
   
-  
+  setTimeout(fn(),1000);
 
   setTimeout(function(){
      t.clear();
