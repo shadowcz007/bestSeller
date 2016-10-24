@@ -36,8 +36,16 @@ db.once('open', function callback () {
 
 var Schema=mongoose.Schema;
 
-//loadPath('data/clothing/4/') ;
-//updateRank();
+
+
+
+
+
+
+function update(DP,counts,data) {
+	 
+	//loadPath(DP,'data/'+DP+'/'+counts+'/',updateRank);
+	updateRank(DP,'',data);
 
 function updateRank(){
   //console.log(arguments[0])
@@ -45,249 +53,83 @@ function updateRank(){
    	var data=arguments[2];
     var _collecting="rank_"+arguments[0];
 
-    var ScheMa=new Schema({ 
-     rank:Number,
-     bs_new:Array,
-     bs_all:Array,
-     bs_base:Array,
-     bs_detail:{
-     		title:{ type: String},
-     		img:{type:String},
-     		link:{ type: String},
-	     	price: { type: String},
-		    rank:{ type: Number} ,
-		    review:{ type:String},
-		    time:{ type: Date}
-			},      
-     updated: {type: Date,default:Date.now}
-
-    },{collection:_collecting});//记得指定collection
-
-
-    var model=mongoose.model(_collecting,ScheMa);
+    var model= require(path.join(`${__dirname}`,'../js/model/'+arguments[0]+'.js'));
 
     let bs_base_old=[],
     	bs_new=[],
     	bs_all=[];
 
-    console.log(data[99].rank)
-  
-
-    model.findOne({}, function (err, it) {
-       console.log(it)
-       if (!it) {
-
-       		for (var i = data.length-1; i >= 0; i--) {     			
-   	       		var doc = new model({ 
-					       			 rank:parseInt(data[i].rank),
-					       			 bs_new:bs_base,
-					       			 bs_all:bs_base.concat(bs_base_old),
-								     bs_base:bs_base,
-								     bs_detail:{
-								     		title:data[i].title,
-								     		img:data[i].img,
-								     		link:data[i].link,
-									     	price:data[i].price,
-										    rank:parseInt(data[i].rank),
-										    review:data[i].review,
-										    time:data[i].time
-											} ,
-									updated: data[i].time  
-					       		});
-
-				// 调用 .save 方法后，mongoose 会去你的 mongodb 中的 test 数据库里，存入一条记录。
-				doc.save(function (err) {
-
-				  if (err) {
-				  	console.log(err)
-				  }
-
-				  console.log('init-----save to db'+i);
-
-				});
-
-			};
-       }else{
-
-       		for (var i = data.length - 1; i >= 0; i--) {
-       			
-       		
-
-					let update_where = {"rank":parseInt(data[i].rank)};//更新条件
-					
-					let update_data1 ={	
-
-					       			 bs_new:bs_base,
-					       			 bs_all:bs_base.concat(bs_base_old),
-								     bs_base:bs_base,								     
-									 updated: data[i].time  
-										 
-								};//更新数据
-
-					
-						 		
-					model.update(update_where,{$set:update_data1},function(err){
-							
-							if(err){
-
-								        console.log('update error!!!!!!!!!!'+err);
-							}else{
-								      
-								        console.log('update success-----------');						         
-
-								    }
-					});	      		
+    //console.log(data[99].title)  
 
 
+    for (var i = data.length - 1; i >= 0; i--) {
+    	let title0=data[i].title;
+    	let rank0=parseInt(data[i].rank);
+    	let time0=data[i].time;
+    	let link0=data[i].link,
+    	    img0=data[i].img,     
+	 		price0=data[i].price,	
+	 		review0=data[i].review;	
 
-
-
-			};
-
-			for (var i = data.length - 1; i >= 0; i--) {
-       			
-       		
-
-					let update_where = {"rank":parseInt(data[i].rank)};//更新条件
-					
-					
-					let update_data2 ={						       			 
-								     bs_detail:{
-								     		title:data[i].title,
-								     		img:data[i].img,
-								     		link:data[i].link,
-									     	price:data[i].price,
-										    rank:parseInt(data[i].rank),
-										    review:data[i].review,
-										    time:data[i].time
-											} 										 
-								};//更新
-						 		
-					model.update(update_where,{$push:update_data2},function(err){
-							
-							if(err){
-
-								        console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-							}else{
-								      
-								        console.log('update success-----------');						         
-
-								    }
-					});	      		
-
-
-
-
-
-			};
-
-
-
-
-       };
-
-      //console.log(it.bs_base);
-     
-      //let new_bs=bs_base_old.concat(bs_base);
-      //let bs_tg=unique(new_bs);
-      //console.log("-------"+bs_tg)
+    	let newTitle = {'title':title0,
+    					'rank':rank0,
+    					'time':time0,
+    					'link':link0,
+    					'img':img0,
+    					'price':price0,
+    					'review':review0,
+    					'detail':{
+						     	'price':price0,
+						     	'rank':rank0,
+						     	'time':time0,
+						     	'review':review0
+						     }
+    				};
+    	let findTitle={'title':title0};
+		model.findOne(findTitle,function(err,person){
       
+      		//console.log(person);
+      		
+      		if (person==null) {
+      			model.create(newTitle,function(){
+      				 
+		    		console.log("------------------create ok------------"+title0);
+		    	});
 
-    });
+      		}else{
+      			console.log(newTitle.title+"已经存在---------------");
+      			
+      			let update_where = {title:title0};//更新条件					
+				let update_data ={	
+									rank:rank0,
+									time:time0,
+									price:price0,
+									review:review0,
+									detail:{
+								     	price:price0,
+								     	rank:rank0,
+								     	time:time0,
+								     	review:review0
+								     } 
+																					 
+									};//更新
+				 
+				model.update(update_where,{$push:update_data},function(err){
+						    if(err){
+						        console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+						    }else{
+						        console.log('update success-----------'+title0);
 
+						    }
+				});	
 
-function unique(a){
- var res = [];
- var json = {};
- for(var i = 0; i < a.length; i++){
-  if(!json[a[i]]){
-  res.push(a[i]);
-  json[a[i]] = 1;
-  }else{
-  json[a[i]]++
-  }
- }
- return json;
-};
+      		};
+      		
+    	});
 
-/*
-  let time="2016-10-21T04:00";
-  let rank=it.rank,
+	}
 
-  shop=[{time:time,title:it.title,link:it.link,img:it.img,price:it.price,review:it.review}];
-
-  db.rank_clothing.save({rank:rank,bs_new:[],bs_all:[],bs_base:bs_base,bs_detail:shop,time:[time]});
-
-
-*/
-
-/*
-    let update_where = {"rank":id};//更新条件
-    let update_data = {"lat":lat,"lng":lng,"address":address,"shopname":name};//更新数据
-    
-    model.update(update_where,{$set:update_data},function(err){
-        if(err){
-            console.log('update error!!!!!!!!!!!!!!!!!!!!!'+i);
-        }else{
-            console.log('update success-----------'+i);
-
-        }
-    });
-*/
-
-}
-
-
-
-
-
- // initDP("app");
-
-function initDP(){
-
-	var _collecting="rank_clothing"  ;
-
-    var ScheMa=new Schema({ 
-     rank:String,
-     bs_new:Array,
-     bs_all:Array,
-     bs_base:Array,
-     bs_detail:Array,
-     time:Array
-
-    },{collection:_collecting});//记得指定collection
-
-
-    var model=mongoose.model(_collecting,ScheMa);
-
-/*
-
-    model.findOne({}, function (err, it) {
-      if (!it) {
-      	   	var doc = new model({ rank: rank, bs_new:[],bs_all:[],bs_base:bs_base,bs_detail:shop,time:[time]});
-
-			// 调用 .save 方法后，mongoose 会去你的 mongodb 中的 test 数据库里，存入一条记录。
-			doc.save(function (err) {
-			  if (err) // ...
-			  console.log('init-----save to db');
-			});
-
-      	
-      };
-      console.log(it);
-  
-      //let new_bs=bs_base_old.concat(bs_base);
-      //let bs_tg=unique(new_bs);
-      //console.log("-------"+bs_tg)
-      
-
-    });
- */  
-
-}
- 
-loadPath('clothing','data/clothing/6/',updateRank);
- 
+} 
 
 function loadPath(dp,TEST_DIR,callback){
   var items = [] // files, directories, symlinks, etc
@@ -315,14 +157,10 @@ function loadPath(dp,TEST_DIR,callback){
               		data1.push(data[j]);
               		title.push(data[j].title);
 
-              	};
-              	
- 				//let array1=dataStr.split();
- 				//data1Str.push(dataStr);
- 
-                if (ln<=0 && data1.length==100) {
-                	//console.log(data1.length);
-                		
+              	};             	
+ 				  
+                if (ln<=0 && data1.length>=90) {
+                                 		
                 		callback(dp,title,data1);
 
                 	};
@@ -339,3 +177,32 @@ function loadPath(dp,TEST_DIR,callback){
 
     })
   }
+
+function unique(a){
+ var res = [];
+ var json = {};
+ for(var i = 0; i < a.length; i++){
+  if(!json[a[i]]){
+  res.push(a[i]);
+  json[a[i]] = 1;
+  }else{
+  json[a[i]]++
+  }
+ }
+ return json;
+};
+}
+
+ //loadPath('clothing','data/clothing/58/',updateRank);
+
+
+function test (argument) {
+	// body...
+	console.log('test')
+}
+module.exports = {
+    update:update,
+    test:test
+    
+};
+
