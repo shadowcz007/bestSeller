@@ -12,6 +12,17 @@
 webview{
   height:800px;
 }
+
+.linkButton{
+  display: block;
+  height: 44px;
+  border: 1px dashed gray;
+  margin: 12px;
+  background-color: white;
+  text-align: center;
+  padding-top: 11px;
+  color: #a5a5a5;
+}
 .btn-add{
     position: absolute !important;
     bottom: 12px;
@@ -24,7 +35,7 @@ webview{
 .price{
       font-size: 14px;
     color: #636363;
-     
+
 }
 .review{
   font-size: 14px;
@@ -56,7 +67,7 @@ webview{
     border-radius: 12px;
     color: white;
     text-align: center;
-  
+
 }
 
 .rankLast{
@@ -64,7 +75,7 @@ webview{
      float: left;
     width: 24px;
     height: 24px;
-     
+
     color: #585858;
     text-align: center;
 }
@@ -110,11 +121,11 @@ webview{
 }
 
 
-.hoverAni {  
+.hoverAni {
   display: block;
   color: black;
   background:white ;
-   
+
   transition: all 0.2s ease;
   animation: down-bump 0.4s ease;
 }
@@ -2458,6 +2469,3 @@ td:last-child {
   flex: none;
   padding: 3px 10px;
 }
-
-
-
