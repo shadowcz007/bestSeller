@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./css/photon.css">
-     <script src="./js/libs/echarts.min.js"></script>   
-    
+     <script src="./js/libs/echarts.min.js"></script>
+
   </head>
   <body>
-  <div class="window">     
+  <div class="window">
       <div class="window-content">
         <div class="pane-group ">
           <div class="pane-sm sidebar">
@@ -47,21 +47,21 @@
                 <button class="btn btn-large btn-default" id="add">
                   <span class="icon icon-heart"></span>
                 </button>
-                 
+
                 <button class="btn btn-large btn-default">
                   <span class="icon icon-star"></span>
                 </button>
               </div>
             </nav>
           </div>
-        
+
         <div class="pane-sm pane department">
             <h2 class="title">BestSellers</h2>
-            <ul class="list-group" id="dpf">          
+            <ul class="list-group" id="dpf">
             </ul>
         </div>
 
-          <div class="pane department"> 
+          <div class="pane department">
               <h2 class="title">BestSellers</h2>
               <div>
 
@@ -70,28 +70,32 @@
                 <button class="btn btn-mini btn-positive">评论数</button>
                 <button class="btn btn-mini btn-negative">评分</button>
                 <button class="btn btn-mini btn-warning">价格</button>
-              
+
               </div>
-              <ul class="list-group" id="bestsellers">          
-              </ul> 
+              <ul class="list-group" id="bestsellers">
+              </ul>
           </div>
 
           <div class="pane add" style="display:none">
-              <ul class="list-group addlist" >          
+              <ul class="list-group addlist" >
               </ul>
 
-              
-          </div> 
+
+          </div>
           <div class="pane" style="display:none" id="data">
-              <div id="duration" style="width: 840px;height:600px;"></div>
-              <div id="lineStack" style="width: 520px;height:320px;"></div>
-              <a class="btn-default" id='lineStackChange'>lineStackChange</a>
+              <div id="duration" style="width: 100%;height:100%;"></div>
+              <p>统计了出现在bestSellers榜单的次数，次数越多，表示商品质量及服务越优，可进一步研究其关键词、
+                <br>review内容等；次数越少，表示是新进入榜单的商品，可以研究其类似产品，跟卖or研发新品</p>
+              <div id="lineStack" style="width: 620px;height:320px;"></div>
+              <a class="linkButton" id='lineStackChange'>lineStackChange</a>
+              <div id="lineStackChangeContent"></div>
+              <div id="parallel" style="width:800px;height:1240px;"></div>
           </div>
 
         </div>
       </div>
 
-     
+
       <footer class="toolbar toolbar-footer">
         <h1 class="title">Footer</h1>
       </footer>
@@ -101,8 +105,8 @@
 </body>
 <script>
 window.$ = window.jQuery = require('./js/libs/jquery.min.js');
-require('./js/index.js'); 
- 
+require('./js/index.js');
+
   </script>
- 
+
 </html>
