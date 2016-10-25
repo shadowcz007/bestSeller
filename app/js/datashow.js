@@ -1,29 +1,58 @@
+/*!
+* @license shadow
+* Copyright (c) 2016-2020 freegarden.
+*=====================================
+* datashow.show(DP,)
+*
+*
+*
+*/
+
+
 const fs = require('fs-extra');
 const path=require('path');
 const {remote,ipcRenderer} = require('electron');
 
-
 const bestdb=require(path.join(__dirname, './bestdb.js'));
 
+
+
 function show (argument) {
-	 
-bestdb.load("clothing",function(data){
+	let NewBestHour=24;//取最近24小时上榜的商品
+	let NewNewBs=1;
+
+
+
+
+bestdb.load("clothing",'',function(data){
 	//console.log(data[0].title);
 	//console.log(data[0].time.length);
 
- 
-	let maxTime=0,time=[],title=[];
-	let timeArea=[],timeS=[],titleS=[],series=[];
+
+	let maxTime=0,time=[],title=[];//统计出现次数
+	let timeArea=[],timeS=[],titleS=[],urlS=[],imgS=[],series=[];//统计某商品排名情况
+
+
 	let ln=data.length;
 	let counts=0;
+
 	for (var i = data.length - 1; i >= 0; i--) {
+
 		ln--;
+
+
+
 		time.push(data[i].time.length);
+
 		title.push(data[i].title);
-		if (data[i].time.length<=10) {
+
+		//data[i].detail
+
+
+		if (data[i].time.length<=NewBestHour) {
 			counts++;
 			let ranks1=data[i].rank;
-			let rank00=[];			
+			let rank00=[];
 			console.log(ranks1);
 			series.push({
 						"name":data[i].title,
@@ -31,45 +60,94 @@ bestdb.load("clothing",function(data){
 						"stack":'总量',
 						"data":ranks1
 					});
-			timeS.push(data[i].time);
-			titleS.push(data[i].title);
+					let dataToTime=data[i].time;
 
-			
+					for (var j = 0; j < dataToTime.length; j++) {
+							dataToTime[j]=dataToTime[j].getHours()+'h';
+					}
+
+			timeS.push(dataToTime);
+			console.log(dataToTime);
+
+			titleS.push(data[i].title);
+			urlS.push(data[i].link);
+			imgS.push(data[i].img);
 
 		};
-		
+
 		if (ln<=0) {
 
 				maxTime=Math.max.apply(null, time);
-				console.log(series);
-				console.log(titleS);
-				console.log(timeS);
+
+			//	console.log(series);
+			//	console.log(titleS);
+			//	console.log(timeS);
+
 				duration(title,time);
+
 				let cln=titleS.length;
 				let clna=0;
+
+				lineStackChange(clna);
+
 				$('#lineStackChange').on("click",function(){
-			　　　　	$('#lineStackChange').text('lineStackChange'+clna+'/'+titleS.length)
-					lineStack(titleS[clna],timeS[clna],series[clna]);
-					clna++;　　　　	
-					
-					if (clna>cln) {
-						clna=0;
-					};
+			　　　　
+								clna++;　　　　
+								lineStackChange(clna)
+								console.log(clna);
+								console.log(cln);
+								if (clna>=cln-1) {
+									clna=-1;
+								};
 				});
-				
+				function lineStackChange(index) {
 
-
-
-
-
-
+										$('#lineStackChange').text('lineStackChange:'+(index+1)+' | '+titleS.length)
+										$('#lineStackChangeContent').html('<br><a href="'+urlS[index]+'">'+titleS[index]+'</a><img src="'+imgS[index]+'">')
+										lineStack(titleS[index],timeS[index],series[index]);
+				}
 
 
 		};
+
+
+
 	};
 
 
+
 });
+
+bestdb.load("clothing","2016/10/25/15:50",function(data){
+	//	let pallelRank=[rank,reviews,star,price,"new"];//统计排名与各项指标的关系
+		let pSeries=[],titles=[],colors=[],type='last';
+		let ln=data.length;
+	//	console.log(data)
+			for (var i = 0; i <data.length; i++) {
+					ln--;
+					//最近1小时上榜的商品
+					if (data[i].time.length<=NewNewBs) {
+							type='new';
+							colors.push(getRandomColor2());
+					}else{
+							colors.push(getRandomColor());
+					}
+
+					titles.push(data[i].title);
+
+					pSeries.push({'name': data[i].title,
+											'type': 'parallel',
+											'lineStyle': 'lineStyle',
+											'data': [[data[i].rank_new,data[i].review_new,data[i].star_new,data[i].priceMax_new,data[i].priceMin_new,type]]
+											});
+					if (ln<=0) {
+						parallel(pSeries,titles,colors);
+					}
+		}
+
+});
+
+
 
 
 	function duration(title,time){
@@ -79,21 +157,36 @@ bestdb.load("clothing",function(data){
 	        // 指定图表的配置项和数据
 	        var option = {
 	            title: {
-	                text: 'bestSellers持久度'
-	            },
+	                text: 'New Best Sellers',
+									textStyle:{
+										fontSize:18
+									}
+								  },
 	            tooltip: {
 	            	 trigger: 'axis'
 	            },
 	            toolbox: {
 			        feature: {
 			            saveAsImage: {}
-			        }
-			    },
+								},
+								dataZoom:{
+									show:true
+								}
+			    		},
 	            legend: {
 	                data:['持久度']
 	            },
 	            xAxis: {
-	                data: title
+									type:'category',
+	                data: title,
+
+									axisLabel:{
+										interval:1,
+										rotate:18,
+										textStyle:{
+											fontSize:8
+										}
+									}
 	            },
 	            yAxis: {},
 	            series: [{
@@ -139,7 +232,11 @@ bestdb.load("clothing",function(data){
 				        data: time
 				    },
 				    yAxis: {
-				        type: 'value'
+				        type: 'value',
+								inverse:true,
+								min:1,
+								max:100,
+								minInterval: 1
 				    },
 				    series: series
 				};
@@ -150,27 +247,17 @@ bestdb.load("clothing",function(data){
 
 	}
 
-	function parallel(){
-		var dataT1 = [
-		    [1,55,9,56,"良"]
-		];
-
-		var dataT2 = [
-		    [23,26,37,27,1.163,27,13,"优"]
-		];
-
-		var dataT3 = [
-		    [61,91,45,125,0.82,34,23,"良"]
-		];
-
+	function parallel(data,title,color){
+	//	console.log(JSON.stringify(data));
+	//	console.log(title);
+		var myChart1 = echarts.init(document.getElementById('parallel'));
 		var schema = [
-		    {name: 'date', index: 1, text: 'rank'},
-		    {name: 'reviews', index: 1, text: 'reviews'},
-		    {name: 'star', index: 6, text: 'star'},
-		    {name: 'price', index: 2, text: 'price'},
-		    
-		    
-		    {name: '等级', index: 7, text: '等级'}
+		    {name: 'rank', index: 1, text: 'rank'},
+		    {name: 'reviews', index: 2, text: 'reviews'},
+		    {name: 'star', index: 3, text: 'star'},
+		    {name: 'priceMax', index: 4, text: 'priceMax'},
+				{name: 'priceMin', index: 5, text: 'priceMin'},
+		    {name: 'NewBest', index: 6, text: 'NewBest'}
 		];
 
 		var lineStyle = {
@@ -181,70 +268,58 @@ bestdb.load("clothing",function(data){
 		};
 
 		option = {
-		    color: [
-		        '#c23531', '#91c7ae', '#dd8668'
-		    ],
+		    color: color,
 		    legend: {
-		        top: 10,
-		        data: ['title1', 'title2', 'title3'],
-		        itemGap: 20
+						zlevel:1,
+						orient:'vertical',
+						selectedMode:'multiple',
+		        top: '0',
+						left:'4px',
+		        data: title,
+		        itemGap: 8,
+						textStyle:{
+							fontSize:10
+						}
 		    },
 		    parallelAxis: [
 		        {dim: 0, name: schema[0].text, inverse: true, min:1,max:100,minInterval: 1, nameLocation: 'start'},
 		        {dim: 1, name: schema[1].text},
-		        {dim: 2, name: schema[2].text},
+		        {dim: 2, name: schema[2].text,min:0,max:5,minInterval: 1},
 		        {dim: 3, name: schema[3].text},
-		        {dim: 4, name: schema[4].text,
-		        type: 'category', data: ['优', '良', '轻度污染', '中度污染', '重度污染', '严重污染']}
+						{dim: 4, name: schema[4].text},
+		        {dim: 5, name: schema[5].text,type: 'category', data: ['new', 'last']}
 		    ],
-		    
+
 		    parallel: {
-		        left: '5%',
-		        right: '13%',
-		        bottom: '10%',
-		        top: '20%',
-		        parallelAxisDefault: {
-		            type: 'value',
-		            name: 'reviews',
-		            nameLocation: 'end',
-		            nameGap: 2,
-		            nameTextStyle: {
-		                fontSize: 12
-		            }
-		        }
+		        left: '36px',
+		        right: '36px',
+		        bottom: '36px',
+		        top: '1024px'
+
 		    },
-		    series: [
-		        {
-		            name: 'title1',
-		            type: 'parallel',
-		            lineStyle: lineStyle,
-		            data: dataT1
-		        },
-		        {
-		            name: 'title2',
-		            type: 'parallel',
-		            lineStyle: lineStyle,
-		            data: dataT2
-		        },
-		        {
-		            name: 'title3',
-		            type: 'parallel',
-		            lineStyle: lineStyle,
-		            data: dataT3
-		        }
-		    ]
+		    series: data
 		};
+
+		  myChart1.setOption(option);
+
+
+
 	}
-	
+
 
 }
 
 
 
+function getRandomColor(){
+	return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
+}
+function getRandomColor2(){
 
+    return "red";
 
-
+ }
 module.exports = {
     show: show
-    
+
 };

@@ -6,18 +6,18 @@ const path=require('path');
 // mongoose config
 var _connectDB="bestSellers";
 
-var mongoose = require('mongoose')  
+var mongoose = require('mongoose')
   , connectionString = 'mongodb://localhost/'+_connectDB
   , options = {};
-	
-options = {  
+
+options = {
   server: {
     auto_reconnect: true,
     poolSize: 10
   }
 };
-	
-mongoose.connect(connectionString, options, function(err, res) {  
+
+mongoose.connect(connectionString, options, function(err, res) {
   if(err) {
     console.log('[mongoose log] Error connecting to: ' + connectionString + '. ' + err);
   } else {
@@ -39,10 +39,17 @@ var Schema=mongoose.Schema;
 
 
 
-function load(DP,callback){
+function load(DP,date,callback){
       var model= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js'));
-      
-      model.find({}, function (err, docs) {
+      var date1;
+      if (!date) {
+        date1=new Date("1990/01/01");
+      }else{
+        var date1=new Date(date);
+      }
+
+
+      model.find({time_new:{$gt: date1}}, function (err, docs) {
         // docs 此时只包含文档的部分键值
         return callback(docs)
 
@@ -52,7 +59,7 @@ function load(DP,callback){
 
 
 function update(DP,counts,data) {
-	 
+
 	//loadPath(DP,'data/'+DP+'/'+counts+'/',updateRank);
 	updateRank(DP,'',data);
 
@@ -68,17 +75,22 @@ function update(DP,counts,data) {
     	bs_new=[],
     	bs_all=[];
 
-    //console.log(data[99].title)  
+    //console.log(data[99].title)
 
 
     for (var i = data.length - 1; i >= 0; i--) {
     	let title0=data[i].title;
     	let rank0=parseInt(data[i].rank);
+
     	let time0=data[i].time;
     	let link0=data[i].link,
-    	    img0=data[i].img,     
-	 		price0=data[i].price,	
-	 		review0=data[i].review;	
+    	    img0=data[i].img,
+	 		price0=data[i].price,
+      priceMax_new=data[i].price.replace(/.*\$/g,''),
+      priceMin_new=data[i].price.replace(/\$|-.*|\s/g,''),
+      review_new=data[i].review.replace(/.*\(|\)/g,''),
+      star_new=data[i].review.replace(/\(.*/g,''),
+	 		review0=data[i].review;
 
     	let newTitle = {'title':title0,
     					'rank':rank0,
@@ -87,6 +99,13 @@ function update(DP,counts,data) {
     					'img':img0,
     					'price':price0,
     					'review':review0,
+
+              'rank_new':rank0,
+              'priceMax_new':priceMax_new,
+              'priceMin_new':priceMin_new,
+              'review_new':review_new,
+              'star_new':star_new,
+              'time_new':time0,
     					'detail':{
 						     	'price':price0,
 						     	'rank':rank0,
@@ -96,33 +115,42 @@ function update(DP,counts,data) {
     				};
     	let findTitle={'title':title0};
 		model.findOne(findTitle,function(err,person){
-      
+
       		//console.log(person);
-      		
+
       		if (person==null) {
       			model.create(newTitle,function(){
-      				 
+
 		    		console.log("------------------create ok------------"+title0);
 		    	});
 
       		}else{
       			console.log(newTitle.title+"已经存在---------------");
-      			
-      			let update_where = {title:title0};//更新条件					
-				let update_data ={	
+
+      			let update_where = {title:title0};//更新条件
+				let update_data ={
 									rank:rank0,
 									time:time0,
 									price:price0,
 									review:review0,
+
 									detail:{
 								     	price:price0,
 								     	rank:rank0,
 								     	time:time0,
 								     	review:review0
-								     } 
-																					 
+								     }
+
 									};//更新
-				 
+        let update_data2 ={
+          									rank_new:rank0,
+          									priceMax_new:priceMax_new,
+                            priceMin_new:priceMin_new,
+          									review_new:review_new,
+                            star_new:star_new,
+                            time_new:time0
+          									};//更新
+
 				model.update(update_where,{$push:update_data},function(err){
 						    if(err){
 						        console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
@@ -130,21 +158,29 @@ function update(DP,counts,data) {
 						        console.log('update success-----------'+title0);
 
 						    }
-				});	
+				});
+        model.update(update_where,{$set:update_data2},function(err){
+                if(err){
+                    console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                }else{
+                    console.log('update success----new-------'+title0);
+
+                }
+        });
 
       		};
-      		
+
     	});
 
 	}
 
-} 
+}
 
 function loadPath(dp,TEST_DIR,callback){
   var items = [] // files, directories, symlinks, etc
   var data1Str=[],data1=[];
   var item0,title=[];
-  
+
 
   fs.walk(TEST_DIR)
     .on('readable', function () {
@@ -161,28 +197,28 @@ function loadPath(dp,TEST_DIR,callback){
       for (var i = items.length - 1; i >= 0; i--) {
               ln--;
               fs.readJson(items[i], function(err, data) {
-                
+
               	for (let j = data.length - 1; j >= 0; j--) {
               		data1.push(data[j]);
               		title.push(data[j].title);
 
-              	};             	
- 				  
+              	};
+
                 if (ln<=0 && data1.length>=90) {
-                                 		
+
                 		callback(dp,title,data1);
 
                 	};
-                
 
 
-              }); 
+
+              });
 
 
 
       };
 
-      
+
 
     })
   }
@@ -203,7 +239,9 @@ function unique(a){
 }
 
  //loadPath('clothing','data/clothing/58/',updateRank);
+function search() {
 
+}
 
 function test (argument) {
 	// body...
@@ -212,7 +250,7 @@ function test (argument) {
 module.exports = {
     update:update,
     load:load,
-    test:test
-    
-};
+    test:test,
+    search:search
 
+};
