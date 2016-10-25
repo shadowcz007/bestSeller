@@ -47,18 +47,18 @@ for (let i = 0; i < toolsBtns.length; i++) {
 }
 
 function prepareButton(buttonEl, toolsID) {
-    
+
     buttonEl.addEventListener('click', function () {
-        
+
         for (let i = 0; i < toolsButtons.length; i++) {
 		    let toolsButton = toolsButtons[i];
              $(toolsButton).removeClass('active');
-		   //toolsButton.className="nav-group-item button-tools";		    
+		   //toolsButton.className="nav-group-item button-tools";
 		}
         $(buttonEl).addClass('active');
         //buttonEl.className="nav-group-item button-tools active";
 
-       
+
         console.log("click btn------"+toolsID);
 
         ipcRenderer.send('click-button', {"0":toolsID});
@@ -69,7 +69,7 @@ function prepareButton(buttonEl, toolsID) {
               case "AnyDepartment":
                     $('.department').show();
                     $('.add').hide();
-                   if ($('#dpf').children().length==0) {                
+                   if ($('#dpf').children().length==0) {
                         department.load("dpf");
                         bindElem("dpf");
                     }
@@ -86,15 +86,15 @@ function prepareButton(buttonEl, toolsID) {
 
                     $("#startCatch").click(function(){
                        console.log("startCatch");
-                       catch_sched();               
-                    
+                       catch_sched();
+
                     });
 
                     $("#stockCatch").click(function(){
 
                        console.log("stockCatch");
-                       catch_sched_stock();               
-                    
+                       catch_sched_stock();
+
                     });
 
 
@@ -102,22 +102,26 @@ function prepareButton(buttonEl, toolsID) {
 
               case "add":
                     add();
-                break;  
+                break;
 
               case "DataShow":
+                    $("#startCatch").remove();
+                    $('.department').hide();
+                    $('.add').hide();
                     $('#data').show();
                     dataShow.show();
-                break; 
-                         
+
+                break;
+
 
               default:
                 break;
         }
 
 
- 
 
- 
+
+
 
     });
 
@@ -158,32 +162,32 @@ function bindElem(){
      switch(arguments[0]){
 
         case "dpf":
-             
+
             nextType="dpc";
 
-            $("."+arguments[0]).on('click', function(){ 
-                
-                testSelected(this);  
+            $("."+arguments[0]).on('click', function(){
+
+                testSelected(this);
 
                 testLoad("dpf",this);
 
-                //catch_confirm($(this).attr('src'),$(this).attr('id'),0);                
-                       
-               // bindElem(nextType);                
+                //catch_confirm($(this).attr('src'),$(this).attr('id'),0);
+
+               // bindElem(nextType);
 
             });
 
             break;
 
         case "dpc":
-             
+
             nextType="dpcc";
             bindElmdef("dpc",nextType);
 
-            break;  
+            break;
 
         case "dpcc":
-             
+
             nextType="dpccc";
             bindElmdef("dpcc",nextType);
 
@@ -195,18 +199,18 @@ function bindElem(){
         //console.log($("."+type))
         $("."+type).on('click', function(){
                 console.log(this)
-                testSelected(this);     
+                testSelected(this);
                 console.log(type)
-                testLoad(type,this);           
+                testLoad(type,this);
 
                // catch_confirm($(this).attr('src'),$(this).attr('id'),1);
-               
+
                // bindElem(nxtype);
-             
+
             });
     }
 
-    
+
 }
 
 
@@ -228,16 +232,16 @@ function testLoad(type0,elem){
             id="2";
             type="dpcc"
             console.log(id);
-             
-            break; 
+
+            break;
 
         case "dpcc":
 
             id="3";
             type="dpccc"
             console.log(id);
-             
-        break;   
+
+        break;
 
 
         }
@@ -251,19 +255,19 @@ function testLoad(type0,elem){
         etext=elems.text(),
         file=path.join(`${__dirname}`,'../js/data/'+eid+'.json'),
         files=path.join(`${__dirname}`,'../js/data/'+edata+'/');
-                
-                ipcRenderer.send('click-button','{"'+id+'":"'+eid+'"}');                
+
+                ipcRenderer.send('click-button','{"'+id+'":"'+eid+'"}');
 
                 try {
 
                     department.load(type,file,eid);
-                    
+
                     department.loadPath(files);
-          
+
                 } catch (err) {
                     alert('需要下载')
-                }      
-  
+                }
+
                 // dpName,dataID,fSrc,type,count
                 catch_confirm(etext,edata,esrc,etype,ecount);
                 bindElem(type);
@@ -274,21 +278,21 @@ function testLoad(type0,elem){
 function testSelected(elem){
     let dp=$(elem).attr('class').replace(/list-group-item|hoverAni|selected|\s/ig,'');
     let dps=$('.'+dp);
-    
+
     if (elem) {
 
-                
+
         for (var i = $('.selected').length - 1; i >= 0; i--) {
                 $($('.selected')).removeClass('selected');
             };
-            
-       
-   
+
+
+
         var classN=$(elem).hasClass('selected');
 
-        
 
-        if (!classN) { 
+
+        if (!classN) {
 
             $(elem).addClass('selected');
             console.log("add selected")
@@ -298,7 +302,7 @@ function testSelected(elem){
 
         return $('.selected').attr('data')
 
-    };     
+    };
 
 
 }
@@ -307,14 +311,14 @@ function catch_confirm(dpName,dataID,fSrc,type,count){
   //var r=confirm("Catch New BestSellers<br>"+arguments[4]);
     let fileName='AnyDepartment';
     console.log("OK!----start---catch New BestSellers");
-    
+
 
     ipcRenderer.send('catch',[fSrc,dataID,type,count]);
-    
+
     department.update(fileName,dpName,dataID,fSrc,type,count);
 
 
-   
+
 }
 function catch_sched_stock(){
     let url=$('#stockURL').val();
@@ -324,34 +328,46 @@ function catch_sched_stock(){
             console.log("Now:"+new Date());
 
     var sched = later.parse.recur().every(60).minute(),
-                t = later.setInterval(function() {          
+                t = later.setInterval(function() {
                     console.log("运行一次--------------"+new Date());
-                    ipcRenderer.send('catch_stock',url);        
+                    ipcRenderer.send('catch_stock',url);
                 }, sched);
 
     setTimeout(function(){
                t.clear();
                console.log("Clear");
-            },604800*1000); 
+            },604800*1000);
 
-    later.setTimeout(function() {}, sched) 
+    later.setTimeout(function() {}, sched)
 
 
-    
-   
+
+
 }
-    
+
 function catch_sched(){
 
   later.date.localTime();
 
   console.log("Now:"+new Date());
-  function fn(){
+
+
+
+  var sched = later.parse.recur().every(1).hour(),
+      t = later.setInterval(function(){fn()}, sched);
+
+  //setTimeout(fn(),1000);
+
+  setTimeout(function(){
+     t.clear();
+     console.log("Clear");
+  },604800*1000);
+    function fn(){
     console.log("运行一次--------------"+new Date());
 
             let html=$('.addlist').children();
             let ln=html.length;
-             
+
 
             for (var i = html.length - 1; i >= 0; i--) {
                 ln--;
@@ -362,31 +378,21 @@ function catch_sched(){
                     count=$(html[i]).attr('count');
 
                 console.log(html[i]);
-            
+
 
                   if (ln<=0) {
-                           
+
                         ipcRenderer.send('catch',[esrc,eid,id,count]);
-                            
+
                         department.update('AnyDepartment',etext,eid,esrc,id,count);
 
-                        department.load("start");                    
-                          
-                  }; 
+                        department.load("start");
+
+                  };
 
             };
-  
+
   }
-
-  var sched = later.parse.recur().every(1).hour(),
-      t = later.setInterval(fn(), sched);
-  
-  setTimeout(fn(),1000);
-
-  setTimeout(function(){
-     t.clear();
-     console.log("Clear");
-  },604800*1000);
 
 }
 
@@ -396,6 +402,3 @@ ipcRenderer.on('click-button-reply', function (event, arg) {
 ipcRenderer.on('catch_stock-result-save-reply', function (event, arg) {
   $('.addlist').after('<p>'+arg+'</p>')
 })
-
-
-
