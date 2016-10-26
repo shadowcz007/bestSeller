@@ -5,6 +5,9 @@ var ScheMa=new Schema({
      title:String,
      img:String,
      link:String,
+     keywords:String,
+     ASIN:String,
+     firstDate:Date,
      detail:[{
      	price:String,
      	rank:Number,
@@ -23,8 +26,8 @@ var ScheMa=new Schema({
 	 review:Array,
      updated: {type: Date,default:Date.now}
 
-    },{collection:'rank_clothing'});//记得指定collection
+   },{collection:'look_product'});//记得指定collection
 
 
 
-module.exports = mongoose.model('rank_clothing', ScheMa);
+module.exports = mongoose.model('look_product', ScheMa);
