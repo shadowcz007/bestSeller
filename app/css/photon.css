@@ -13,6 +13,26 @@ webview{
   height:800px;
 }
 
+.look_product_list{
+  margin: 12px !important;
+}
+
+#lineStack{
+  margin: 12px
+}
+#data{
+  padding: 12px;
+}
+.lineStack{
+  width: 620px;height:620px;
+}
+
+.lineStackTitle{
+  font-size: 16px;
+    color: gray;
+    text-decoration: none;
+    margin: 12px;
+}
 .linkButton{
   display: block;
   height: 44px;
