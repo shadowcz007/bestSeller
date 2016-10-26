@@ -16,7 +16,7 @@ options = {
     poolSize: 10
   }
 };
-
+mongoose.Promise = global.Promise;
 mongoose.connect(connectionString, options, function(err, res) {
   if(err) {
     console.log('[mongoose log] Error connecting to: ' + connectionString + '. ' + err);
@@ -40,20 +40,34 @@ var Schema=mongoose.Schema;
 
 
 function load(DP,date,callback){
-      var model= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js'));
-      var date1;
-      if (!date) {
-        date1=new Date("1990/01/01");
+    var model= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js'));
+
+      if (DP=="look_product") {
+          model.find({}, function (err, docs) {
+                // docs 此时只包含文档的部分键值
+                return callback(docs)
+
+              });
+
+
       }else{
-        var date1=new Date(date);
+
+          var date1;
+          if (!date) {
+            date1=new Date("1990/01/01");
+          }else{
+            var date1=new Date(date);
+          }
+
+
+          model.find({time_new:{$gt: date1}}, function (err, docs) {
+            // docs 此时只包含文档的部分键值
+            return callback(docs)
+
+          });
+
       }
 
-
-      model.find({time_new:{$gt: date1}}, function (err, docs) {
-        // docs 此时只包含文档的部分键值
-        return callback(docs)
-
-      });
 
 }
 
@@ -243,12 +257,63 @@ function search() {
 
 }
 
+function lookProduct(DP,productTitle) {
+    console.log(DP+'__'+productTitle);
+    var dpModel= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js')),
+        lpModel= require(path.join(`${__dirname}`,'../js/model/look_product.js'));
+
+
+    lpModel.findOne({title:productTitle}, function (err, doc) {
+      // docs 此时只包含文档的部分键值
+
+      if (!doc) {
+        dpModel.findOne({title:productTitle}, function (err, doc2) {
+          // docs 此时只包含文档的部分键值
+          let newDoc={ title:doc2.title,
+                      img:doc2.img,
+                      link:doc2.link,
+                      detail:doc2.detail,
+                      priceMax_new:doc2.priceMax_new,
+                      priceMin_new:doc2.priceMin_new,
+                      rank_new:doc2.rank_new,
+                      review_new:doc2.review_new,
+                      star_new:doc2.star_new,
+                      time_new:doc2.time_new,
+                 	 price:doc2.price,
+                 	 rank:doc2.rank,
+                 	 time:doc2.time,
+                 	 review:doc2.review};
+
+          console.log(newDoc);
+          lpModel.create(newDoc, function(error){
+              if(error) {
+                  console.log(error);
+              } else {
+                  console.log('save ok');
+              }
+          });
+
+        });
+
+
+      }else{
+        alert("已经添加关注了")
+      }
+
+
+    });
+
+
+}
+
+
 function test (argument) {
 	// body...
 	console.log('test')
 }
 module.exports = {
     update:update,
+    lookProduct:lookProduct,
     load:load,
     test:test,
     search:search

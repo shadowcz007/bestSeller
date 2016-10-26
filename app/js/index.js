@@ -80,7 +80,17 @@ function prepareButton(buttonEl, toolsID) {
                     $("#startCatch").remove();
                     $('.department').hide();
                     $('.add').show();
-                    $('.addlist').after('<button class="btn btn-large btn-primary" id="startCatch">START</button><button class="btn btn-large btn-primary" id="stockCatch">stockCatch</button><input class="form-control" type="text" placeholder="url" id="stockURL">');
+
+                    $('.addlist').after(`
+                      <button class="btn btn-large btn-primary" id="startCatch">START</button>
+                      <button class="btn btn-large btn-primary" id="stockCatch">stockCatch</button>
+                      <input class="form-control" type="text" placeholder="url" id="stockURL">`
+                    );
+                    
+                    $('.look_product_list').after(`
+                      <button class="btn btn-large btn-primary" id="start_look_product">START LOOK PRODUCT</button>
+
+                      `);
 
                     department.load("start");
 
@@ -395,6 +405,10 @@ function catch_sched(){
   }
 
 }
+
+
+
+
 
 ipcRenderer.on('click-button-reply', function (event, arg) {
   //console.log(arg) // prints
