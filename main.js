@@ -7,7 +7,7 @@ const fs = require('fs-extra');
 
 const bestdb=require('./app/js/bestdb.js');
 
-ipcMain._maxListeners=100; 
+ipcMain._maxListeners=100;
 console.log(ipcMain._maxListeners)
 
 global.sharedObj = {myvar: "hellofrommainjs",
@@ -33,42 +33,58 @@ global.sharedObj = {myvar: "hellofrommainjs",
                           "11":""
 
                       },
-                      count:""
-                    
+                      count:"",
+                      productWinUrls:""
+
                     };
- //selected:["name",0]  
+ //selected:["name",0]
  //0,1,2,3,4
- //0--mainbtn,1--dpf,2--dpc,3-dpcc                 
+ //0--mainbtn,1--dpf,2--dpc,3-dpcc
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+
+/////////////////////////////////
+/*
+** mainWin主窗口：分类浏览、抓取任务设定、数据可视化。。。
+** productWin窗口：监测某个产品，定时爬取信息。。。
+** bestSellersWin窗口：监测某个排行榜的窗口，定时爬取。。。
+**
+**
+**
+**
+**
+**
+**
+**
+**
+**
+*/
+/////////////////////////////
+
+
+let mainWin,bestSellersWin,stockWin,productWin;
 
 function createWindow () {
- // createCatchWindow (); 
-  createMainWindow();
+  createMainWin();
 }
-function createMainWindow () {
-   
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
+function createMainWin () {
+
+  mainWin = new BrowserWindow({
     frame:true,
     resizable: false,
     //alwaysOnTop:true,
     title:'BestSellers',
     titleBarStyle:'hidden-inset',
    // fullscreen:true,
-   //backgroundColor:'#80FFFFFF',
+
     width: 1280,
     height: 800,
     'min-width': 500,
     'min-height': 500,
     'accept-first-mouse': true,
-    
     webPreferences: {
         experimentalFeatures:true,
         experimentalCanvasFeatures:true,
@@ -79,24 +95,20 @@ function createMainWindow () {
       }
   })
 
-  //读取 index.html ，设置path位置.
-  mainWindow.loadURL(`file://${__dirname}/app/index.html`)
-  
-  mainWindow.webContents.openDevTools()
-  
-  mainWindow.on('closed', function () {    
-    mainWindow = null
+  mainWin.loadURL(`file://${__dirname}/app/index.html`)
+  mainWin.webContents.openDevTools()
+  mainWin.on('closed', function () {
+    mainWin = null
   })
 }
 
-let amazonWindow;
-function createAmazonWindow () {
-  
-  amazonWindow = new BrowserWindow({
+
+function createBestSellersWin () {
+  bestSellersWin = new BrowserWindow({
     frame:true,
     resizable: true,
     alwaysOnTop:true,
-    title:'Catch',
+    title:'bestSellers',
     x:1,
     y:1,
     titleBarStyle:'hidden-inset',
@@ -104,40 +116,31 @@ function createAmazonWindow () {
     movable:true,
     width: 100,
     height: 100,
-    
     webPreferences: {
         experimentalFeatures:true,
-       // experimentalCanvasFeatures:true,
         plugins: true,
         nodeIntegration: true,//这句是使用node 模块
-        //webSecurity: false,
-        //preload: path.join(__dirname, '../../inject/preload.js'),
       }
   })
+  //bestSellersWin.loadURL('https://www.amazon.com/Best-Sellers-Appliances/zgbs/appliances/ref=zg_bs_nav_0')
 
-  //amazonWindow.loadURL('https://www.amazon.com/Best-Sellers-Appliances/zgbs/appliances/ref=zg_bs_nav_0')
-  
-  amazonWindow.loadURL(`file://${__dirname}/app/tpl/amazon.html`)
-
+  bestSellersWin.loadURL(`file://${__dirname}/app/tpl/amazon.html`)
   // Open the DevTools.
-  amazonWindow.webContents.openDevTools()
+  bestSellersWin.webContents.openDevTools()
 /*
-
-  amazonWindow.webContents.on('did-finish-load', () => {
-  amazonWindow.webContents.savePage('tmp/test.html', 'HTMLOnly', (error) => {
+  bestSellersWin.webContents.on('did-finish-load', () => {
+  bestSellersWin.webContents.savePage('tmp/test.html', 'HTMLOnly', (error) => {
     if (!error) console.log('Save page successfully')
   })
   })
 */
-
- 
-  amazonWindow.on('closed', function () {
-    amazonWindow = null
+  bestSellersWin.on('closed', function () {
+    bestSellersWin = null
   })
 }
 
 //
-let stockWin;
+
 function createStockWindow () {
   // Create the browser window.
   stockWin = new BrowserWindow({
@@ -146,37 +149,77 @@ function createStockWindow () {
     alwaysOnTop:false,
     title:'stock',
     titleBarStyle:'hidden-inset',
-   // fullscreen:true,
-   //backgroundColor:'#80FFFFFF',
     width: 300,
     height: 300,
     x:0,
     y:0,
     center:false,
-    
-    
     webPreferences: {
         experimentalFeatures:true,
         experimentalCanvasFeatures:true,
         plugins: true,
         nodeIntegration: true,//这句是使用node 模块
-        //webSecurity: false,
-        //preload: path.join(__dirname, '../../inject/preload.js'),
       }
   })
-
-  //读取 index.html ，设置path位置.
   stockWin.loadURL(`file://${__dirname}/app/tpl/stock.html`)
-
-  // Open the DevTools.
-   stockWin.webContents.openDevTools()
-
-   
+  stockWin.webContents.openDevTools()
   stockWin.on('closed', function () {
-     
     stockWin = null
   })
 }
+
+/////look productWin
+
+function createProductWindow () {
+  productWin = new BrowserWindow({
+    //frame:false,
+    resizable: true,
+    alwaysOnTop:false,
+    title:'product',
+    titleBarStyle:'hidden-inset',
+    width: 400,
+    height: 400,
+    x:0,
+    y:0,
+    center:false,
+    webPreferences: {
+        experimentalFeatures:true,
+        plugins: true,
+        nodeIntegration: true//这句是使用node 模块
+      }
+  });
+  productWin.loadURL(`file://${__dirname}/app/tpl/product.html`)
+  productWin.webContents.openDevTools();
+  productWin.on('closed', function () {
+    productWin = null
+  });
+};
+
+/////////////////ipcMain
+/*
+*  click-button
+*  click-button-reply
+*
+*  asynchronous-message
+*  asynchronous-reply
+*  synchronous-message
+
+*  catch
+*  catch-bestseller
+*
+*  catch-result-save
+*  catch-result-save-reply
+*
+*  catch_stock
+*  catch_stock_result
+*
+*  catch_stock-result-save
+*
+*  catch_lookProduct,打开createProductWindow();
+*
+
+*/
+
 
 
 
@@ -184,15 +227,12 @@ ipcMain.on('click-button', function (event, arg) {
   console.log(arg);
   let arg0;
   if (typeof(arg)=="string") {
-
     arg0=JSON.parse(arg);
   }else{
     arg0=arg;
   };
   let key=Object.keys(arg0);
-
   switch(key[0]){
-
       case "0":
         global.sharedObj.selected["0"]=arg0["0"];
         global.sharedObj.selected["1"]="";
@@ -213,13 +253,13 @@ ipcMain.on('click-button', function (event, arg) {
 
       case "3":
         global.sharedObj.selected["3"]=arg0["3"];
-        break; 
+        break;
 
       default:
         break;
   }
 
-    
+
   console.log(global.sharedObj.selected);
 
   event.sender.send('click-button-reply', arg0);
@@ -239,13 +279,13 @@ ipcMain.on('synchronous-message', function (event, arg) {
 
 ipcMain.on('catch',function (event, arg) {
   console.log(arg);
-  if (amazonWindow==null) {
-    createAmazonWindow();
+  if (bestSellersWin==null) {
+    createBestSellersWin();
   }else{
-    amazonWindow.reload();
-    //amazonWindow.focusOnWebView();
+    bestSellersWin.reload();
+    //bestSellersWin.focusOnWebView();
   };
-  
+
     global.sharedObj.dpf=arg;
     global.sharedObj.type=arg[2];
     global.sharedObj.count=arg[3];
@@ -255,10 +295,7 @@ ipcMain.on('catch',function (event, arg) {
 });
 
 ipcMain.on('catch-result-save',function (event, arg) {
-  
- 
- //mainWindow.reload();
-
+ //mainWin.reload();
   //console.log("catch-result-save----------from-webview"+JSON.stringify(arg[1]).replace(/\\n/g,''));
   //console.log(path.join(`${__dirname}`,'app/js/data/test1.json'))
   let index=arg[0].replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'')+'/'+global.sharedObj.count+"/"+arg[0].replace(/.*pg=|&ajax.*=/ig,'');
@@ -271,13 +308,13 @@ ipcMain.on('catch-result-save',function (event, arg) {
   };
   fs.outputJson(path.join(`${__dirname}`,'app/js/data/'+index.toLowerCase()+'.json'),json);
   console.log("fsjout --------json------------from webview--"+path.join(`${__dirname}`,'app/js/data/'+index.toLowerCase()+'.json'))
-  
+
   bestdb.update(DP,counts,json);
 
   //event.sender.send('catch-result-save-reply',[index,bs]);
 
 })
-  
+
 ipcMain.on('catch_stock',function (event, arg) {
   console.log(arg);
    global.sharedObj.stockURL=arg;
@@ -285,41 +322,58 @@ ipcMain.on('catch_stock',function (event, arg) {
     createStockWindow();
   }else{
     stockWin.reload();
-    
-  };   
+
+  };
 
   event.sender.send('catch_stock_result',arg);
 
 });
 
 ipcMain.on('catch_stock-result-save',function (event, arg) {
-  let time=new Date(); 
+  let time=new Date();
   let fileName=time.getMonth()+"m"+time.getDate()+"d"+time.getHours()+'h'+time.getMinutes()+'min';
 
   fs.outputJson(path.join(`${__dirname}`,'app/js/data/stock/'+fileName+'.json'),arg);
 
   console.log("fsjout --------json------------from webview--"+path.join(`${__dirname}`,'app/js/data/stock/'+fileName+'.json'))
-  
+
   event.sender.send('catch_stock-result-save-reply',path.join(`${__dirname}`,'app/js/data/stock/'+fileName+'.json'));
 
 })
 
+ipcMain.on('catch_lookProduct',function (event, args) {
+  console.log(args);
+  global.sharedObj.productWinUrls=args;
+  if (productWin==null) {
+    createProductWindow();
+  }else{
+    productWin.reload();
+
+  };
+
+  //event.sender.send('catch_lookProduct_result',args);
+
+});
+
+
+
+
+
+
 
 app.on('ready', createWindow)
 
- 
+
 app.on('window-all-closed', function () {
-   
+
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
 app.on('activate', function () {
-   
-  if (mainWindow === null) {
+
+  if (mainWin === null) {
     createWindow()
   }
 })
-
- 
