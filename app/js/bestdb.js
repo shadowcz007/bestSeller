@@ -366,9 +366,49 @@ function test (argument) {
 	console.log('test')
 }
 
+function topReviewers(result) {
+    console.log(arguments);
+    var model= require(path.join(`${__dirname}`,'../js/model/topReviewers.js'));
+
+    let findName={userID:result.userID};
+
+    model.findOne(findName,function(err,person){
+        //console.log(person);
+        if (person==null) {
+          model.create(result,function(){
+            console.log("------------------create ok------------"+result);
+          });
+
+        }else{
+          let update_data1={
+                          hfVotes:result.hfVotes,
+                          wishList:result.wishList,
+                     	    totalReviews:result.totalReviews,
+                          percentHelpful:result.percentHelpful
+                        },
+             update_data2={
+                          rank:result.rank
+                        };
+          model.update(findName,{$set:update_data1,$push:update_data2},function(err){
+                  if(err){
+                      console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                  }else{
+                      console.log('update success-----------'+result);
+                  }
+          });
+
+        };
+    })
+
+
+
+
+}
+
 module.exports = {
     update:update,
     lookProduct:lookProduct,
+    topReviewers:topReviewers,
     load:load,
     test:test,
     search:search

@@ -160,6 +160,16 @@ function prepareButton(buttonEl, toolsID) {
 
                 break;
 
+              case "topReviewers":
+                    $("#startCatch").remove();
+                    $('.department').hide();
+                    $('.add').hide();
+                    $('#data').hide();
+
+                    catch_sched_topReviewers();
+
+
+                break;
 
               default:
                 break;
@@ -471,6 +481,9 @@ function catch_sched_lookProduct(urls){
 
 }
 
+function catch_sched_topReviewers(){
+    ipcRenderer.send('catch_topReviewers','https://www.amazon.com/review/top-reviewers/ref=cm_cr_tr_link_');
+}
 
 
 ipcRenderer.on('click-button-reply', function (event, arg) {
