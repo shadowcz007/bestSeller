@@ -51,7 +51,7 @@ const BrowserWindow = electron.BrowserWindow
 ** mainWin主窗口：分类浏览、抓取任务设定、数据可视化。。。
 ** productWin窗口：监测某个产品，定时爬取信息。。。
 ** bestSellersWin窗口：监测某个排行榜的窗口，定时爬取。。。
-**
+** topReviewersWin
 **
 **
 **
@@ -65,7 +65,7 @@ const BrowserWindow = electron.BrowserWindow
 /////////////////////////////
 
 
-let mainWin,bestSellersWin,stockWin,productWin;
+let mainWin,bestSellersWin,stockWin,productWin,topReviewersWin;
 
 function createWindow () {
   createMainWin();
@@ -192,6 +192,34 @@ function createProductWindow () {
   productWin.webContents.openDevTools();
   productWin.on('closed', function () {
     productWin = null
+  });
+};
+
+
+/////topReviewersWin
+
+function createTopReviewersWindow () {
+  topReviewersWin = new BrowserWindow({
+    //frame:false,
+    resizable: true,
+    alwaysOnTop:false,
+    title:'topReviewers',
+    titleBarStyle:'hidden-inset',
+    width: 400,
+    height: 400,
+    x:0,
+    y:0,
+    center:false,
+    webPreferences: {
+        experimentalFeatures:true,
+        plugins: true,
+        nodeIntegration: true//这句是使用node 模块
+      }
+  });
+  topReviewersWin.loadURL(`file://${__dirname}/app/tpl/topReviewers.html`)
+  topReviewersWin.webContents.openDevTools();
+  topReviewersWin.on('closed', function () {
+    topReviewersWin = null
   });
 };
 
@@ -355,7 +383,16 @@ ipcMain.on('catch_lookProduct',function (event, args) {
 
 });
 
+ipcMain.on('catch_topReviewers',function (event, args) {
+  console.log(args);
+  global.sharedObj.topReviewersUrl=args;
+  if (topReviewersWin==null) {
+    createTopReviewersWindow();
+  }else{
+    topReviewersWin.reload();
 
+  };
+});
 
 
 
