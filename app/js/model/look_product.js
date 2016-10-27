@@ -8,6 +8,9 @@ var ScheMa=new Schema({
      keywords:String,
      ASIN:String,
      firstDate:Date,
+     rank_lp:String,
+     ranks_lp:Array,
+     isLooking:Boolean,
      detail:[{
      	price:String,
      	rank:Number,
