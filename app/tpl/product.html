@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>lookProduct</title>
+     <link rel="stylesheet" href="../css/photon.css">
+  </head>
+  <body>
+  <div id="webviews"></div>
+ </body>
+  <script>
+const path=require('path');
+
+const {remote,ipcRenderer} = require('electron');
+const bestdb=require(path.join(`${__dirname}`,'../js/bestdb.js'));
+
+var obj=remote.getGlobal('sharedObj');
+
+window.$ = window.jQuery = require(path.join(`${__dirname}`,'../js/libs/jquery.min.js'));
+
+let lpUrls=obj.productWinUrls,
+    lpLn=lpUrls.length,
+    webviews=$('#webviews');
+
+for (var i = 0; i < lpUrls.length; i++) {
+  lpLn--;
+  webviews.append(`
+        <h3 class=lpTitle>`+lpUrls[i].replace(/.*.com\/|\/dp.*|-/ig,' ')+`</h3>
+        <webview class='lpWebview' id=lp`+i+` src=`+lpUrls[i]+` useragent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' nodeintegration>
+        </webview>
+
+    `);
+
+  let webview=document.getElementById('lp'+i);
+console.log(webview)
+  webview.addEventListener('dom-ready', function () {
+          webview.openDevTools();
+          webview.executeJavaScript(`
+            const path=require('path');
+            console.log(path.join('`+`${__dirname}`+`','../js/bestdb.js'));
+            const bestdb=require(path.join('`+`${__dirname}`+`','../js/bestdb.js'));
+
+          const {ipcRenderer,remote} = require('electron');
+          var regBest=/sellers rank/ig,
+              regReviews=/customer reviews/ig,
+              regASIN=/ASIN/ig,
+              regDF=/Date first available/ig;
+
+          var pDOM=document.getElementsByTagName('meta'),
+              ulDOM=document.getElementById('detailBullets_feature_div').children[0].children,
+              trDOM=document.getElementsByTagName('tr');
+
+          var rank,reviews,title;
+
+          var result={};
+          result['time']=Date();
+          for (var u=0;u<=pDOM.length-1;u++){
+            if(pDOM[u].getAttribute('name')=='keywords'){
+               result['keywords']=pDOM[u].getAttribute('content');
+            }
+          }
+          for (var j=0;j<=ulDOM.length-1;j++){
+            var ostr=ulDOM[j].innerText;
+            var cTest=regASIN.test(ostr),
+                dTest=regDF.test(ostr);
+            if(cTest){
+              result['ASIN']=ostr.replace(/ASIN:|\s/ig,'');
+              console.log(result['ASIN']);
+            };
+            if(dTest){
+              result['firstDate']=new Date(ostr.replace(/.*:/ig,''));
+              console.log(result['firstDate']);
+            }
+          }
+          let url00=document.URL;
+          result['url']=url00;
+          result['title']=url00.replace(/.*.com\\/|\\/dp.*/ig,'');
+          for(var i=0;i<=trDOM.length-1;i++){
+          var str=trDOM[i].innerText;
+          var bTest=regBest.test(str),
+              aTest=regReviews.test(str);
+          if(aTest){
+            reviews=str.replace(/\\n.*/g,'');
+            result['reviews']=reviews;
+          }
+          if(bTest){
+          rank=trDOM[i].innerText.replace(/Best Sellers Rank|\\n|\s/ig,' ').replace(/\s{2,}/g,'');
+          rank=rank.split('#').slice(1);
+          result['rank']=rank;
+
+          }else{
+          otherBest();
+          };
+
+          };
+          function otherBest(){
+          var salesRank=document.getElementById('SalesRank').innerText.replace(/amazon Best Sellers Rank:|\\n|\s/ig,' ').replace(/\s{2,}/g,'');;
+
+          salesRank=salesRank.split('#').slice(1);
+          result['rank']=salesRank;
+
+          }
+          console.log(result);
+
+          bestdb.lookProduct('clothing',result['title'],'updateProduct',result);
+
+          console.log(JSON.stringify(result,null,2));
+
+          `,false,function(){
+
+            console.log("catch product ok");
+
+            });
+
+  });
+
+
+}
+</script>
+</html>
