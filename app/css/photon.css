@@ -9,6 +9,20 @@
  */
 
 @charset "UTF-8";
+
+.lpWebview{
+  width: 96%;
+  height: 360px;
+  margin: 2%;
+}
+.lpTitle{
+  font-size: 18px;
+margin: 28px;
+border-bottom: 1px dashed gray;
+}
+.isLooking{
+      color: #489df8 !important;
+}
 webview{
   height:800px;
 }
