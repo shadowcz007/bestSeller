@@ -1,15 +1,25 @@
-const fs=require('fs-extra');//读写文件
+/////////////////////////////////
+/*
+**数据库接口
+**
+**
+**
+**
+**
+**
+**
+**
+*/
+/////////////////////////////
+
+const fs=require('fs-extra');
 const path=require('path');
-
-
 
 // mongoose config
 var _connectDB="bestSellers";
-
 var mongoose = require('mongoose')
   , connectionString = 'mongodb://localhost/'+_connectDB
   , options = {};
-
 options = {
   server: {
     auto_reconnect: true,
@@ -25,18 +35,12 @@ mongoose.connect(connectionString, options, function(err, res) {
   }
 });
 
-
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongoose connection error:'));
 db.once('open', function callback () {
-  // yay!
 	console.log('mongoose open success');
 });
-
-
 var Schema=mongoose.Schema;
-
-
 
 
 function load(DP,date,callback){
@@ -257,51 +261,101 @@ function search() {
 
 }
 
-function lookProduct(DP,productTitle) {
+function lookProduct(DP,productTitle,type,result) {
     console.log(DP+'__'+productTitle);
     var dpModel= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js')),
         lpModel= require(path.join(`${__dirname}`,'../js/model/look_product.js'));
 
+    switch(type){
 
-    lpModel.findOne({title:productTitle}, function (err, doc) {
-      // docs 此时只包含文档的部分键值
+           case "addList":
 
-      if (!doc) {
-        dpModel.findOne({title:productTitle}, function (err, doc2) {
-          // docs 此时只包含文档的部分键值
-          let newDoc={ title:doc2.title,
-                      img:doc2.img,
-                      link:doc2.link,
-                      detail:doc2.detail,
-                      priceMax_new:doc2.priceMax_new,
-                      priceMin_new:doc2.priceMin_new,
-                      rank_new:doc2.rank_new,
-                      review_new:doc2.review_new,
-                      star_new:doc2.star_new,
-                      time_new:doc2.time_new,
-                 	 price:doc2.price,
-                 	 rank:doc2.rank,
-                 	 time:doc2.time,
-                 	 review:doc2.review};
+              addList(DP,productTitle);
 
-          console.log(newDoc);
-          lpModel.create(newDoc, function(error){
-              if(error) {
-                  console.log(error);
-              } else {
-                  console.log('save ok');
-              }
+               break;
+
+           case "updateProduct":
+
+               updateProduct(DP,productTitle,type,result)
+
+               break;
+
+           case "dpcc":
+
+
+
+               break;
+
+  }
+
+
+
+
+    function addList(DP,productTitle) {
+      lpModel.findOne({title:productTitle}, function (err, doc) {
+        // docs 此时只包含文档的部分键值
+
+        if (!doc) {
+          dpModel.findOne({title:productTitle}, function (err, doc2) {
+            // docs 此时只包含文档的部分键值
+            let newDoc={ title:doc2.title,
+                        img:doc2.img,
+                        link:doc2.link,
+                        detail:doc2.detail,
+                        priceMax_new:doc2.priceMax_new,
+                        priceMin_new:doc2.priceMin_new,
+                        rank_new:doc2.rank_new,
+                        review_new:doc2.review_new,
+                        star_new:doc2.star_new,
+                        time_new:doc2.time_new,
+                     price:doc2.price,
+                     rank:doc2.rank,
+                     time:doc2.time,
+                     review:doc2.review};
+
+            console.log(newDoc);
+            lpModel.create(newDoc, function(error){
+                if(error) {
+                    console.log(error);
+                } else {
+                    console.log('save ok');
+                }
+            });
           });
+        }else{
+          alert("已经添加关注了")
+        }
+      });
+    }
 
-        });
+    function updateProduct(DP,productTitle,type,result) {
+      console.log('updateProduct');
 
+      let update_where = {title:productTitle};//更新条件
 
-      }else{
-        alert("已经添加关注了")
-      }
+      let update_data ={
+                keywords:result.keywords,
+                ASIN:result.ASIN,
+                firstDate:result.firstDate,
+                rank_lp:result.rank
+              },
+          update_data2={
+                ranks_lp:{rank:result.rank,
+                          time:result.time}
 
+          };//更新
 
-    });
+//{$set: {y:9},$push:{o:90}}
+      lpModel.update(update_where,{$set:update_data,$push:update_data2},function(err){
+              if(err){
+                  console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+              }else{
+                  console.log('update success-----------'+productTitle);
+
+              }
+      });
+
+    }
 
 
 }
@@ -311,6 +365,7 @@ function test (argument) {
 	// body...
 	console.log('test')
 }
+
 module.exports = {
     update:update,
     lookProduct:lookProduct,

@@ -1,4 +1,18 @@
+
+/////////////////////////////////
+/*
+**
 //load json,add element
+**
+**
+**
+**
+**
+**
+**
+**
+*/
+/////////////////////////////
 
 const fs = require('fs-extra');
 const path=require('path');
@@ -115,8 +129,12 @@ function load(){
 
 						$('.look_product_list').append(`
 							<li class='list-group-item' src=`+docs[i].link+` data=`+docs[i].title+`>
+							<img class="media-object pull-left" src=`+docs[i].img+` width="32" height="32">
 							<div class='media-body'>
 							<strong>`+docs[i].title+`</strong>
+							<p>`+'Looks : '+docs[i].ranks_lp.length+`</p>
+							<p>`+'Now : '+docs[i].rank_lp+`</p>
+
 							</div>
 							</li>`);
 					}

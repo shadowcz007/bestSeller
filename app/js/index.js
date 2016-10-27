@@ -1,8 +1,22 @@
+/////////////////////////////////
+/*
+**
+**绑定按钮，所有功能性的按钮动作绑定
+dpf,dpc
+click
+**
+**
+**
+**
+**
+**
+**
+**
+*/
+/////////////////////////////
+
 'use strict'
 
-//绑定按钮，所有功能性的按钮动作绑定
-//dpf,dpc
-//click
 
 const path=require('path');
 
@@ -81,16 +95,14 @@ function prepareButton(buttonEl, toolsID) {
                     $('.department').hide();
                     $('.add').show();
 
+
+
                     $('.addlist').after(`
                       <button class="btn btn-large btn-primary" id="startCatch">START</button>
                       <button class="btn btn-large btn-primary" id="stockCatch">stockCatch</button>
                       <input class="form-control" type="text" placeholder="url" id="stockURL">`
                     );
-                    
-                    $('.look_product_list').after(`
-                      <button class="btn btn-large btn-primary" id="start_look_product">START LOOK PRODUCT</button>
 
-                      `);
 
                     department.load("start");
 
@@ -104,6 +116,31 @@ function prepareButton(buttonEl, toolsID) {
 
                        console.log("stockCatch");
                        catch_sched_stock();
+
+                    });
+
+
+                    $('#start_look_product').click(function(){
+
+                       console.log("start_look_product---click");
+
+
+                       let targetDOM=$('.look_product_list').children(),
+                           targetUrl=[],
+                           tln=targetDOM.length;
+    console.log(targetDOM)
+                       for (var i = 0; i < targetDOM.length; i++) {
+
+                            tln--;
+                            $(targetDOM[i]).addClass("isLooking");
+                            targetUrl.push($(targetDOM[i]).attr('src'));
+
+                            if (tln<=0) {
+
+                                catch_sched_lookProduct(targetUrl);
+
+                            }
+                       }
 
                     });
 
@@ -361,17 +398,18 @@ function catch_sched(){
 
   console.log("Now:"+new Date());
 
-
-
   var sched = later.parse.recur().every(1).hour(),
       t = later.setInterval(function(){fn()}, sched);
 
   //setTimeout(fn(),1000);
+  setTimeout(function() {
+    fn();
+  }, 1000)
 
   setTimeout(function(){
      t.clear();
      console.log("Clear");
-  },604800*1000);
+  },604800*2000);
     function fn(){
     console.log("运行一次--------------"+new Date());
 
@@ -406,7 +444,32 @@ function catch_sched(){
 
 }
 
+function catch_sched_lookProduct(urls){
 
+    later.date.localTime();
+
+            console.log("Now:"+new Date());
+
+    var sched = later.parse.recur().every(60).minute(),
+                t = later.setInterval(function() {
+                    console.log("运行一次--------------"+new Date());
+                    ipcRenderer.send('catch_lookProduct',urls);
+                }, sched);
+
+    setTimeout(function(){
+               t.clear();
+               console.log("catch_sched_lookProduct_Clear");
+            },604800*2000);
+
+    setTimeout(function() {
+      console.log("立刻运行一次--------------");
+      ipcRenderer.send('catch_lookProduct',urls);
+    }, 1000)
+
+
+
+
+}
 
 
 

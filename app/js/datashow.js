@@ -1,13 +1,19 @@
-/*!
+/////////////////////////////////
+/*
 * @license shadow
 * Copyright (c) 2016-2020 freegarden.
 *=====================================
 * datashow.show(DP,)
-*
-*
-*
+**
+**
+**
+**
+**
+**
+**
+**
 */
-
+/////////////////////////////
 
 const fs = require('fs-extra');
 const path=require('path');
@@ -16,18 +22,13 @@ const {remote,ipcRenderer} = require('electron');
 const bestdb=require(path.join(__dirname, './bestdb.js'));
 
 
-
 function show (argument) {
 	let NewBestHour=24;//取最近24小时上榜的商品
 	let NewNewBs=1;
 
-
-
-
-bestdb.load("clothing",'',function(data){
+	bestdb.load("clothing",'',function(data){
 	//console.log(data[0].title);
 	//console.log(data[0].time.length);
-
 
 	let time1=[],time2=[],title=[];//统计出现次数
 	let timeS=[],timeN=[],titleS=[],urlS=[],imgS=[],rankS=[],starS=[],reviewS=[],priceS=[],rankSeries=[];//统计某商品排名情况
@@ -39,7 +40,6 @@ bestdb.load("clothing",'',function(data){
 	for (var i = data.length - 1; i >= 0; i--) {
 
 		ln--;
-
 
 		if (data[i].time.length<=24) {
 				time1.push(data[i].time.length);
@@ -160,7 +160,7 @@ bestdb.load("clothing",'',function(data){
 
 								let productTitle=$(this).attr('data');
 								let dp=$(this).attr('dp');
-								bestdb.lookProduct(dp,productTitle);
+								bestdb.lookProduct(dp,productTitle,'addList');
             });
 
 						for (let p = 0; p < cln; p++) {
@@ -592,26 +592,19 @@ let mytoolBox2={
 		    },
 		    series: data
 		};
-
 		  myChart1.setOption(option);
-
-
-
 	}
 
-
 }
-
 
 
 function getRandomColor(){
 	return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
 }
 function getRandomColor2(){
-
     return "red";
-
  }
+ 
 module.exports = {
     show: show
 
