@@ -11,6 +11,7 @@ var ScheMa=new Schema({
      rank_lp:String,
      ranks_lp:Array,
      isLooking:Boolean,
+     time_lp:Date,
      detail:[{
      	price:String,
      	rank:Number,
