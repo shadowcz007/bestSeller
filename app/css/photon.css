@@ -9,7 +9,10 @@
  */
 
 @charset "UTF-8";
+#topReviewersContent{
+  padding: 24px;
 
+}
 .lpWebview{
   width: 96%;
   height: 360px;
