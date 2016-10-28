@@ -134,6 +134,7 @@ function load(){
 							<strong>`+docs[i].title+`</strong>
 							<p>`+'Looks : '+docs[i].ranks_lp.length+`</p>
 							<p>`+'Now : '+docs[i].rank_lp+`</p>
+							<p>`+'Update : '+docs[i].time_lp+`</p>
 
 							</div>
 							</li>`);

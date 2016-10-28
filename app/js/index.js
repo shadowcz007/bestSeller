@@ -80,7 +80,7 @@ function prepareButton(buttonEl, toolsID) {
 
         switch(toolsID){
 
-              case "AnyDepartment":
+              case "Department":
                     $('.department').show();
                     $('.add').hide();
                    if ($('#dpf').children().length==0) {
@@ -128,7 +128,7 @@ function prepareButton(buttonEl, toolsID) {
                        let targetDOM=$('.look_product_list').children(),
                            targetUrl=[],
                            tln=targetDOM.length;
-    console.log(targetDOM)
+                            console.log(targetDOM)
                        for (var i = 0; i < targetDOM.length; i++) {
 
                             tln--;
@@ -151,12 +151,27 @@ function prepareButton(buttonEl, toolsID) {
                     add();
                 break;
 
-              case "DataShow":
+              case "DepartmentDataShow":
                     $("#startCatch").remove();
                     $('.department').hide();
                     $('.add').hide();
-                    $('#data').show();
-                    dataShow.show();
+                    $('#topReviewersContent').hide();
+                    $('#departmentData').show();
+
+                    dataShow.showDepartment();
+
+                break;
+
+              case "ProductDataShow":
+                      $("#startCatch").remove();
+                      $('.department').hide();
+                      $('.add').hide();
+                      $('#departmentData').hide();
+                      $('#topReviewersContent').hide();
+
+                      $('#productData').show();
+
+                      dataShow.showProduct();
 
                 break;
 
@@ -164,9 +179,17 @@ function prepareButton(buttonEl, toolsID) {
                     $("#startCatch").remove();
                     $('.department').hide();
                     $('.add').hide();
-                    $('#data').hide();
+                    $('#departmentData').hide();
+                    $('#topReviewersContent').show();
 
-                    catch_sched_topReviewers();
+
+                    dataShow.showTReviewers();
+                    $('#tpStart').click(function(){
+                        let sF=$('#dpsFrom').val(),
+                            sT=$('#dpsTo').val();
+                        catch_sched_topReviewers(sF,sT);
+                    });
+
 
 
                 break;
@@ -413,7 +436,9 @@ function catch_sched(){
 
   //setTimeout(fn(),1000);
   setTimeout(function() {
+    console.log("BestSellers立刻运行一次--------------");
     fn();
+
   }, 1000)
 
   setTimeout(function(){
@@ -421,7 +446,7 @@ function catch_sched(){
      console.log("Clear");
   },604800*2000);
     function fn(){
-    console.log("运行一次--------------"+new Date());
+    console.log("BestSellers运行一次--------------"+new Date());
 
             let html=$('.addlist').children();
             let ln=html.length;
@@ -462,7 +487,7 @@ function catch_sched_lookProduct(urls){
 
     var sched = later.parse.recur().every(60).minute(),
                 t = later.setInterval(function() {
-                    console.log("运行一次--------------"+new Date());
+                    console.log("catch_lookProduct运行一次--------------"+new Date());
                     ipcRenderer.send('catch_lookProduct',urls);
                 }, sched);
 
@@ -472,7 +497,7 @@ function catch_sched_lookProduct(urls){
             },604800*2000);
 
     setTimeout(function() {
-      console.log("立刻运行一次--------------");
+      console.log("catch_lookProduct立刻运行一次--------------");
       ipcRenderer.send('catch_lookProduct',urls);
     }, 1000)
 
@@ -481,8 +506,8 @@ function catch_sched_lookProduct(urls){
 
 }
 
-function catch_sched_topReviewers(){
-    ipcRenderer.send('catch_topReviewers','https://www.amazon.com/review/top-reviewers/ref=cm_cr_tr_link_');
+function catch_sched_topReviewers(sf,st){
+    ipcRenderer.send('catch_topReviewers',['https://www.amazon.com/review/top-reviewers/ref=cm_cr_tr_link_',sf,st]);
 }
 
 

@@ -280,9 +280,9 @@ function lookProduct(DP,productTitle,type,result) {
 
                break;
 
-           case "dpcc":
+           case "loadProduct":
 
-
+              loadProduct(DP,productTitle,type,result);
 
                break;
 
@@ -337,7 +337,8 @@ function lookProduct(DP,productTitle,type,result) {
                 keywords:result.keywords,
                 ASIN:result.ASIN,
                 firstDate:result.firstDate,
-                rank_lp:result.rank
+                rank_lp:result.rank,
+                time_lp:result.time
               },
           update_data2={
                 ranks_lp:{rank:result.rank,
@@ -355,7 +356,27 @@ function lookProduct(DP,productTitle,type,result) {
               }
       });
 
+    };
+
+    function loadProduct(DP,productTitle,type,result) {
+
+          switch (productTitle) {
+            case 'all':
+                dpModel.find({}, function (err, docs) {
+                  result(docs);
+                });
+
+              break;
+            default:
+
+          }
+
+
+
     }
+
+
+
 
 
 }
@@ -366,39 +387,53 @@ function test (argument) {
 	console.log('test')
 }
 
-function topReviewers(result) {
+function topReviewers(result,callback) {
     console.log(arguments);
     var model= require(path.join(`${__dirname}`,'../js/model/topReviewers.js'));
 
-    let findName={userID:result.userID};
+    if (result) {
 
-    model.findOne(findName,function(err,person){
-        //console.log(person);
-        if (person==null) {
-          model.create(result,function(){
-            console.log("------------------create ok------------"+result);
-          });
+          let findName={userID:result.userID};
 
-        }else{
-          let update_data1={
-                          hfVotes:result.hfVotes,
-                          wishList:result.wishList,
-                     	    totalReviews:result.totalReviews,
-                          percentHelpful:result.percentHelpful
-                        },
-             update_data2={
-                          rank:result.rank
-                        };
-          model.update(findName,{$set:update_data1,$push:update_data2},function(err){
-                  if(err){
-                      console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                  }else{
-                      console.log('update success-----------'+result);
-                  }
-          });
 
-        };
-    })
+          model.findOne(findName,function(err,person){
+              //console.log(person);
+              if (person==null) {
+                model.create(result,function(){
+                  console.log("------------------create ok------------"+result);
+                });
+
+              }else{
+                let update_data1={
+                                hfVotes:result.hfVotes,
+                                wishList:result.wishList,
+                                totalReviews:result.totalReviews,
+                                percentHelpful:result.percentHelpful
+                              },
+                   update_data2={
+                                rank:result.rank
+                              };
+                model.update(findName,{$set:update_data1,$push:update_data2},function(err){
+                        if(err){
+                            console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                        }else{
+                            console.log('update success-----------'+result);
+                        }
+                });
+
+              };
+          })
+
+
+
+
+    }else{
+      model.find({},function(err,docs){
+            return callback(docs);
+      })
+
+    }
+
 
 
 

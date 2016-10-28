@@ -20,9 +20,9 @@ const path=require('path');
 const {remote,ipcRenderer} = require('electron');
 
 const bestdb=require(path.join(__dirname, './bestdb.js'));
+const chart=require(path.join(__dirname, './myChart.js'));
 
-
-function show (argument) {
+function showDepartment (argument) {
 	let NewBestHour=24;//取最近24小时上榜的商品
 	let NewNewBs=1;
 
@@ -89,8 +89,6 @@ function show (argument) {
 										rep=detail1[p].review.replace(/.*\(|\)|\s/g,''),
 										sp=detail1[p].review.replace(/\(.*|\s/g,'');
 
-
-
 								fRank.push([tp,rp]);
 								fReview.push([tp,rep]);
 								fPriceMin.push([tp,pmp]);
@@ -103,9 +101,6 @@ function show (argument) {
 
 			timeS.push(dataToTime);
 	console.log("-----------------"+data[i].title);
-
-
-
 
 			timeN.push(data[i].time_new);
 			titleS.push(data[i].title);
@@ -128,10 +123,7 @@ function show (argument) {
 			//	console.log(titleS);
 			//	console.log(timeS);
 
-
-
-
-				duration(title,time1,time2);
+				chart.duration(title,time1,time2);
 
 				let cln=titleS.length;
 				let clna=0;
@@ -141,7 +133,8 @@ function show (argument) {
 				//	$('#lineStack').append("<div id="+'lineStack'+k+' class="lineStack"></div><a href="'+urlS[k]+'" class=lineStackTitle>'+(k+1)+':  '+titleS[k]+'</a><img class=pull-left src="'+imgS[k]+'">');
 				$('#lineStack').append(
 					`<li class="list-group-item">
-							<div id=`+'lineStack'+k+` class=lineStack></div>
+
+							<div id=`+'lineStack2_'+k+` class=lineStack></div>
 					    <img class="media-object pull-left" src=`+imgS[k]+` width="72" >
 					    <div class="media-body">
 					      <strong>`+'Product Title : '+titleS[k]+`</strong>
@@ -165,36 +158,12 @@ function show (argument) {
 
 						for (let p = 0; p < cln; p++) {
 							console.log(JSON.stringify(fdataAll[p]));
-							//lineStack(p,titleS[p],timeS[p],rankSeries[p]);
-							lineStack2(p,titleS[p],fdataAll[p]);
+							//chart.lineStack(p,titleS[p],timeS[p],rankSeries[p]);
+							chart.lineStack2(p,titleS[p],fdataAll[p]);
 						}
 					}
 				}
-
-//
-/*
-				lineStackChange(clna);
-
-				$('#lineStackChange').on("click",function(){
-			　　　　
-								clna++;　　　　
-								lineStackChange(clna)
-								console.log(clna);
-								console.log(cln);
-								if (clna>=cln-1) {
-									clna=-1;
-								};
-				});
-				function lineStackChange(index) {
-
-										$('#lineStackChange').text('lineStackChange:'+(index+1)+' | '+titleS.length)
-										$('#lineStackChangeContent').html('<br><a href="'+urlS[index]+'">'+titleS[index]+'</a><img src="'+imgS[index]+'">')
-										lineStack(index,titleS[index],timeS[index],series[index]);
-				}
-*/
-
 		};
-
 	};
 });
 
@@ -221,381 +190,163 @@ bestdb.load("clothing","2016/10/25/15:50",function(data){
 											'data': [[data[i].rank_new,data[i].review_new,data[i].star_new,data[i].priceMax_new,data[i].priceMin_new,type]]
 											});
 					if (ln<=0) {
-						parallel(pSeries,titles,colors);
+						chart.parallel(pSeries,titles,colors);
 					}
 		}
 
 });
 
+}
 
 
 
-//////
-let mytoolBox={
-	feature: {
-		dataView : {show: true,
-		optionToContent: function(opt) {
-				var axisData = opt.xAxis[0].data;
-				var series = opt.series;
-				var table = '<table style="width:100%;text-align:center"><tbody><tr>'
-										 + '<td>Product Name</td>'
-										 + '<td>' + series[0].name + '</td>'
-										 + '<td>' + series[1].name + '</td>'
-										 + '</tr>';
-				for (var i = 0, l = axisData.length; i < l; i++) {
-						table += '<tr>'
-										 + '<td>' + axisData[i] + '</td>'
-										 + '<td>' + series[0].data[i] + '</td>'
-										 + '<td>' + series[1].data[i] + '</td>'
-										 + '</tr>';
-				}
-				table += '</tbody></table>';
-				return table;
-		}},
-			saveAsImage: {show: true,pixelRatio:2}
-		}
-};
-let mytoolBox2={
-	feature: {
-		dataView : {show: true},
-			saveAsImage: {show: true,pixelRatio:2}
-		}
-};
+function showProduct() {
+	 bestdb.lookProduct('look_product','all','loadProduct',function (docs) {
+		 		console.log(docs);
 
+				let ln=docs.length;
+				for (var i = 0; i < docs.length; i++) {
+						ln--;
 
-	function duration(title,time1,time2){
-	// 基于准备好的dom，初始化echarts实例
-	        var myChart = echarts.init(document.getElementById('duration'));
+						let ranks=docs[i].ranks_lp,
+								timeS=[],
+								rankS=[],
+								sln=ranks.length;
 
-	        // 指定图表的配置项和数据
-	        var option = {
-	            title: {
-	                text: 'New Best Sellers',
-									textStyle:{
-										fontSize:18
-									}
-								  },
-	            tooltip: {
-								enterable:true,
-			 					trigger: 'axis',
-								 //formatter: '{a0}:{b0}:{c0}<hr>{a1}:{b1}:{c1}'
-	            },
-								dataZoom: [
-					        {
-					            type: 'slider',
-					            show: true,
-					            xAxisIndex: [0],
-					            start: 1,
-					            end: 100
-					        },
-					        {
-					            type: 'inside',
-					            xAxisIndex: [0],
-					            start: 1,
-					            end: 100
-					        }
-					    ],
-	            toolbox: mytoolBox,
-	            legend: {
-	                data:['less','more']
-	            },
-	            xAxis: {
-									type:'category',
-	                data: title,
+						$('#PD_lineStack').append(
+							`<li class="list-group-item">
+									<img class="media-object pull-left" src=`+docs[i].img+` width="72" >
+									<div class="media-body">
+										<strong>`+'Product Title : '+docs[i].title+`</strong>
+										<p>`+'Looks : '+ranks.length+`</p>
+										<p>`+'Rank : '+docs[i].rank_lp+`</p>
 
-									axisLabel:{
-										interval:1,
-										rotate:18,
-										textStyle:{
-											fontSize:8
-										}
-									}
-	            },
-	            yAxis: {type:'value'},
-	            series: [{
-	                name: 'less',
-	                type: 'bar',
-	                data: time1
-	            },{
-	                name: 'more',
-	                type: 'bar',
-	                data: time2
-	            }]
-	        };
+										<p>`+'First Date : '+docs[i].firstDate+`</p>
+										<p>`+'Update : '+docs[i].time_lp+`</p>
+										<p>`+'ASIN : '+docs[i].ASIN+`</p>
+										<p>`+'Keywords : '+docs[i].keywords+`</p>
+										<p>`+'Url : '+docs[i].link+`</p>
 
-	        // 使用刚指定的配置项和数据显示图表。
-	        myChart.setOption(option);
+									</div>
+									<div id=`+'PD_lineStack_'+i+` class=lineStack></div>
+								</li>`);
 
-	}
-	function lineStack2(index,title,dataAll){
-	// 基于准备好的dom，初始化echarts实例
-	        var myChart = echarts.init(document.getElementById('lineStack'+index));
-					var my={axisLabel:{
-		            rotate:15,
-								formatter: function (value, index) {
-		                // 格式化成月/日，只在第一个刻度显示年份
-		                var date = new Date(value);
-		                var texts = [date.getDate(),(date.getHours() + 1)];
-		                if (index === 0) {
-		                    texts.unshift(date.getMonth()+1+"M");
-		                }
-		                return texts.join(':');
-		            },
-		            textStyle:{
-		                fontSize:10
-		            }
-		        }};
+						let series=[{'type':'line','data':[]},{'type':'line','data':[]},{'type':'line','data':[]},{'type':'line','data':[]}];
 
-					option = {
-				    title: {
-				        text: title,
-				        x: 'left',
-				        y: 0
-				    },
-				    grid: [
-				        {x: '7%', y: '8%', width: '38%', height: '38%'},
-				        {x2: '7%', y: '8%', width: '38%', height: '38%'},
-				        {x: '7%', y2: '7%', width: '38%', height: '38%'},
-				        {x2: '7%', y2: '7%', width: '38%', height: '38%'}
-				    ],
-						toolbox: mytoolBox2,
-				    tooltip: {
-				        formatter: ' {a}: ({c})'
-				    },
-				    xAxis: [
-				        {gridIndex: 0, type: 'time',axisLabel:my.axisLabel},
-				        {gridIndex: 1, type: 'time',axisLabel:my.axisLabel},
-				        {gridIndex: 2, type: 'time',axisLabel:my.axisLabel},
-				        {gridIndex: 3, type: 'time',axisLabel:my.axisLabel}
-				    ],
-				    yAxis: [
-				        {gridIndex: 0, min: 1,max:100,inverse:true,name:"Rank",nameLocation:'start'},
-				        {gridIndex: 1, min: 0,name:"Reviews",nameLocation:'end'},
-				        {gridIndex: 2, min: 0,name:"PriceMin",nameLocation:'end'},
-				        {gridIndex: 3, min: 0,max:5,name:"Star",nameLocation:'end'}
-				    ],
-
-				    dataZoom: [
-				        {
-				            type: 'slider',
-				             show: false,
-				            xAxisIndex: [0],
-				            start: 1,
-				            end: 100
-				        },
-
-				        {
-				            type: 'inside', show: false,
-				            xAxisIndex: [0],
-				            start: 1,
-				            end:100
-				        },{
-				            type: 'slider',
-				             show: false,
-				            xAxisIndex: [1],
-				            start: 1,
-				            end:100
-				        },
-
-				        {
-				            type: 'inside', show: false,
-				            xAxisIndex: [1],
-				            start: 1,
-				            end: 100
-				        },
-				        {
-				            type: 'slider',
-				             show: false,
-				            xAxisIndex: [2],
-				            start: 1,
-				            end: 100
-				        },
-
-				        {
-				            type: 'inside', show: false,
-				            xAxisIndex: [2],
-				            start: 1,
-				            end: 100
-				        },
-				        {
-				            type: 'slider',
-				            show: false,
-				            xAxisIndex: [3],
-				            start: 1,
-				            end: 100
-				        },
-
-				        {
-				            type: 'inside', show: false,
-				            xAxisIndex: [3],
-				            start: 1,
-				            end: 100
-				        }
-
-				    ],
-    series: [
-        {
-            name: 'rank',
-            type: 'line',
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            data: dataAll[0]
-        },
-        {
-            name: 'reviews',
-            type: 'line',
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            data: dataAll[1]
-        },
-        {
-            name: 'priceMin',
-            type: 'line',
-            xAxisIndex: 2,
-            yAxisIndex: 2,
-            data: dataAll[2]
-
-        },
-        {
-            name: 'star' ,
-            type: 'line',
-            xAxisIndex: 3,
-            yAxisIndex: 3,
-            data: dataAll[3]
-
-        }
-    ]
-};
-
-	        // 使用刚指定的配置项和数据显示图表。
-	        myChart.setOption(option);
-
-	}
-
-	function lineStack(index,title,time,series){
-	// 基于准备好的dom，初始化echarts实例
-	        var myChart = echarts.init(document.getElementById('lineStack'+index));
-
-	        // 指定图表的配置项和数据
-	        option = {
-				    title: {
-				        text: title
-				    },
-				    tooltip: {
-				        trigger: 'axis'
-				    },
-				    legend: {
-				        data:title
-				    },
-				    grid: {
-				        left: '3%',
-				        right: '4%',
-				        bottom: '3%',
-				        containLabel: true
-				    },
-				    toolbox: {
-				        feature: {
-				            saveAsImage: {}
-				        }
-				    },
-				    xAxis: {
-				        type: 'category',
-				        boundaryGap: false,
-				        data: time
-				    },
-				    yAxis: {
-				        type: 'value',
-								inverse:true,
-								min:1,
-								max:100,
-								minInterval: 1
-				    },
-				    series: series
-				};
-
-
-	        // 使用刚指定的配置项和数据显示图表。
-	        myChart.setOption(option);
-
-	}
-
-	function parallel(data,title,color){
-	//	console.log(JSON.stringify(data));
-	//	console.log(title);
-		var myChart1 = echarts.init(document.getElementById('parallel'));
-		var schema = [
-		    {name: 'rank', index: 1, text: 'rank'},
-		    {name: 'reviews', index: 2, text: 'reviews'},
-		    {name: 'star', index: 3, text: 'star'},
-		    {name: 'priceMax', index: 4, text: 'priceMax'},
-				{name: 'priceMin', index: 5, text: 'priceMin'},
-		    {name: 'NewBest', index: 6, text: 'NewBest'}
-		];
-
-		var lineStyle = {
-		    normal: {
-		        width: 2,
-		        opacity: 0.8
-		    }
-		};
-
-		option = {
-		    color: color,
-		    legend: {
-						zlevel:1,
-						orient:'vertical',
-						selectedMode:'multiple',
-		        top: '0',
-						left:'4px',
-		        data: title,
-		        itemGap: 8,
-						textStyle:{
-							fontSize:10
+						for (var j = 0; j < ranks.length; j++) {
+								sln--;
+								rankS.push(rankSs(ranks[j].rank));
+								let todu=rankSs(ranks[j].rank);
+								for (var k = 0; k < todu.length; k++) {
+										series[k].name=todu[k][0]
+										series[k].data.push(todu[k][1])
+								}
+								timeS.push(ranks[j].time);
+								if(sln<=0){
+										console.log(series)
+									chart.lineStack('PD_lineStack_'+i,docs[i].title,timeS,series);
+								}
 						}
-		    },
-				toolbox: mytoolBox2,
-				tooltip: {
-						 padding: 10,
-						 backgroundColor: '#222',
-						 borderColor: '#777',
-						 borderWidth: 1,
-						 formatter: function (obj) {
-								 var value = obj[0].value;
-								 return '<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 18px;padding-bottom: 7px;margin-bottom: 7px">'
-										 + obj[0].seriesName + ' ' + value[0] + '日期：'
-										 + value[7]
-										 + '</div>'
-										 + schema[1].text + '：' + value[1] + '<br>'
-										 + schema[2].text + '：' + value[2] + '<br>'
-										 + schema[3].text + '：' + value[3] + '<br>'
-										 + schema[4].text + '：' + value[4] + '<br>'
-										 + schema[5].text + '：' + value[5] + '<br>'
-										 + schema[6].text + '：' + value[6] + '<br>';
-						 }
-				 },
+					}
+	 });
 
-		    parallelAxis: [
-		        {dim: 0, name: schema[0].text, inverse: true, min:1,max:100,minInterval: 1, nameLocation: 'start'},
-		        {dim: 1, name: schema[1].text},
-		        {dim: 2, name: schema[2].text,min:0,max:5,minInterval: 1},
-		        {dim: 3, name: schema[3].text},
-						{dim: 4, name: schema[4].text},
-		        {dim: 5, name: schema[5].text,type: 'category', data: ['new', 'last']}
-		    ],
 
-		    parallel: {
-		        left: '36px',
-		        right: '36px',
-		        bottom: '36px',
-		        top: '1024px'
 
-		    },
-		    series: data
-		};
-		  myChart1.setOption(option);
+
+
+
+				function rankSs(rankS) {
+
+					let series=[];
+					let lns=rankS.length;
+					for (let p = 0; p < rankS.length; p++) {
+							lns--;
+							let jiji=rankS[p];
+
+							let name=jiji.replace(/.* in|\(.*|\)|\s{2}/gi,'');
+
+							let rank=jiji.replace(/in.*|\s/g,'');
+
+							series.push([name,rank])
+							if (lns<=0) {
+								 return series
+							}
+					}
+
+
+
+/*
+else{
+		series[name].push(jiji.replace(/in.*|\s/gi,''))
+		console.log(series[name]);
+}
+if (lns<=0) {
+	let names=Object.keys(series),
+			data=[],
+			lnn=names.length;
+
+	for (let u = 0; u < names.length; u++) {
+					lnn--;
+					let n=names[u];
+					data.push({'name':n,
+									 'type':'line',
+									 'stack': 'rank',
+									 'data':series[n]
+							 });
+					if (lnn<=0) {
+							return data
+					}
 	}
+}
+
+
+*/
+
+
+
+
+
+
+
+
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+function showTReviewers() {
+				bestdb.topReviewers('',function (docs) {
+								console.log(docs);
+								for (var i = 0; i < docs.length; i++) {
+										$('#topReviewersG').append(`
+												<p>`+docs[i].name+`</p>
+												<p>`+docs[i].totalReviews+`</p>
+												<p>`+docs[i].rank+`</p>
+											`)
+								}								
+				})
+}
+
+
+
 
 
 function getRandomColor(){
@@ -604,8 +355,10 @@ function getRandomColor(){
 function getRandomColor2(){
     return "red";
  }
- 
+
 module.exports = {
-    show: show
+    showDepartment: showDepartment,
+		showProduct:showProduct,
+		showTReviewers:showTReviewers
 
 };
