@@ -338,11 +338,24 @@ function lookProduct(DP,productTitle,type,result) {
                 ASIN:result.ASIN,
                 firstDate:result.firstDate,
                 rank_lp:result.rank,
-                time_lp:result.time
+                time_lp:result.time,
+                review_lp:result.review,
+                star_lp:result.star,
+                priceMin_lp:result.priceMin,
+                priceMax_lp:result.priceMax,
+                size_lp:result.size
               },
           update_data2={
                 ranks_lp:{rank:result.rank,
-                          time:result.time}
+                          time:result.time},
+                reviews_lp:{review:result.review,
+                          time:result.time},
+                stars_lp:{star:result.star,
+                          time:result.time},
+                priceMins_lp:{priceMin:result.priceMin,
+                              time:result.time},
+                priceMaxs_lp:{priceMax:result.priceMax,
+                              time:result.time}
 
           };//更新
 
@@ -397,29 +410,73 @@ function topReviewers(result,callback) {
 
 
           model.findOne(findName,function(err,person){
-              //console.log(person);
-              if (person==null) {
+              console.log(person);
+              if (person === null) {
+                  console.log(person);
                 model.create(result,function(){
                   console.log("------------------create ok------------"+result);
                 });
 
               }else{
-                let update_data1={
+
+                let update_data1,update_data2;
+
+                if (result.avatar) {
+
+                  update_data1={
+                                avatar:result.avatar,
+                                location:result.location,
+                                bioExpander:result.bioExpander,
+                                wListCount:result.wListCount
+                              };
+
+                   update_data2={
+                                reviewsContent:result.reviewsContent
+                              };
+                   model.update(findName,{$set:update_data1,$addToSet:update_data2},function(err){
+                                                  if(err){
+                                                      console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                                                  }else{
+
+                                                      console.log('update topReviewers detail------------')
+
+                                                      console.log('update success-----------'+result);
+                                                  }
+                  });
+
+                }else{
+
+                  update_data1={
                                 hfVotes:result.hfVotes,
                                 wishList:result.wishList,
                                 totalReviews:result.totalReviews,
-                                percentHelpful:result.percentHelpful
-                              },
-                   update_data2={
+                                percentHelpful:result.percentHelpful,
                                 rank:result.rank
                               };
-                model.update(findName,{$set:update_data1,$push:update_data2},function(err){
-                        if(err){
-                            console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                        }else{
-                            console.log('update success-----------'+result);
-                        }
-                });
+
+                   update_data2={
+                                rankChange:result.rank
+                              };
+
+                  model.update(findName,{$set:update_data1,$push:update_data2},function(err){
+                                      if(err){
+                                        console.log(err)
+                                          console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                                      }else{
+                                          console.log('update topReviewers all------------')
+
+                                          console.log('update success-----------'+result);
+                                      }
+                  });
+
+                }
+
+
+
+
+
+
+
 
               };
           })

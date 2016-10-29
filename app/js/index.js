@@ -213,11 +213,18 @@ function prepareButton(buttonEl, toolsID) {
                     $('#topReviewersContent').show();
 
 
-                    dataShow.showTReviewers();
+                    //dataShow.showTReviewers();
+
                     $('#tpStart').click(function(){
                         let sF=$('#dpsFrom').val(),
                             sT=$('#dpsTo').val();
                         catch_sched_topReviewers(sF,sT);
+                    });
+
+                    $('#tpDetailStart').click(function(){
+                        let sF=$('#dpsFrom').val(),
+                            sT=$('#dpsTo').val();
+                        catch_sched_topReviewers(sF,sT,'detail');
                     });
 
 
@@ -536,8 +543,8 @@ function catch_sched_lookProduct(urls){
 
 }
 
-function catch_sched_topReviewers(sf,st){
-    ipcRenderer.send('catch_topReviewers',['https://www.amazon.com/review/top-reviewers/ref=cm_cr_tr_link_',sf,st]);
+function catch_sched_topReviewers(sf,st,type){
+    ipcRenderer.send('catch_topReviewers',['https://www.amazon.com/review/top-reviewers/ref=cm_cr_tr_link_',sf,st,type]);
 }
 
 
