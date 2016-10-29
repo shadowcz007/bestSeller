@@ -228,6 +228,7 @@ function showProduct() {
 										<p>`+'Url : '+docs[i].link+`</p>
 
 									</div>
+									<div id=`+'PD_lineStack_'+i+'_img'+`></div>
 									<div id=`+'PD_lineStack_'+i+` class=lineStack></div>
 								</li>`);
 
@@ -244,7 +245,8 @@ function showProduct() {
 								timeS.push(ranks[j].time);
 								if(sln<=0){
 										console.log(series)
-									chart.lineStack('PD_lineStack_'+i,docs[i].title,timeS,series);
+										chart.lineStack('PD_lineStack_'+i,docs[i].title,timeS,series);
+
 								}
 						}
 					}
@@ -341,7 +343,8 @@ function showTReviewers() {
 												<p>`+docs[i].totalReviews+`</p>
 												<p>`+docs[i].rank+`</p>
 											`)
-								}								
+								}
+
 				})
 }
 

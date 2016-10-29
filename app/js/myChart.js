@@ -364,6 +364,15 @@ var myAxisLabel={
 
 	        // 使用刚指定的配置项和数据显示图表。
 	        myChart.setOption(option);
+					var imgSrc = myChart.getDataURL({
+					    pixelRatio: 2,
+					    backgroundColor: '#fff'
+					});
+					//console.log(document.getElementById(index+'_img'))
+					$('#'+index+'_img').append(`
+						<img src=`+imgSrc+` class='chartImg' style='display:none;width:90%;height: auto;'>
+						`)
+
 
 	}
 

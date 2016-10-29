@@ -30,11 +30,38 @@ const department=require(path.join(__dirname, './department.js'));
 
 const dataShow=require(path.join(__dirname, './datashow.js'));
 
+const schedules=require(path.join(__dirname, './schedules.js'));
+
 var obj=remote.getGlobal('sharedObj');
 
 //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
+///////init button
 dragFile();
 
+$('.start_email').click(function(){
+
+    let content=$(this).parent().clone(),
+        subject=content.attr('id');
+
+      let canvas=content.find('canvas'),
+          chartImg=content.find('.chartImg');
+      let ln=canvas.length;
+      for (var i = 0; i < canvas.length; i++) {
+        ln--;
+        $(canvas[i]).parent().parent().remove();
+        $(chartImg[i]).show();
+        if (ln<=0) {
+          let html=content.html();
+          //console.log(html);
+          schedules.email(subject,html);
+        }
+
+      }
+
+});
+
+
+//////////////////////
 
 ipcRenderer.on('asynchronous-reply', function (event, arg) {
     console.log(arg) // prints "pong"
@@ -143,6 +170,9 @@ function prepareButton(buttonEl, toolsID) {
                        }
 
                     });
+
+
+
 
 
                 break;
