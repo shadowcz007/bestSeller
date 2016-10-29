@@ -10,87 +10,17 @@
  </body>
   <script>
 const path=require('path');
-
-const {remote,ipcRenderer} = require('electron');
-const bestdb=require(path.join(`${__dirname}`,'../js/bestdb.js'));
+const {remote} = require('electron');
 
 var obj=remote.getGlobal('sharedObj');
 
 window.$ = window.jQuery = require(path.join(`${__dirname}`,'../js/libs/jquery.min.js'));
+const topReviewers=require(path.join(`${__dirname}`,'../js/topReviewers.js'));
 
-let url=obj.topReviewersUrl,
-    urls=[];
-
-for (var i = 100; i <1001; i++) {
-  urls.push(url+i+'?ie=UTF8&page='+i);
-}
-
-let ln=urls.length,
-    webviews=$('#webviews');
-
-let s=0;
-stepByStep();
-function stepByStep() {
-
-  webviews.html(`
-        <h3 class=lpTitle>`+(s+1)+`</h3>
-        <webview class='lpWebview' id=tr`+s+` src=`+urls[s]+` useragent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36' nodeintegration>
-        </webview>
-    `);
-
-  let webview=document.getElementById('tr'+s);
-console.log(webview)
-  webview.addEventListener('dom-ready', function () {
-          webview.openDevTools();
-          webview.executeJavaScript(`
-            const path=require('path');
-            console.log(path.join('`+`${__dirname}`+`','../js/bestdb.js'));
-            const bestdb=require(path.join('`+`${__dirname}`+`','../js/bestdb.js'));
-
-            const {ipcRenderer,remote} = require('electron');
-
-            var links=document.links,result=[],ln=links.length;
-            var regName=/_name/ig,
-                regNext=/Next »/ig;
-
-            for(var i=0;i<=links.length-1;i++){
-              ln--;
-
-              if(regName.test(links[i].href)){
-
-               var DOM=document.getElementById('reviewer'+links[i].href.replace(/.*tbl_|_name/g,''));
-                result.push({link:links[i].href,
-                              name:links[i].innerText,
-                              rank:links[i].href.replace(/.*tbl_|_name/g,''),
-                              time:Date(),
-                              userID:links[i].href.replace(/.*profile\\/|\\/ref.*/g,''),
-                              totalReviews:DOM.cells[3].innerText.replace(/,/g,''),
-                              hfVotes:DOM.cells[4].innerText.replace(/,/g,''),
-                              percentHelpful:DOM.cells[5].innerText.replace(/%/g,'')
-                          });
-
-              }
-
-            if(ln<=0){
-              bestdb.topReviewers(result);
-              console.log(JSON.stringify(result,null,2));
-            }
-            }
-          `,false,function(){
-
-            console.log("catch topReviewers ok");
-            console.log(s+'~~~'+Date());
-            s++;
-            if (s<1000) {
-              setTimeout("stepByStep()",20000)
-
-            }
-
-
-            });
-
-  });
-
+if(obj.topReviewers=='detail'){
+  topReviewers.detail();
+}else{
+  topReviewers.topAll();
 }
 
 </script>

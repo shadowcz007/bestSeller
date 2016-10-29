@@ -41,6 +41,15 @@ console.log(webview)
             const bestdb=require(path.join('`+`${__dirname}`+`','../js/bestdb.js'));
 
           const {ipcRenderer,remote} = require('electron');
+
+          var result={};
+              result['review']=document.getElementById('acrCustomerReviewText').innerText.replace(/customer.*|\\s/ig,'');
+              result['star']=document.getElementById('reviewStarsLinkedCustomerReviews').innerText.replace(/out.*|\\s/ig,'');
+          var price0=document.getElementById('priceblock_ourprice').innerText.replace(/\\$/ig,'');
+
+              result['priceMin']=price0.replace(/-.*|\\s/ig,'');
+              result['priceMax']=price0.replace(/.*-|\\s/ig,'');
+
           var regBest=/sellers rank/ig,
               regReviews=/customer reviews/ig,
               regASIN=/ASIN/ig,
@@ -48,11 +57,16 @@ console.log(webview)
 
           var pDOM=document.getElementsByTagName('meta'),
               ulDOM=document.getElementById('detailBullets_feature_div').children[0].children,
-              trDOM=document.getElementsByTagName('tr');
+              trDOM=document.getElementsByTagName('tr'),
+              sizeDOM=document.getElementById('native_dropdown_selected_size_name').children;
 
-          var rank,reviews,title;
+          var rank,reviews,title,size=[];
 
-          var result={};
+          for(var i=1;i<sizeDOM.length;i++){
+          size.push(sizeDOM[i].innerText.replace(/\\s{2}/ig,''))
+          };
+          result['size']=size;
+
           result['time']=Date();
           for (var u=0;u<=pDOM.length-1;u++){
             if(pDOM[u].getAttribute('name')=='keywords'){
@@ -64,7 +78,7 @@ console.log(webview)
             var cTest=regASIN.test(ostr),
                 dTest=regDF.test(ostr);
             if(cTest){
-              result['ASIN']=ostr.replace(/ASIN:|\s/ig,'');
+              result['ASIN']=ostr.replace(/ASIN:|\\s/ig,'');
               console.log(result['ASIN']);
             };
             if(dTest){
@@ -84,7 +98,7 @@ console.log(webview)
             result['reviews']=reviews;
           }
           if(bTest){
-          rank=trDOM[i].innerText.replace(/Best Sellers Rank|\\n|\s/ig,' ').replace(/\s{2,}/g,'');
+          rank=trDOM[i].innerText.replace(/Best Sellers Rank|\\n|\\s/ig,' ').replace(/\\s{2,}/g,'');
           rank=rank.split('#').slice(1);
           result['rank']=rank;
 
@@ -94,7 +108,7 @@ console.log(webview)
 
           };
           function otherBest(){
-          var salesRank=document.getElementById('SalesRank').innerText.replace(/amazon Best Sellers Rank:|\\n|\s/ig,' ').replace(/\s{2,}/g,'');;
+          var salesRank=document.getElementById('SalesRank').innerText.replace(/amazon Best Sellers Rank:|\\n|\\s/ig,' ').replace(/\\s{2,}/g,'');;
 
           salesRank=salesRank.split('#').slice(1);
           result['rank']=salesRank;
@@ -108,7 +122,7 @@ console.log(webview)
 
           `,false,function(){
 
-            console.log("catch product ok");
+            console.log("catch------product ok");
 
             });
 
