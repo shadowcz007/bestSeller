@@ -386,6 +386,7 @@ ipcMain.on('catch_lookProduct',function (event, args) {
 ipcMain.on('catch_topReviewers',function (event, args) {
   console.log(args);
   global.sharedObj.topReviewersUrl=args;
+  global.sharedObj.topReviewers=args[3];
   if (topReviewersWin==null) {
     createTopReviewersWindow();
   }else{
