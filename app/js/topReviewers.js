@@ -77,7 +77,9 @@ console.log(webview)
             if (s<lns) {
               console.log(s)
               console.log(lns)
-              setTimeout("stepByStep()",20000)
+              let _TIME=22000+Math.random()*100000;
+              console.log(_TIME/1000);
+              setTimeout("stepByStep()",_TIME)
 
             }
 
@@ -163,8 +165,9 @@ function detail() {
                       console.log(s+'~~~'+Date());
                       s++;
                       if (s<ln) {
-
-                        setTimeout("stepByStep_detail()",20000)
+                        let _TIME=22000+Math.random()*100000;
+                        console.log(_TIME/1000);
+                        setTimeout("stepByStep_detail()",_TIME)
 
                       }
 

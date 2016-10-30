@@ -333,7 +333,10 @@ var myAxisLabel={
 				        trigger: 'axis'
 				    },
 				    legend: {
-				        data:title2
+				        data:title2,
+								right:'4%',
+								top:'14%',
+								orient:'vertical'
 				    },
 				    grid: {
 				        left: '3%',
@@ -365,7 +368,7 @@ var myAxisLabel={
 	        // 使用刚指定的配置项和数据显示图表。
 	        myChart.setOption(option);
 					var imgSrc = myChart.getDataURL({
-					    pixelRatio: 2,
+					    pixelRatio: 1,
 					    backgroundColor: '#fff'
 					});
 					//console.log(document.getElementById(index+'_img'))
@@ -400,7 +403,8 @@ function parallel(data,title,color){
 
 		option = {
 		    color: color,
-		    legend: {
+/*
+			  legend: {
 						zlevel:1,
 						orient:'vertical',
 						selectedMode:'multiple',
@@ -412,6 +416,7 @@ function parallel(data,title,color){
 							fontSize:10
 						}
 		    },
+				*/
 				toolbox: mytoolBox2,
 				tooltip: {
 						 padding: 10,
@@ -446,7 +451,7 @@ function parallel(data,title,color){
 		        left: '36px',
 		        right: '36px',
 		        bottom: '36px',
-		        top: '1024px'
+		        top: '12px'
 
 		    },
 		    series: data
