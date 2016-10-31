@@ -7,7 +7,7 @@ const fs = require('fs-extra');
 
 const bestdb=require('./app/js/bestdb.js');
 
-ipcMain._maxListeners=100;
+ipcMain._maxListeners=200;
 console.log(ipcMain._maxListeners)
 
 global.sharedObj = {myvar: "hellofrommainjs",
@@ -124,16 +124,10 @@ function createBestSellersWin () {
   })
   //bestSellersWin.loadURL('https://www.amazon.com/Best-Sellers-Appliances/zgbs/appliances/ref=zg_bs_nav_0')
 
-  bestSellersWin.loadURL(`file://${__dirname}/app/tpl/amazon.html`)
-  // Open the DevTools.
+  bestSellersWin.loadURL(`file://${__dirname}/app/tpl/rank.html`)
+
   bestSellersWin.webContents.openDevTools()
-/*
-  bestSellersWin.webContents.on('did-finish-load', () => {
-  bestSellersWin.webContents.savePage('tmp/test.html', 'HTMLOnly', (error) => {
-    if (!error) console.log('Save page successfully')
-  })
-  })
-*/
+
   bestSellersWin.on('closed', function () {
     bestSellersWin = null
   })
@@ -305,22 +299,24 @@ ipcMain.on('synchronous-message', function (event, arg) {
   event.returnValue = 'main-returnValue-----pong---------'
 })
 
-ipcMain.on('catch',function (event, arg) {
+
+ipcMain.on('catch_rankStart',function (event, arg) {
   console.log(arg);
   if (bestSellersWin==null) {
     createBestSellersWin();
   }else{
     bestSellersWin.reload();
-    //bestSellersWin.focusOnWebView();
   };
+    global.sharedObj.rankStart=arg;
+});
 
-    global.sharedObj.dpf=arg;
-    global.sharedObj.type=arg[2];
-    global.sharedObj.count=arg[3];
+ipcMain.on('result',function (event, arg) {
 
-  event.sender.send('catch-bestseller',arg);
+  console.log('result~~~~~~~~~~~~~'+arg);
 
 });
+
+
 
 ipcMain.on('catch-result-save',function (event, arg) {
  //mainWin.reload();
