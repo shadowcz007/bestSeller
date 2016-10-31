@@ -14,8 +14,6 @@
 **
 */
 /////////////////////////////
-
-const fs = require('fs-extra');
 const path=require('path');
 const {remote,ipcRenderer} = require('electron');
 
@@ -26,12 +24,12 @@ function showDepartment (argument) {
 	let NewBestHour=24;//取最近24小时上榜的商品
 	let NewNewBs=1;
 
-	bestdb.load("clothing",'',function(data){
+	bestdb.load("rank",'',function(data){
 	//console.log(data[0].title);
-	//console.log(data[0].time.length);
+	//console.log(data[0]);
 
 	let time1=[],time2=[],title=[];//统计出现次数
-	let timeS=[],timeN=[],titleS=[],urlS=[],imgS=[],rankS=[],starS=[],reviewS=[],priceS=[],rankSeries=[];//统计某商品排名情况
+	let timeS=[],timeN=[],titleS=[],dataS=[],urlS=[],imgS=[],rankS=[],starS=[],reviewS=[],priceS=[],rankSeries=[];//统计某商品排名情况
 	let fdataAll=[];
 
 	let ln=data.length;
@@ -40,7 +38,7 @@ function showDepartment (argument) {
 	for (var i = data.length - 1; i >= 0; i--) {
 
 		ln--;
-
+console.log(data[i].time.length+'~~~~~~~~~~~~~~~~~~');
 		if (data[i].time.length<=24) {
 				time1.push(data[i].time.length);
 				time2.push(0);
@@ -51,19 +49,19 @@ function showDepartment (argument) {
 
 		title.push(data[i].title);
 
-		//data[i].detail
+
 
 
 		if (data[i].time.length<=NewBestHour) {
 			counts++;
 			let ranks1=data[i].rank,
 			    reviews1=data[i].review,
-					priceMins1=data[i].price,
-					stars1=data[i].review,
+					priceMins1=data[i].priceMin,
+					stars1=data[i].star,
 					detail1=data[i].detail;
 
 			let rank00=[];
-			console.log(ranks1);
+		//	console.log(ranks1);
 			rankSeries.push({
 						"name":data[i].title,
 						"type":'line',
@@ -83,11 +81,12 @@ function showDepartment (argument) {
 					let fRank=[],fReview=[],fPriceMin=[],fStar=[];
 					for (var p = 0; p < detail1.length; p++) {
 						jln--;
+					//	console.log(detail1[p])
 								let tp=detail1[p].time,
 										rp=detail1[p].rank,
-										pmp=detail1[p].price.replace(/\$|-.*|\s/g,''),
-										rep=detail1[p].review.replace(/.*\(|\)|\s/g,''),
-										sp=detail1[p].review.replace(/\(.*|\s/g,'');
+										pmp=detail1[p].priceMin,
+										rep=detail1[p].review,
+										sp=detail1[p].star;
 
 								fRank.push([tp,rp]);
 								fReview.push([tp,rep]);
@@ -96,14 +95,15 @@ function showDepartment (argument) {
 								if (jln<=0) {
 									fdataAll.push([fRank,fReview,fPriceMin,fStar]);
 								}
-	console.log(tp);
+	//console.log(tp);
 					}
 
 			timeS.push(dataToTime);
-	console.log("-----------------"+data[i].title);
+	//console.log("-----------------"+data[i].title);
 
 			timeN.push(data[i].time_new);
 			titleS.push(data[i].title);
+			dataS.push(data[i].data);
 			urlS.push(data[i].link);
 			imgS.push(data[i].img);
 			rankS.push(data[i].rank_new);
@@ -117,11 +117,14 @@ function showDepartment (argument) {
 
 		if (ln<=0) {
 
-			//	maxTime=Math.max.apply(null, time);
 
 			//	console.log(series);
 			//	console.log(titleS);
 			//	console.log(timeS);
+
+			 	console.log(title);
+					console.log(time1);
+						console.log(time2);
 
 				chart.duration(title,time1,time2);
 
@@ -144,7 +147,7 @@ function showDepartment (argument) {
 								<p>`+'Star : '+starS[k]+`</p>
 								<p>`+'Price : $'+priceS[k]+`</p>
 								<p>`+'Update Time : '+timeN[k]+' , NO.'+(k+1)+`</p>
-								<button class="btn btn-large btn-negative look_product" dp="clothing" data="`+titleS[k]+`">Add to Look</button>
+								<button class="btn btn-large btn-negative look_product" dp="clothing" data="`+dataS[k]+`">Add to Look</button>
 					    </div>
 					  </li>`);
 
@@ -152,12 +155,12 @@ function showDepartment (argument) {
 						$('.look_product').on('click', function(){
 
 								let productTitle=$(this).attr('data');
-								let dp=$(this).attr('dp');
-								bestdb.lookProduct(dp,productTitle,'addList');
+								bestdb.lookProduct(productTitle,'addList');
+
             });
 
 						for (let p = 0; p < cln; p++) {
-							console.log(JSON.stringify(fdataAll[p]));
+						//	console.log(JSON.stringify(fdataAll[p]));
 							//chart.lineStack(p,titleS[p],timeS[p],rankSeries[p]);
 							chart.lineStack2(p,titleS[p],fdataAll[p]);
 						}
@@ -167,7 +170,7 @@ function showDepartment (argument) {
 	};
 });
 
-bestdb.load("clothing","2016/10/25/15:50",function(data){
+bestdb.load("rank","2016/10/25/15:50",function(data){
 	//	let pallelRank=[rank,reviews,star,price,"new"];//统计排名与各项指标的关系
 		let pSeries=[],titles=[],colors=[],type='last';
 		let ln=data.length;
@@ -202,12 +205,13 @@ bestdb.load("clothing","2016/10/25/15:50",function(data){
 
 function showProduct() {
 	 bestdb.lookProduct('look_product','all','loadProduct',function (docs) {
-		 		console.log(docs);
+		 		//console.log(docs);
 
 				let ln=docs.length;
+					console.log(docs.length);
 				for (var i = 0; i < docs.length; i++) {
 						ln--;
-
+console.log(docs[i]);
 						let ranks=docs[i].ranks_lp,
 								timeS=[],
 								rankS=[],

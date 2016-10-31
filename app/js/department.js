@@ -105,21 +105,38 @@ function load(){
 	//console.log(ln);
 	if (arguments[0]=="start") {
 
-		json=fs.readJsonSync(`${__dirname}/data/AnyDepartment.json`);
-		$('.addlist').html('');
+			$('.selectedRank').html('');
 
-		for (var i = json.length - 1; i >= 0; i--) {
-			 console.log("start");
-			if(json[i].select==true){
+			bestdb.loadRank(function (docs) {
 
-				let linkd=json[i].link;
-				//let count=json[i].
-	 			let dataStr=linkd.replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
+					console.log(docs);
+					let urlsToTran=[],lnlr=docs.length;
+					for (var i = 0; i < docs.length; i++) {
+						lnlr--;
+						let linkd=docs[i].link;
+						urlsToTran.push(linkd);
+						console.log(linkd);
 
-				$('.addlist').append("<li id="+json[i].title.replace(regid,'').toLowerCase()+" class='list-group-item' src='"+linkd+"' data='"+dataStr.toLowerCase()+"' count='"+json[i].count+"'><div class='media-body'><strong>"+json[i].title+"</strong></div></li>");
+						//let dataStr=linkd.replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
 
-	 			};
-			};
+						$('.selectedRank').append(`
+							<li id=`+docs[i].title.replace(regid,'').toLowerCase()+` class='list-group-item' src=`+linkd+` count=`+docs[i].count+`>
+								<div class='media-body'>
+									<strong>`+docs[i].title+`</strong>
+									<p>`+'Looks : '+docs[i].count+`</p>
+									<p>`+'Number: '+linkd.length+`</p>
+									<p>`+'Update : '+docs[i].time+`</p>
+								</div>
+							</li>
+						`);
+					};
+					if(lnlr<=0){
+							console.log(window._URLS)
+							window._URLS=tranformArray(urlsToTran);
+					}
+
+				});
+
 
 				//////////// load from db
 			bestdb.load("look_product",'',function (docs) {
@@ -408,6 +425,15 @@ function save(){
   //department.show(path.join(`${__dirname}`,'../js/data/'+obj.dpf[1]+'.json'));
 
 }
+
+function tranformArray(array) {
+	console.log(JSON.stringify(array))
+  var c = JSON.stringify(array).replace(/\[|\]/g,'').split(",");
+	console.log(c.length)
+  return c;
+
+}
+
 
 module.exports = {
     load: load,

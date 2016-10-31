@@ -14,7 +14,7 @@
 
 const fs=require('fs-extra');
 const path=require('path');
-
+const {remote,ipcRenderer} = require('electron');
 // mongoose config
 var _connectDB="bestSellers";
 var mongoose = require('mongoose')
@@ -42,6 +42,95 @@ db.once('open', function callback () {
 });
 var Schema=mongoose.Schema;
 
+function loadRank(callback) {
+    var model= require(path.join(`${__dirname}`,'../js/model/department.js'));
+    model.find({select:true}, function (err, docs) {
+          // docs 此时只包含文档的部分键值
+          return callback(docs)
+
+        });
+};
+
+
+function updateRank() {
+    var data=arguments[0];
+    var model= require(path.join(`${__dirname}`,'../js/model/rank.js'));
+      let newData = {'title':data.title,
+              'department':data.department,
+              'rank':data.rank,
+              'time':data.time,
+              'link':data.link,
+              'img':data.img,
+              'review':data.review,
+              'star':data.star,
+              'priceMax':data.priceMax,
+              'priceMin':data.priceMin,
+              'data':data.data,
+              'rank_new':data.rank,
+              'priceMax_new':data.priceMax,
+              'priceMin_new':data.priceMin,
+              'review_new':data.review,
+              'star_new':data.star,
+              'time_new':data.time,
+              'detail':{
+                  'priceMax':data.priceMax,
+                  'priceMin':data.priceMin,
+                  'rank':data.rank,
+                  'time':data.time,
+                  'review':data.review,
+                  'star':data.star
+                 }
+            };
+      let findData={'data':data.data};
+    model.findOne(findData,function(err,doc){
+          if (doc==null) {
+            model.create(newData,function(){
+            console.log("-----------------db-create ok------------"+findData.data);
+            ipcRenderer.send('catch_rankStart_result',data.data+'~~success');
+          });
+
+          }else{
+            console.log(findData.data+"db已经存在---------------");
+
+            let update_where = {data:data.data};//更新条件
+            let update_data ={
+                      rank:data.rank,
+                      time:data.time,
+                      priceMin:data.priceMin,
+                      priceMax:data.priceMax,
+                      review:data.review,
+                      star:data.star,
+                      detail:{
+                          priceMin:data.priceMin,
+                          priceMax:data.priceMax,
+                          rank:data.rank,
+                          time:data.time,
+                          review:data.review,
+                          star:data.star
+                         }
+                      };
+            let update_data2 ={
+                                rank_new:data.rank,
+                                priceMax_new:data.priceMax,
+                                priceMin_new:data.priceMin,
+                                review_new:data.review,
+                                star_new:data.star,
+                                time_new:data.time
+                                };
+            model.update(update_where,{$push:update_data,$set:update_data2},function(err){
+                    if(err){
+                        console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!'+data.data);
+                        ipcRenderer.send('result',data.data+'~~update error');
+                    }else{
+                        console.log('update success-----------'+data.data);
+                        ipcRenderer.send('result',data.data+'~~success');
+                    }
+            });
+          };
+      });
+}
+
+
 
 function load(DP,date,callback){
     var model= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js'));
@@ -66,6 +155,7 @@ function load(DP,date,callback){
 
           model.find({time_new:{$gt: date1}}, function (err, docs) {
             // docs 此时只包含文档的部分键值
+            //console.log(docs)
             return callback(docs)
 
           });
@@ -79,120 +169,6 @@ function load(DP,date,callback){
 function update(DP,counts,data) {
 
 	//loadPath(DP,'data/'+DP+'/'+counts+'/',updateRank);
-	updateRank(DP,'',data);
-
-  function updateRank(){
-  //console.log(arguments[0])
-  	var bs_base=arguments[1];
-   	var data=arguments[2];
-    var _collecting="rank_"+arguments[0];
-
-    var model= require(path.join(`${__dirname}`,'../js/model/'+arguments[0]+'.js'));
-
-    let bs_base_old=[],
-    	bs_new=[],
-    	bs_all=[];
-
-    //console.log(data[99].title)
-
-
-    for (var i = data.length - 1; i >= 0; i--) {
-    	let title0=data[i].title;
-    	let rank0=parseInt(data[i].rank);
-
-    	let time0=data[i].time;
-    	let link0=data[i].link,
-    	    img0=data[i].img,
-	 		price0=data[i].price,
-      priceMax_new=data[i].price.replace(/.*\$/g,''),
-      priceMin_new=data[i].price.replace(/\$|-.*|\s/g,''),
-      review_new=data[i].review.replace(/.*\(|\)/g,''),
-      star_new=data[i].review.replace(/\(.*/g,''),
-	 		review0=data[i].review;
-
-    	let newTitle = {'title':title0,
-    					'rank':rank0,
-    					'time':time0,
-    					'link':link0,
-    					'img':img0,
-    					'price':price0,
-    					'review':review0,
-
-              'rank_new':rank0,
-              'priceMax_new':priceMax_new,
-              'priceMin_new':priceMin_new,
-              'review_new':review_new,
-              'star_new':star_new,
-              'time_new':time0,
-    					'detail':{
-						     	'price':price0,
-						     	'rank':rank0,
-						     	'time':time0,
-						     	'review':review0
-						     }
-    				};
-    	let findTitle={'title':title0};
-		model.findOne(findTitle,function(err,person){
-
-      		//console.log(person);
-
-      		if (person==null) {
-      			model.create(newTitle,function(){
-
-		    		console.log("------------------create ok------------"+title0);
-		    	});
-
-      		}else{
-      			console.log(newTitle.title+"已经存在---------------");
-
-      			let update_where = {title:title0};//更新条件
-				let update_data ={
-									rank:rank0,
-									time:time0,
-									price:price0,
-									review:review0,
-
-									detail:{
-								     	price:price0,
-								     	rank:rank0,
-								     	time:time0,
-								     	review:review0
-								     }
-
-									};//更新
-        let update_data2 ={
-          									rank_new:rank0,
-          									priceMax_new:priceMax_new,
-                            priceMin_new:priceMin_new,
-          									review_new:review_new,
-                            star_new:star_new,
-                            time_new:time0
-          									};//更新
-
-				model.update(update_where,{$push:update_data},function(err){
-						    if(err){
-						        console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-						    }else{
-						        console.log('update success-----------'+title0);
-
-						    }
-				});
-        model.update(update_where,{$set:update_data2},function(err){
-                if(err){
-                    console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                }else{
-                    console.log('update success----new-------'+title0);
-
-                }
-        });
-
-      		};
-
-    	});
-
-	}
-
-}
 
 function loadPath(dp,TEST_DIR,callback){
   var items = [] // files, directories, symlinks, etc
@@ -256,33 +232,32 @@ function unique(a){
 };
 }
 
- //loadPath('clothing','data/clothing/58/',updateRank);
 function search() {
 
 }
 
-function lookProduct(DP,productTitle,type,result) {
-    console.log(DP+'__'+productTitle);
-    var dpModel= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js')),
+function lookProduct(productData,type,result) {
+    console.log('__'+productData);
+    var dpModel= require(path.join(`${__dirname}`,'../js/model/rank.js')),
         lpModel= require(path.join(`${__dirname}`,'../js/model/look_product.js'));
 
     switch(type){
 
            case "addList":
 
-              addList(DP,productTitle);
+              addList(productData);
 
                break;
 
            case "updateProduct":
 
-               updateProduct(DP,productTitle,type,result)
+               updateProduct(productData,type,result)
 
                break;
 
            case "loadProduct":
 
-              loadProduct(DP,productTitle,type,result);
+              loadProduct(productData,type,result);
 
                break;
 
@@ -291,14 +266,15 @@ function lookProduct(DP,productTitle,type,result) {
 
 
 
-    function addList(DP,productTitle) {
-      lpModel.findOne({title:productTitle}, function (err, doc) {
+    function addList(productData) {
+      lpModel.findOne({data:productData}, function (err, doc) {
         // docs 此时只包含文档的部分键值
 
         if (!doc) {
-          dpModel.findOne({title:productTitle}, function (err, doc2) {
+          dpModel.findOne({data:productData}, function (err, doc2) {
             // docs 此时只包含文档的部分键值
             let newDoc={ title:doc2.title,
+                        data:doc2.data,
                         img:doc2.img,
                         link:doc2.link,
                         detail:doc2.detail,
@@ -328,10 +304,10 @@ function lookProduct(DP,productTitle,type,result) {
       });
     }
 
-    function updateProduct(DP,productTitle,type,result) {
+    function updateProduct(productData,type,result) {
       console.log('updateProduct');
 
-      let update_where = {title:productTitle};//更新条件
+      let update_where = {data:productData};//更新条件
 
       let update_data ={
                 keywords:result.keywords,
@@ -343,7 +319,8 @@ function lookProduct(DP,productTitle,type,result) {
                 star_lp:result.star,
                 priceMin_lp:result.priceMin,
                 priceMax_lp:result.priceMax,
-                size_lp:result.size
+                size_lp:result.size,
+                color_lp:result.color
               },
           update_data2={
                 ranks_lp:{rank:result.rank,
@@ -363,19 +340,21 @@ function lookProduct(DP,productTitle,type,result) {
       lpModel.update(update_where,{$set:update_data,$push:update_data2},function(err){
               if(err){
                   console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                  ipcRenderer.send('result',result.keywords+'~~error');
               }else{
-                  console.log('update success-----------'+productTitle);
-
+                  console.log('update success-----------'+result.keywords);
+                  ipcRenderer.send('result',result.keywords+'~~success');
               }
       });
 
     };
 
-    function loadProduct(DP,productTitle,type,result) {
+    function loadProduct(productData,type,result) {
 
-          switch (productTitle) {
+          switch (productData) {
             case 'all':
-                dpModel.find({}, function (err, docs) {
+                lpModel.find({}, function (err, docs) {
+                  console.log(docs)
                   result(docs);
                 });
 
@@ -427,13 +406,15 @@ function topReviewers(result,callback) {
                                 avatar:result.avatar,
                                 location:result.location,
                                 bioExpander:result.bioExpander,
-                                wListCount:result.wListCount
-                              };
-
-                   update_data2={
+                                wListCount:result.wListCount,
                                 reviewsContent:result.reviewsContent
                               };
-                   model.update(findName,{$set:update_data1,$addToSet:update_data2},function(err){
+
+                  // update_data2={
+
+                          //    };
+                            //  ,$addToSet:update_data2
+                   model.update(findName,{$set:update_data1},function(err){
                                                   if(err){
                                                       console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                                                   }else{
@@ -502,6 +483,8 @@ module.exports = {
     lookProduct:lookProduct,
     topReviewers:topReviewers,
     load:load,
+    loadRank:loadRank,
+    updateRank:updateRank,
     test:test,
     search:search
 

@@ -32,6 +32,8 @@ const dataShow=require(path.join(__dirname, './datashow.js'));
 
 const schedules=require(path.join(__dirname, './schedules.js'));
 
+const bestdb=require(path.join(__dirname, './bestdb.js'));
+
 var obj=remote.getGlobal('sharedObj');
 
 //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
@@ -72,20 +74,16 @@ ipcRenderer.sendSync('synchronous-message', '---synchronous-message---renderer--
 
 
 
-var toolsBtns = $('.btn');
+
 var toolsButtons=$('.button-tools');
-console.log("toolsBtns:-------"+toolsBtns+"/"+toolsButtons);
+console.log("toolsBtns:-------"+ "/"+toolsButtons);
 
 for (let i = 0; i < toolsButtons.length; i++) {
     var toolsButton = toolsButtons[i];
     var toolsID = $(toolsButton).attr('id');
     prepareButton(toolsButton, toolsID);
 }
-for (let i = 0; i < toolsBtns.length; i++) {
-    var toolsBtn = toolsBtns[i];
-    var toolsID = $(toolsBtns).attr('id');
-    prepareButton(toolsBtn, toolsID);
-}
+
 
 function prepareButton(buttonEl, toolsID) {
 
@@ -118,32 +116,15 @@ function prepareButton(buttonEl, toolsID) {
                 break;
 
               case "Setup":
-                    $("#startCatch").remove();
                     $('.department').hide();
                     $('.add').show();
 
 
-
-                    $('.addlist').after(`
-                      <button class="btn btn-large btn-primary" id="startCatch">START</button>
-                      <button class="btn btn-large btn-primary" id="stockCatch">stockCatch</button>
-                      <input class="form-control" type="text" placeholder="url" id="stockURL">`
-                    );
-
-
                     department.load("start");
 
-                    $("#startCatch").click(function(){
-                       console.log("startCatch");
-                       catch_sched();
-
-                    });
-
-                    $("#stockCatch").click(function(){
-
-                       console.log("stockCatch");
-                       catch_sched_stock();
-
+                    $("#rankStart").click(function(){
+                        console.log("startCatch");
+                        catch_sched_rankStart(_URLS);
                     });
 
 
@@ -511,6 +492,35 @@ function catch_sched(){
                   };
 
             };
+
+  }
+
+}
+
+function catch_sched_rankStart(){
+  let urls=arguments;
+  later.date.localTime();
+
+  console.log("Now:"+new Date());
+
+  var sched = later.parse.recur().every(1).hour(),
+      t = later.setInterval(function(){fn()}, sched);
+
+  //setTimeout(fn(),1000);
+  setTimeout(function() {
+    console.log("BestSellers立刻运行一次--------------");
+    fn();
+
+  }, 1000)
+
+  setTimeout(function(){
+     t.clear();
+     console.log("Clear");
+  },604800*2000);
+    function fn(){
+    console.log("BestSellers运行一次--------------"+new Date());
+        //  bestdb.updateDP(urls);
+          ipcRenderer.send('catch_rankStart',urls);
 
   }
 

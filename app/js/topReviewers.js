@@ -121,8 +121,10 @@ function detail() {
               `);
 
             let webview=document.getElementById('tr'+s);
-          console.log(webview)
+          //console.log(webview);
+
             webview.addEventListener('dom-ready', function () {
+            
                     webview.openDevTools();
                     webview.executeJavaScript(`
                       const path=require('path');
@@ -142,22 +144,25 @@ function detail() {
                            var rTitle=document.getElementsByClassName('glimpse-product-title');
                            var rDate=document.getElementsByClassName('glimpse-raw-timestamp');
 
-                           var ln=rTitle.length;
+                           var lnt=rTitle.length;
                            for(var i=0;i<rTitle.length;i++){
-                             ln--;
+                             lnt--;
+                             console.log(lnt);
 
-                                reviewsContent.push({
+                              reviewsContent.push({
                                'title':rTitle[i].innerText,
                                'date':rDate[i].innerText
                               });
+                              console.log(reviewsContent);
+                               if(lnt<=0){
+                                 result['reviewsContent']=reviewsContent;
 
-                           if(ln<=0){
-                             result['reviewsContent']=reviewsContent;
-                           }
+                               }
+
                            }
 
-                        bestdb.topReviewers(result);
-                        console.log(JSON.stringify(result,null,2));
+                           bestdb.topReviewers(result);
+                           console.log(JSON.stringify(result,null,2));
 
                     `,false,function(){
 
