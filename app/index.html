@@ -3,7 +3,6 @@
   <head>
     <title>BestSellers</title>
     <meta charset="utf-8">
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="./css/photon.css">
      <script src="./js/libs/echarts.min.js"></script>
 
@@ -11,7 +10,7 @@
   <body>
   <div class="window">
       <div class="window-content">
-        <div class="pane-group ">
+        <div class="pane-group">
           <div class="pane-sm sidebar">
             <nav class="nav-group">
             <br>
@@ -80,7 +79,7 @@
               </ul>
           </div>
 
-          <div class="pane add" style="display:none">
+          <div class="pane add" style="display:none" id="Page_setup">
             <button class="btn btn-large btn-primary start_email">EMAIL</button>
               <hr>
 
@@ -93,7 +92,6 @@
               <div class="form-actions">
                 <button class="btn btn-form btn-default">Stop</button>
                 <button class="btn btn-form btn-primary" id="rankStart">Start</button>
-
               </div>
 
             <hr>
@@ -105,27 +103,37 @@
 
           </div>
 
-          <div class="pane" style="display:none" id="departmentData">
-              <h3><span class="icon icon-record" style="color:#57acf5"></span>BestSellers的决定因素</h3>
-              <p>统计BestSellers产品的review、star、最小&最大price，进入榜单的次数，可见，review集中在1000左右，star在3星以上，价格集中在$10-30之间</p>
-              <div class="">
+          <div class="pane" style="display:none" id="Page_departmentData">
+              <ul class="list-group" id="departmentDataTitle"></ul>
+              <h4><span class="icon icon-record" style="color:#57acf5"></span>BestSellers的决定因素</h4>
 
-              </div>
-              <div id="parallel" style="width:90%;height:50%;"></div>
+              <p>统计BestSellers产品的review、star、最小&最大price，进入榜单的次数，可见，review集中在1000左右，star在3星以上，价格集中在$10-30之间</p>
+
+              <div id="parallel" style="width:100%;height:100%;"></div>
               <hr>
-              <h3><span class="icon icon-record" style="color:#57acf5"></span>热度</h3>
+
+              <h4><span class="icon icon-record" style="color:#57acf5"></span>价格与销量的关系</h4>
+              <p>价格与销量的关系</p>
+              <div id="scatter" style="width: 90%;height:50%;"></div>
+<hr><!--
+              <h4><span class="icon icon-record" style="color:#57acf5"></span>关键字</h4>
+              <p>关键词</p>
+              <iframe src="./tpl/wordCloud/index.html" width="100%" height="500" style='border: none;
+    width: 100%;'></iframe>
+              <hr>!-->
+              <h4><span class="icon icon-record" style="color:#57acf5"></span>热度</h4>
               <p>统计了出现在bestSellers榜单的次数，次数越多(>24)，表示商品质量及服务越优，可进一步研究其关键词、
                 <br>review内容等；次数越少(<24)，表示是新进入榜单的商品，可以研究其类似产品，跟卖or研发新品</p>
               <div id="duration_pie" style="width:90%;height:50%;"></div>
-              <div id="duration" style="width: 90%;height:50%;"></div>
+              <div id="duration" style="width: 100%;height:100%;"></div>
 
               <hr>
-              <h3><span class="icon icon-record" style="color:#57acf5"></span>趋势</h3>
+              <h4><span class="icon icon-record" style="color:#57acf5"></span>趋势</h4>
               <p>根据24小时的rank、review、star、最低价格来反应趋势</p>
               <ul class="list-group" id="lineStack" ></ul>
           </div>
 
-          <div class="pane" style="display:none" id="productData">
+          <div class="pane" style="display:none" id="Page_productData">
             <button class="btn btn-large btn-primary start_email">EMAIL</button>
 
             <h3><span class="icon icon-record" style="color:#57acf5"></span>趋势</h3>
@@ -134,7 +142,7 @@
           </div>
 
 
-          <div class="pane" style="display:none" id="topReviewersContent">
+          <div class="pane" style="display:none" id="Page_topReviewersContent">
             <form>
               <h5>PageNumber</h5>
               <p>Total:1000</p>
@@ -168,8 +176,8 @@
       </footer>
   </div>
 
-
 </body>
+
 <script>
 window.$ = window.jQuery = require('./js/libs/jquery.min.js');
 require('./js/index.js');
