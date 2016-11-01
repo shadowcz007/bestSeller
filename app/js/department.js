@@ -115,12 +115,12 @@ function load(){
 						lnlr--;
 						let linkd=docs[i].link;
 						urlsToTran.push(linkd);
-						console.log(linkd);
+					//	console.log(linkd);
 
 						//let dataStr=linkd.replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
 
 						$('.selectedRank').append(`
-							<li id=`+docs[i].title.replace(regid,'').toLowerCase()+` class='list-group-item' src=`+linkd+` count=`+docs[i].count+`>
+							<li id=`+docs[i].data+` class='list-group-item' src=`+linkd+` count=`+docs[i].count+`>
 								<div class='media-body'>
 									<strong>`+docs[i].title+`</strong>
 									<p>`+'Looks : '+docs[i].count+`</p>
@@ -129,17 +129,31 @@ function load(){
 								</div>
 							</li>
 						`);
+
+						if(lnlr<=0){
+								let pd=docs[i].data;
+							//	console.log(window._URLS)
+								window._URLS=tranformArray(urlsToTran);
+
+								bestdb.loadRankOfProduct(pd,function(e){
+									console.log(e)
+											$('#'+pd).after(`
+													<p>`+'Numbers : '+e+`</p>
+												`)
+								})
+
+						}
+
+
 					};
-					if(lnlr<=0){
-							console.log(window._URLS)
-							window._URLS=tranformArray(urlsToTran);
-					}
+
+
 
 				});
 
 
 				//////////// load from db
-			bestdb.load("look_product",'',function (docs) {
+			bestdb.load("look_product",function (docs) {
 					console.log(docs);
 					$('.look_product_list').html('');
 					for (var i = 0; i < docs.length; i++) {

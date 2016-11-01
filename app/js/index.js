@@ -65,16 +65,6 @@ $('.start_email').click(function(){
 
 //////////////////////
 
-ipcRenderer.on('asynchronous-reply', function (event, arg) {
-    console.log(arg) // prints "pong"
-})
-
-ipcRenderer.send('asynchronous-message', '------renderer--send-----ping------------')
-ipcRenderer.sendSync('synchronous-message', '---synchronous-message---renderer--send-----ping------------')
-
-
-
-
 var toolsButtons=$('.button-tools');
 console.log("toolsBtns:-------"+ "/"+toolsButtons);
 
@@ -90,18 +80,12 @@ function prepareButton(buttonEl, toolsID) {
     buttonEl.addEventListener('click', function () {
 
         for (let i = 0; i < toolsButtons.length; i++) {
-		    let toolsButton = toolsButtons[i];
-             $(toolsButton).removeClass('active');
-		   //toolsButton.className="nav-group-item button-tools";
-		}
+  		    let toolsButton = toolsButtons[i];
+              $(toolsButton).removeClass('active');
+		    }
         $(buttonEl).addClass('active');
-        //buttonEl.className="nav-group-item button-tools active";
-
-
         console.log("click btn------"+toolsID);
-
         ipcRenderer.send('click-button', {"0":toolsID});
-
 
         switch(toolsID){
 
@@ -116,9 +100,11 @@ function prepareButton(buttonEl, toolsID) {
                 break;
 
               case "Setup":
+                    $('#Page_departmentData').hide();
+                    $('#Page_setup').show();
+                    $('#Page_productData').hide();
+                    $('#Page_topReviewersContent').hide();
                     $('.department').hide();
-                    $('.add').show();
-
 
                     department.load("start");
 
@@ -144,16 +130,9 @@ function prepareButton(buttonEl, toolsID) {
                             targetUrl.push($(targetDOM[i]).attr('src'));
 
                             if (tln<=0) {
-
                                 catch_sched_lookProduct(targetUrl);
-
-                            }
-                       }
-
+                            }                       }
                     });
-
-
-
 
 
                 break;
@@ -163,37 +142,34 @@ function prepareButton(buttonEl, toolsID) {
                 break;
 
               case "DepartmentDataShow":
-                    $("#startCatch").remove();
+                    $('#Page_departmentData').show();
+                    $('#Page_setup').hide();
+                    $('#Page_productData').hide();
+                    $('#Page_topReviewersContent').hide();
+                  //  $("#startCatch").remove();
                     $('.department').hide();
-                    $('.add').hide();
-                    $('#topReviewersContent').hide();
-                    $('#departmentData').show();
 
-                    dataShow.showDepartment();
+
+                    dataShow.showDepartment2();
 
                 break;
 
               case "ProductDataShow":
-                      $("#startCatch").remove();
-                      $('.department').hide();
-                      $('.add').hide();
-                      $('#departmentData').hide();
-                      $('#topReviewersContent').hide();
-
-                      $('#productData').show();
-
+                      $('#Page_departmentData').hide();
+                      $('#Page_setup').hide();
+                      $('#Page_productData').show();
+                      $('#Page_topReviewersContent').hide();
+                        $('.department').hide();
                       dataShow.showProduct();
 
                 break;
 
               case "topReviewers":
-                    $("#startCatch").remove();
-                    $('.department').hide();
-                    $('.add').hide();
-                    $('#departmentData').hide();
-                    $('#topReviewersContent').show();
-
-
+                    $('#Page_departmentData').hide();
+                    $('#Page_setup').hide();
+                    $('#Page_productData').hide();
+                    $('#Page_topReviewersContent').show();
+                      $('.department').hide();
                     //dataShow.showTReviewers();
 
                     $('#tpStart').click(function(){
@@ -230,7 +206,7 @@ function prepareButton(buttonEl, toolsID) {
 function add(){
     let html=$('.selected').clone(true);
     html.removeClass('selected hoverAni').unbind("click");
-    //$('.addlist').append(html[0]);
+
     console.log($('.selected'));
     let type=$('.selected').attr('class').replace(/selected|hoverAni|list-group-item|\s/g,'');
     department.update('AnyDepartment',$('.selected').text(),$('.selected').attr('data'),$('.selected').attr('src'),type);
@@ -498,7 +474,15 @@ function catch_sched(){
 }
 
 function catch_sched_rankStart(){
+
+
   let urls=arguments;
+
+  console.log("BestSellers运行一次--------------"+new Date());
+      //  bestdb.updateDP(urls);
+  ipcRenderer.send('catch_rankStart',urls);
+
+/*
   later.date.localTime();
 
   console.log("Now:"+new Date());
@@ -523,7 +507,7 @@ function catch_sched_rankStart(){
           ipcRenderer.send('catch_rankStart',urls);
 
   }
-
+*/
 }
 
 function catch_sched_lookProduct(urls){
@@ -547,9 +531,6 @@ function catch_sched_lookProduct(urls){
       console.log("catch_lookProduct立刻运行一次--------------");
       ipcRenderer.send('catch_lookProduct',urls);
     }, 1000)
-
-
-
 
 }
 

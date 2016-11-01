@@ -20,11 +20,121 @@ const {remote,ipcRenderer} = require('electron');
 const bestdb=require(path.join(__dirname, './bestdb.js'));
 const chart=require(path.join(__dirname, './myChart.js'));
 
+function showDepartment2() {
+
+	bestdb.load('rank',function (data) {
+		//console.log(data.length);
+
+			let pSeries=[],titles=[],colors=[],department=[]; //parallel
+
+			let priceMax=[],priceMin=[],ld=data.length; //scatter
+
+			let reviewSum={},priceSum={};//sum市场规模
+	//	console.log(data);
+
+		for (var i = 0; i < data.length; i++) {
+			ld--;
+			department.push(data[i].department);
+			priceMax.push([data[i].priceMax_new||0,data[i].review_new||0]);
+			priceMin.push([data[i].priceMin_new||0,data[i].review_new||0]);
+			if(ld<=0){
+				chart.scatter(priceMax,priceMin);
+			}
+		};
+
+		let uniObj=unique(department);
+		department=uniObj[0];
+		let json=uniObj[1];
+		let ln=department.length*data.length;
+
+		$('#departmentDataTitle').append(
+			`<li class="list-group-item">
+					<h4>本次统计了clothing类目下的所有best sellers产品</h4>
+					<div class="media-body">
+						<strong>`+'共计 : '+data.length+'个产品'+`</strong>
+						<p>`+'类目数量 : '+department.length+'个'+`</p>
+						<button class="btn btn-large btn-negative ">Add to Look</button>
+					</div>
+				</li>`);
+
+		for (var i = 0; i < department.length; i++) {
+				let type=department[i];
+				//console.log(type)
+				//console.log(json[type])
+				let reviewForSum=[],
+						priceForSum=[],
+						lsd=data.length;
+
+				for (let j = 0; j < data.length; j++) {
+					ln--;
+					lsd--;
+					if (data[j].department==type) {
+
+						colors.push(getRandomColor());
+						titles.push(data[j].title);
+						pSeries.push({'name': data[j].title,
+												'type': 'parallel',
+												'lineStyle': 'lineStyle',
+												'data': [[data[j].rank_new,data[j].review_new,data[j].star_new,data[j].priceMax_new,data[j].priceMin_new,type]]
+												});
+												//console.log(ln)
+
+							reviewForSum.push(data[j].review_new||0);
+							priceForSum.push(data[j].priceMax_new||0);
+
+
+
+					};
+					if(lsd<=0){
+						reviewSum[type]=reviewForSum.reduce(function (previous, current, index, array) {
+																		   return previous + current;
+																		 });
+						priceSum[type]=priceForSum.reduce(function (previous, current, index, array) {
+																		   return parseInt(previous + current);
+																		 });
+					}
+					if(ln<=0){
+							console.log(reviewSum);
+							console.log(priceSum);
+							let reviewSumData=[],priceSumData=[],lsdd=department.length;
+
+							for (var i = 0; i < department.length; i++) {
+								lsdd--;
+								reviewSumData.push(reviewSum[department[i]]);
+								priceSumData.push(priceSum[department[i]]);
+								if(lsdd<=0){
+									console.log(reviewSumData.length);
+									console.log(priceSumData.length);
+									chart.duration2(department,reviewSumData,priceSumData);
+								}
+							}
+
+							chart.parallel(pSeries,titles,colors,department);
+					};
+				};
+
+		}
+
+	});
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
 function showDepartment (argument) {
 	let NewBestHour=24;//取最近24小时上榜的商品
 	let NewNewBs=1;
 
-	bestdb.load("rank",'',function(data){
+	bestdb.load("rank",function(data){
 	//console.log(data[0].title);
 	//console.log(data[0]);
 
@@ -48,10 +158,6 @@ console.log(data[i].time.length+'~~~~~~~~~~~~~~~~~~');
 		}
 
 		title.push(data[i].title);
-
-
-
-
 		if (data[i].time.length<=NewBestHour) {
 			counts++;
 			let ranks1=data[i].rank,
@@ -111,8 +217,6 @@ console.log(data[i].time.length+'~~~~~~~~~~~~~~~~~~');
 			starS.push(data[i].star_new);
 			priceS.push(data[i].priceMin_new+'~'+data[i].priceMax_new);
 
-
-
 		};
 
 		if (ln<=0) {
@@ -123,8 +227,8 @@ console.log(data[i].time.length+'~~~~~~~~~~~~~~~~~~');
 			//	console.log(timeS);
 
 			 	console.log(title);
-					console.log(time1);
-						console.log(time2);
+				console.log(time1);
+				console.log(time2);
 
 				chart.duration(title,time1,time2);
 
@@ -136,7 +240,6 @@ console.log(data[i].time.length+'~~~~~~~~~~~~~~~~~~');
 				//	$('#lineStack').append("<div id="+'lineStack'+k+' class="lineStack"></div><a href="'+urlS[k]+'" class=lineStackTitle>'+(k+1)+':  '+titleS[k]+'</a><img class=pull-left src="'+imgS[k]+'">');
 				$('#lineStack').append(
 					`<li class="list-group-item">
-
 							<div id=`+'lineStack2_'+k+` class=lineStack></div>
 					    <img class="media-object pull-left" src=`+imgS[k]+` width="72" >
 					    <div class="media-body">
@@ -170,34 +273,34 @@ console.log(data[i].time.length+'~~~~~~~~~~~~~~~~~~');
 	};
 });
 
-bestdb.load("rank","2016/10/25/15:50",function(data){
-	//	let pallelRank=[rank,reviews,star,price,"new"];//统计排名与各项指标的关系
-		let pSeries=[],titles=[],colors=[],type='last';
-		let ln=data.length;
-	//	console.log(data)
-			for (var i = 0; i <data.length; i++) {
-					ln--;
-					//最近1小时上榜的商品
-					if (data[i].time.length<=NewNewBs) {
-							type='new';
-							colors.push(getRandomColor2());
-					}else{
-							colors.push(getRandomColor());
+			bestdb.load("rank",function(data){
+				//	let pallelRank=[rank,reviews,star,price,"new"];//统计排名与各项指标的关系
+					let pSeries=[],titles=[],colors=[],type='last';
+					let ln=data.length;
+				//	console.log(data)
+						for (var i = 0; i <data.length; i++) {
+								ln--;
+								//最近1小时上榜的商品
+								if (data[i].time.length<=2) {
+										type='new';
+										colors.push(getRandomColor2());
+								}else{
+										colors.push(getRandomColor());
+								}
+
+								titles.push(data[i].title);
+
+								pSeries.push({'name': data[i].title,
+														'type': 'parallel',
+														'lineStyle': 'lineStyle',
+														'data': [[data[i].rank_new,data[i].review_new,data[i].star_new,data[i].priceMax_new,data[i].priceMin_new,type]]
+														});
+								if (ln<=0) {
+									chart.parallel(pSeries,titles,colors);
+								}
 					}
 
-					titles.push(data[i].title);
-
-					pSeries.push({'name': data[i].title,
-											'type': 'parallel',
-											'lineStyle': 'lineStyle',
-											'data': [[data[i].rank_new,data[i].review_new,data[i].star_new,data[i].priceMax_new,data[i].priceMin_new,type]]
-											});
-					if (ln<=0) {
-						chart.parallel(pSeries,titles,colors);
-					}
-		}
-
-});
+			});
 
 }
 
@@ -353,7 +456,19 @@ function showTReviewers() {
 }
 
 
-
+function unique(a){
+	 var res = [];
+	 var json = {};
+	 for(var i = 0; i < a.length; i++){
+		if(!json[a[i]]){
+		res.push(a[i]);
+		json[a[i]] = 1;
+		}else{
+		json[a[i]]++
+		}
+	 }
+	 return [res,json];
+};
 
 
 function getRandomColor(){
@@ -363,8 +478,10 @@ function getRandomColor2(){
     return "red";
  }
 
+
 module.exports = {
     showDepartment: showDepartment,
+		showDepartment2: showDepartment2,
 		showProduct:showProduct,
 		showTReviewers:showTReviewers
 

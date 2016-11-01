@@ -69,6 +69,18 @@ webview.openDevTools();
                     review=html[i].getElementsByClassName("zg_reviews")[0].innerText.replace(/ out of 5 stars |,/g,'');}
                   if(html[i].getElementsByClassName("zg_price")[0]){
                     price=html[i].getElementsByClassName("zg_price")[0].innerText;}
+
+                    if(!review){
+                     review='0';
+                   }
+                   if(!price){
+                     price='0';
+                   }
+                  if(!link){
+                     link='0';
+                   }
+                    console.log(review);
+                      console.log(price);
                   bs.push({
                       "department":document.URL.replace(/.*best-sellers-|\\/zgbs.*/ig,'').toLowerCase(),
                     "time":new Date(),
@@ -80,7 +92,7 @@ webview.openDevTools();
                     "review":review.replace(/.*\\(|\\)/g,''),
                     "star":review.replace(/\\(.*/g,''),
                     "priceMin":price.replace(/-.*|\\$|\\n|\\s/g,''),
-                    "priceMax":price.replace(/.*-|\\$|\\n|\\s/g,''),
+                    "priceMax":price.replace(/.*-|\\$|\\n|\\s/g,'')
                   });
                   var data={
                     "department":document.URL.replace(/.*best-sellers-|\\/zgbs.*/ig,'').toLowerCase(),
@@ -93,7 +105,7 @@ webview.openDevTools();
                     "review":review.replace(/.*\\(|\\)/g,''),
                     "star":review.replace(/\\(.*/g,''),
                     "priceMin":price.replace(/-.*|\\$|\\n|\\s/g,''),
-                    "priceMax":price.replace(/.*-|\\$|\\n|\\s/g,''),
+                    "priceMax":price.replace(/.*-|\\$|\\n|\\s/g,'')
                   };
 
                   bestdb.updateRank(data);

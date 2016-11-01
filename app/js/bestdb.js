@@ -15,6 +15,8 @@
 const fs=require('fs-extra');
 const path=require('path');
 const {remote,ipcRenderer} = require('electron');
+
+
 // mongoose config
 var _connectDB="bestSellers";
 var mongoose = require('mongoose')
@@ -42,15 +44,24 @@ db.once('open', function callback () {
 });
 var Schema=mongoose.Schema;
 
+
 function loadRank(callback) {
     var model= require(path.join(`${__dirname}`,'../js/model/department.js'));
+
     model.find({select:true}, function (err, docs) {
           // docs 此时只包含文档的部分键值
-          return callback(docs)
+          return callback(docs);
 
         });
 };
 
+function loadRankOfProduct(dp,callback){
+  var model= require(path.join(`${__dirname}`,'../js/model/rank.js'));
+  model.find({department:dp},function (err,product) {
+    return callback(product)
+
+  })
+}
 
 function updateRank() {
     var data=arguments[0];
@@ -132,35 +143,22 @@ function updateRank() {
 
 
 
-function load(DP,date,callback){
-    var model= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js'));
+
+function load(DP,callback){
+      var model= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js'));
 
       if (DP=="look_product") {
           model.find({}, function (err, docs) {
-                // docs 此时只包含文档的部分键值
                 return callback(docs)
-
-              });
-
-
-      }else{
-
-          var date1;
-          if (!date) {
-            date1=new Date("1990/01/01");
-          }else{
-            var date1=new Date(date);
-          }
-
-
-          model.find({time_new:{$gt: date1}}, function (err, docs) {
-            // docs 此时只包含文档的部分键值
-            //console.log(docs)
-            return callback(docs)
-
           });
+      };
 
-      }
+      if(DP=='rank'){
+          model.find({star_new:{$gt:0}}, function (err, docs) {
+            console.log(docs.length)
+            return callback(docs)
+          });
+      };
 
 
 }
@@ -195,7 +193,6 @@ function loadPath(dp,TEST_DIR,callback){
               	for (let j = data.length - 1; j >= 0; j--) {
               		data1.push(data[j]);
               		title.push(data[j].title);
-
               	};
 
                 if (ln<=0 && data1.length>=90) {
@@ -204,32 +201,24 @@ function loadPath(dp,TEST_DIR,callback){
 
                 	};
 
-
-
               });
-
-
-
       };
-
-
-
     })
   }
 
-function unique(a){
- var res = [];
- var json = {};
- for(var i = 0; i < a.length; i++){
-  if(!json[a[i]]){
-  res.push(a[i]);
-  json[a[i]] = 1;
-  }else{
-  json[a[i]]++
-  }
- }
- return json;
-};
+  function unique(a){
+     var res = [];
+     var json = {};
+     for(var i = 0; i < a.length; i++){
+      if(!json[a[i]]){
+      res.push(a[i]);
+      json[a[i]] = 1;
+      }else{
+      json[a[i]]++
+      }
+     }
+     return json;
+  };
 }
 
 function search() {
@@ -466,7 +455,7 @@ function topReviewers(result,callback) {
 
 
     }else{
-      model.find({},function(err,docs){
+      model.find({bioExpander:{$eq: null}},function(err,docs){
             return callback(docs);
       })
 
@@ -479,11 +468,13 @@ function topReviewers(result,callback) {
 }
 
 module.exports = {
+
     update:update,
     lookProduct:lookProduct,
     topReviewers:topReviewers,
     load:load,
     loadRank:loadRank,
+    loadRankOfProduct:loadRankOfProduct,
     updateRank:updateRank,
     test:test,
     search:search
