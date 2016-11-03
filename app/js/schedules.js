@@ -1,7 +1,9 @@
 'use strict';
-
+const path=require('path');
+const {remote,ipcRenderer} = require('electron');
 const later = require('later');
 const nodemailer = require('nodemailer');
+
 
 function start () {
 
@@ -30,21 +32,29 @@ function start () {
 }
 
 function email() {
-	console.log("email send");
+	console.log("email send start");
 	let subject=arguments[0],
 			html=arguments[1];
-	var transporter = nodemailer.createTransport('smtps://389570357%40qq.com:j98ijkji305x@smtp.qq.com');
 
+	var transporter = nodemailer.createTransport({
+															host: 'smtp.163.com',
+
+ 															port: 25, // port
+															auth: {
+																	user: 'chizhiwei007@163.com',
+																	pass: 'j98ijkji305x'
+															}
+															});
 	// setup e-mail data with unicode symbols
 	var mailOptions = {
-	    from: '"test 👥" <389570357@qq.com>', // sender address
+	    from: '"test 👥" <chizhiwei007@163.com>', // sender address
 	    to: '389570357@qq.com', // list of receivers
 	    subject: subject, // Subject line
 	    //text: 'Hello world 🐴', // plaintext body
 	    html: html // html body
 	};
 
-	// send mail with defined transport object
+
 	transporter.sendMail(mailOptions, function(error, info){
 	    if(error){
 	        return console.log(error);
@@ -53,10 +63,46 @@ function email() {
 	});
 }
 
+function rankStart(){
+  let urls=arguments;
+  console.log("catch_rankStart--------------"+new Date());
+  ipcRenderer.send('catch_rankStart',urls);
+}
+
+function lookProduct(urls){
+    later.date.localTime();
+    console.log("Now:"+new Date());
+
+    var sched = later.parse.recur().every(60).minute(),
+                t = later.setInterval(function() {
+                    console.log("catch_lookProduct运行一次--------------"+new Date());
+										email(new Date(),"look product");
+                    ipcRenderer.send('catch_lookProduct',urls);
+                }, sched);
+
+    setTimeout(function(){
+               t.clear();
+               console.log("catch_sched_lookProduct_Clear");
+            },604800*2000);
+
+    setTimeout(function() {
+      console.log("catch_lookProduct立刻运行一次--------------");
+			email(new Date(),"look product");
+      ipcRenderer.send('catch_lookProduct',urls);
+    }, 1000)
+}
+
+function topReviewers(sf,st,type){
+    ipcRenderer.send('catch_topReviewers',['https://www.amazon.com/review/top-reviewers/ref=cm_cr_tr_link_',sf,st,type]);
+}
+
 
 module.exports = {
 
     start:start,
+		rankStart:rankStart,
+		lookProduct:lookProduct,
+		topReviewers:topReviewers,
 		email:email
 
 

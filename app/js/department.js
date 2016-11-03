@@ -103,174 +103,77 @@ function load(){
 
 	//console.log(dp);
 	//console.log(ln);
-	if (arguments[0]=="start") {
 
-			$('.selectedRank').html('');
-
-			bestdb.loadRank(function (docs) {
-
-					console.log(docs);
-					let urlsToTran=[],lnlr=docs.length;
-					for (var i = 0; i < docs.length; i++) {
-						lnlr--;
-						let linkd=docs[i].link;
-						urlsToTran.push(linkd);
-					//	console.log(linkd);
-
-						//let dataStr=linkd.replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
-
-						$('.selectedRank').append(`
-							<li id=`+docs[i].data+` class='list-group-item' src=`+linkd+` count=`+docs[i].count+`>
-								<div class='media-body'>
-									<strong>`+docs[i].title+`</strong>
-									<p>`+'Looks : '+docs[i].count+`</p>
-									<p>`+'Number: '+linkd.length+`</p>
-									<p>`+'Update : '+docs[i].time+`</p>
-								</div>
-							</li>
-						`);
-
-						if(lnlr<=0){
-								let pd=docs[i].data;
-							//	console.log(window._URLS)
-								window._URLS=tranformArray(urlsToTran);
-
-								bestdb.loadRankOfProduct(pd,function(e){
-									console.log(e)
-											$('#'+pd).after(`
-													<p>`+'Numbers : '+e+`</p>
-												`)
-								})
-
-						}
-
-
-					};
-
-
-
-				});
-
-
-				//////////// load from db
-			bestdb.load("look_product",function (docs) {
-					console.log(docs);
-					$('.look_product_list').html('');
-					for (var i = 0; i < docs.length; i++) {
-
-						$('.look_product_list').append(`
-							<li class='list-group-item' src=`+docs[i].link+` data=`+docs[i].title+`>
-							<img class="media-object pull-left" src=`+docs[i].img+` width="32" height="32">
-							<div class='media-body'>
-							<strong>`+docs[i].title+`</strong>
-							<p>`+'Looks : '+docs[i].ranks_lp.length+`</p>
-							<p>`+'Now : '+docs[i].rank_lp+`</p>
-							<p>`+'Update : '+docs[i].time_lp+`</p>
-
-							</div>
-							</li>`);
-					}
-
-
-			});
-
-
-
-
-
-
-
-
-	};
 
 
 
 	if (ln==0 && arguments[0]=="dpf") {
+		bestdb.loadDepartment(function(json){
+			console.log(json);
+			let count=json.length;
 
- 		console.log("load------------------ AnyDepartment.json")
 
- 		json=fs.readJsonSync(`${__dirname}/data/AnyDepartment.json`);
+	 		for (var i = 0; i <= json.length - 1; i++) {
+	 			if (json[i].type=="dpf"||!json[i].type) {
+		 			let linkd=json[i].link;
 
- 		let count=json.length;
+					dp.append("<li id="+json[i].data+" class='dpf list-group-item hoverAni' src="+linkd+` data=`+json[i].data+` count=`+json[i].count+`>
+						<div class='media-body'><strong>`+json[i].title+`</strong></div></li>
+						`);
+					let dpcJson=json[i].children;
+					console.log(dpcJson)
 
- 		for (var i = 0; i <= json.length - 1; i++) {
- 			if (json[i].type=="dpf"||!json[i].type) {
- 			//dpf.append("<tr class='dpf'><td src='"+json[i].link+"'>"+json[i].title+"</td><td ></td></tr>");
- 			let linkd=json[i].link;
- 			let dataStr=linkd.replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
+					for (let j = 0; j < dpcJson.length; j++) {
+						dp.append("<li id="+dpcJson[j].data+" class='dpc list-group-item hoverAni' src="+dpcJson[j].link+` data=`+dpcJson[j].data+`>
+							<div class='media-body'><strong>`+dpcJson[j].title+`</strong></div></li>
+							`)
+					}
 
-			dp.append("<li id="+json[i].title.replace(regid,'').toLowerCase()+" class='list-group-item hoverAni dpf' src='"+linkd+"' data='"+dataStr.toLowerCase()+"' count='"+json[i].count+"'><div class='media-body'><strong>"+json[i].title+"</strong></div></li>");
+	 			};
+	 		};
 
- 			};
- 			//console.log(count);
- 		};
+			bindElem('dpf')
+			bindElem('dpc')
 
+
+		});
  	};
 
  	if (arguments[0]=="dpc") {
-
- 		json=fs.readJsonSync(arguments[1]);
-
+		console.log(arguments)
+ 		//json=fs.readJsonSync(arguments[1]);
  		console.log("load------------------ "+arguments[1]);
 
- 		//console.log(json);
-
  		let count=json.length;
-
  		if (count==0) {
-
             console.log("=============没有下一级")
-
-        }else{
-
-            var html3=$('#'+arguments[2].replace(/&|\s/g,''));
-
-
-            let delStr=arguments[2].replace(/\s&\s/g,' ');
-
-			//console.log("delStr-------------------"+delStr)
+    }else{
+            var html3=$('#'+arguments[2].replace(/&|\s/g,'')),
+                delStr=arguments[2].replace(/\s&\s/g,' ');
 
             for (let i = 0; i <= json.length - 1; i++) {
-            	let linkd=json[i].link;
- 				let dataStr=linkd.replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
+            	let linkd=json[i].link,
+									dataStr=linkd.replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
+	 								html3.after("<li id="+json[i].title.replace(regid,'').toLowerCase()+" class='dpc hoverAni' src='"+linkd+"' data='"+dataStr.toLowerCase()+"'><div class='media-body'><strong>"+json[i].title.replace(/-/g,' ').replace(delStr,'')+"</strong></div></li>");
 
-	 			html3.after("<li id="+json[i].title.replace(regid,'').toLowerCase()+" class='dpc hoverAni' src='"+linkd+"' data='"+dataStr.toLowerCase()+"'><div class='media-body'><strong>"+json[i].title.replace(/-/g,' ').replace(delStr,'')+"</strong></div></li>");
-
-	 		};
-        };
+	 					};
+    };
  	};
 
  	if (arguments[0]=="dpcc" || arguments[0]=="dpccc") {
-
- 		json=fs.readJsonSync(arguments[1]);
-
- 		//console.log("read-------!!! "+arguments[1]);
-
- 		//console.log(json);
-
- 		let count=json.length;
-
- 		if (count==0) {
-
-            console.log("=============没有下一级")
-
-        }else{
-
-            var html3=$('#'+arguments[2].replace(/&|\s/g,''));
-
-
-            let delStr=arguments[2].replace(/\s&\s/g,' ');
-
-			//console.log("delStr-------------------"+delStr)
-
-            for (let i = 0; i <= json.length - 1; i++) {
-            	let linkd=json[i].link;
- 				let dataStr=linkd.replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
-
-	 			html3.after("<li id="+json[i].title.replace(regid,'').toLowerCase()+" class='dpcc hoverAni' src='"+linkd+"' data='"+dataStr.toLowerCase()+"'><div class='media-body'><strong>"+json[i].title.replace(/-/g,' ').replace(delStr,'')+"</strong></div></li>");
-
-	 		};
-        };
+	 		json=fs.readJsonSync(arguments[1]);
+	 		let count=json.length;
+	 		if (count==0) {
+	            console.log("=============没有下一级")
+	    }else{
+	            var html3=$('#'+arguments[2].replace(/&|\s/g,''));
+	            let delStr=arguments[2].replace(/\s&\s/g,' ');
+	            for (let i = 0; i <= json.length - 1; i++) {
+	            	let linkd=json[i].link,
+	 							    dataStr=linkd.replace(/.*\/Best-Sellers-|\/zgbs.*/ig,'');
+		 						html3.after("<li id="+json[i].title.replace(regid,'').toLowerCase()+" class='dpcc hoverAni' src='"+linkd+"' data='"+dataStr.toLowerCase()+"'><div class='media-body'><strong>"+json[i].title.replace(/-/g,' ').replace(delStr,'')+"</strong></div></li>");
+		 					};
+	    };
  	};
 
 
@@ -447,7 +350,151 @@ function tranformArray(array) {
   return c;
 
 }
+function bindElem(){
 
+    let nextType;
+
+     switch(arguments[0]){
+
+        case "dpf":
+
+            nextType="dpc";
+
+            $("."+arguments[0]).on('click', function(){
+
+                testSelected(this);
+
+                testLoad("dpf",this);
+
+            });
+
+            break;
+
+        case "dpc":
+
+            nextType="dpcc";
+            bindElmdef("dpc",nextType);
+
+            break;
+
+        case "dpcc":
+
+            nextType="dpccc";
+            bindElmdef("dpcc",nextType);
+
+            break;
+
+        }
+
+    function bindElmdef(type,nxtype){
+        //console.log($("."+type))
+        $("."+type).on('click', function(){
+                console.log(this)
+                testSelected(this);
+                console.log(type)
+                testLoad(type,this);
+
+               // catch_confirm($(this).attr('src'),$(this).attr('id'),1);
+
+               // bindElem(nxtype);
+
+            });
+    }
+
+
+}
+
+
+function testLoad(type0,elem){
+
+    let id,type;
+     switch(type0){
+
+        case "dpf":
+
+            id="1";
+            type="dpc"
+
+ console.log(id);
+            break;
+
+        case "dpc":
+
+            id="2";
+            type="dpcc"
+            console.log(id);
+
+            break;
+
+        case "dpcc":
+
+            id="3";
+            type="dpccc"
+            console.log(id);
+
+        break;
+
+
+        }
+
+    let elems=$(elem),
+        eid=elems.attr('id'),
+        edata=elems.attr('data'),
+        esrc=elems.attr('src'),
+        ecount=elems.attr('count'),
+        etype=elems.attr('class').replace(/list-group-item|hoverAni|selected|\s/ig,''),
+        etext=elems.text(),
+        file=path.join(`${__dirname}`,'../js/data/'+eid+'.json'),
+        files=path.join(`${__dirname}`,'../js/data/'+edata+'/');
+
+                ipcRenderer.send('click-button','{"'+id+'":"'+eid+'"}');
+
+                try {
+
+                    department.load(type,file,eid);
+
+                    department.loadPath(files);
+
+                } catch (err) {
+                    alert('需要下载')
+                }
+
+                // dpName,dataID,fSrc,type,count
+                catch_confirm(etext,edata,esrc,etype,ecount);
+                bindElem(type);
+
+}
+
+function catch_confirm(dpName,dataID,fSrc,type,count){
+  //var r=confirm("Catch New BestSellers<br>"+arguments[4]);
+    let fileName='AnyDepartment';
+    console.log("OK!----start---catch New BestSellers");
+
+
+    ipcRenderer.send('catch',[fSrc,dataID,type,count]);
+
+    //department.update(fileName,dpName,dataID,fSrc,type,count);
+
+
+
+}
+function testSelected(elem){
+    let dp=$(elem).attr('class').replace(/list-group-item|hoverAni|selected|\s/ig,'');
+    let dps=$('.'+dp);
+    if (elem) {
+        for (var i = $('.selected').length - 1; i >= 0; i--) {
+                $($('.selected')).removeClass('selected');
+            };
+        var classN=$(elem).hasClass('selected');
+
+        if (!classN) {
+            $(elem).addClass('selected');
+            console.log("add selected")
+        }
+    }else{
+        return $('.selected').attr('data')
+    };
+}
 
 module.exports = {
     load: load,

@@ -49,7 +49,7 @@ function loadRank(callback) {
     var model= require(path.join(`${__dirname}`,'../js/model/department.js'));
 
     model.find({select:true}, function (err, docs) {
-          // docs 此时只包含文档的部分键值
+          console.log(docs)
           return callback(docs);
 
         });
@@ -144,7 +144,7 @@ function updateRank() {
 
 
 
-function load(DP,callback){
+function load(DP,val,callback){
       var model= require(path.join(`${__dirname}`,'../js/model/'+DP+'.js'));
 
       if (DP=="look_product") {
@@ -154,7 +154,7 @@ function load(DP,callback){
       };
 
       if(DP=='rank'){
-          model.find({star_new:{$gt:0}}, function (err, docs) {
+          model.find({star_new:{$gt:val}}, function (err, docs) {
             console.log(docs.length)
             return callback(docs)
           });
@@ -295,8 +295,8 @@ function lookProduct(productData,type,result) {
 
     function updateProduct(productData,type,result) {
       console.log('updateProduct');
-
-      let update_where = {data:productData};//更新条件
+console.log(result);
+      let update_where = {data:productData.toLowerCase()};//更新条件
 
       let update_data ={
                 keywords:result.keywords,
@@ -393,10 +393,10 @@ function topReviewers(result,callback) {
 
                   update_data1={
                                 avatar:result.avatar,
-                                location:result.location,
-                                bioExpander:result.bioExpander,
-                                wListCount:result.wListCount,
-                                reviewsContent:result.reviewsContent
+                                location:result.location ||0,
+                                bioExpander:result.bioExpander ||0,
+                                wListCount:result.wListCount ||0,
+                                reviewsContent:result.reviewsContent ||0
                               };
 
                   // update_data2={
@@ -418,7 +418,7 @@ function topReviewers(result,callback) {
 
                   update_data1={
                                 hfVotes:result.hfVotes,
-                                wishList:result.wishList,
+                                wishList:result.wishList||0,
                                 totalReviews:result.totalReviews,
                                 percentHelpful:result.percentHelpful,
                                 rank:result.rank
@@ -467,11 +467,76 @@ function topReviewers(result,callback) {
 
 }
 
+
+
+function loadDepartment(result){
+  var model= require(path.join(`${__dirname}`,'../js/model/department.js'));
+  model.find({},function(err,docs){
+    console.log(docs);
+    return result(docs)
+  })
+};
+
+function updateDepartment(doc){
+  var model= require(path.join(`${__dirname}`,'../js/model/department.js'));
+
+
+
+  model.findOne({data:doc.data},function(err,result){
+      console.log(result)
+      if (result !== null) {
+        var update_data1={links:doc.links,children:doc.children};
+
+         var update_data2={
+                      links:doc.links,
+                      children:doc.children
+                    };
+
+        model.update({data:doc.data},{$set:{links:doc.links,children:doc.children}},function(err){
+                            if(err){
+                              console.log(err)
+                                console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                            }else{
+                                console.log('update topReviewers all------------')
+
+                                console.log('update success-----------');
+                            }
+        });
+      }else{
+        var update_data1={
+                        "children.$.type":'dpc',
+                        "children.$.links":doc.links,
+                        "children.$.children":doc.children
+                    };
+        model.update({"children.data":doc.data},{$set:update_data1},function(err){
+                            if(err){
+                              console.log(err)
+                                console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                            }else{
+
+
+                                console.log('update success-----------');
+                            }
+        });
+
+
+
+
+
+      }
+  })
+
+
+
+};
+
 module.exports = {
 
     update:update,
     lookProduct:lookProduct,
     topReviewers:topReviewers,
+    loadDepartment:loadDepartment,
+    updateDepartment:  updateDepartment,
     load:load,
     loadRank:loadRank,
     loadRankOfProduct:loadRankOfProduct,

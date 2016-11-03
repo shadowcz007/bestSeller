@@ -20,9 +20,9 @@ const {remote,ipcRenderer} = require('electron');
 const bestdb=require(path.join(__dirname, './bestdb.js'));
 const chart=require(path.join(__dirname, './myChart.js'));
 
-function showDepartment2() {
+function showDepartment2(val) {
 
-	bestdb.load('rank',function (data) {
+	bestdb.load('rank',val,function (data) {
 		//console.log(data.length);
 
 			let pSeries=[],titles=[],colors=[],department=[]; //parallel
@@ -307,7 +307,7 @@ console.log(data[i].time.length+'~~~~~~~~~~~~~~~~~~');
 
 
 function showProduct() {
-	 bestdb.lookProduct('look_product','all','loadProduct',function (docs) {
+	 bestdb.lookProduct('all','loadProduct',function (docs) {
 		 		//console.log(docs);
 
 				let ln=docs.length;
@@ -347,12 +347,12 @@ console.log(docs[i]);
 								let todu=rankSs(ranks[j].rank);
 								for (var k = 0; k < todu.length; k++) {
 										series[k].name=todu[k][0]
-										series[k].data.push(todu[k][1])
+										series[k].data.push(parseInt(todu[k][1].replace(',','')))
 								}
 								timeS.push(ranks[j].time);
 								if(sln<=0){
 										console.log(series)
-										chart.lineStack('PD_lineStack_'+i,docs[i].title,timeS,series);
+										chart.lineStack('PD_lineStack_'+i,docs[i].data,timeS,series);
 
 								}
 						}

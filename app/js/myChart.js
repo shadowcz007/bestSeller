@@ -393,7 +393,12 @@ var myAxisLabel={
 	}
 
 	function lineStack(index,title,time,series){
-	// 基于准备好的dom，初始化echarts实例
+
+
+					console.log(JSON.stringify(title));
+					console.log(JSON.stringify(time));
+					console.log(JSON.stringify(series));
+
 	        var myChart = echarts.init(document.getElementById(index));
           let title2=[];
           for (var i = 0; i < series.length; i++) {

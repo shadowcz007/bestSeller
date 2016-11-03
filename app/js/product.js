@@ -56,7 +56,7 @@ function spider() {
                   }
 
                   result['priceMin']=result['priceMax']=0;
-                  
+
 
 
 
@@ -145,7 +145,7 @@ function spider() {
                   }
                   console.log(result);
 
-                  bestdb.lookProduct('clothing',result['title'],'updateProduct',result);
+                  bestdb.lookProduct(result['title'],'updateProduct',result);
 
                   console.log(JSON.stringify(result,null,2));
 

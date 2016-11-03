@@ -9,7 +9,7 @@ let webviews=$('#webviews');
 
 function spider() {
 
-let urls=creatUrls(obj.rankStart),
+let urls=creatUrls(obj.rankStart).reverse(),
     lns=urls.length;
  console.log(urls);
 

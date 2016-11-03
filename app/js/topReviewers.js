@@ -103,7 +103,7 @@ function detail() {
       st=obj.topReviewersUrl[2];
 
   bestdb.topReviewers('',function (docs) {
-
+          console.log(docs.length)
           for (var i = sf; i < parseInt(st)+1; i++) {
               taskLink.push(docs[i].link);
           }
@@ -123,8 +123,8 @@ function detail() {
             let webview=document.getElementById('tr'+s);
           //console.log(webview);
 
-            webview.addEventListener('dom-ready', function () {
-            
+            webview.addEventListener('did-stop-loading', function () {
+
                     webview.openDevTools();
                     webview.executeJavaScript(`
                       const path=require('path');
@@ -143,24 +143,26 @@ function detail() {
                            result['bioExpander']=document.getElementsByClassName('bio-expander')[0].innerText.replace(/\\n/ig,'').replace(/Helpful votes.*/ig,'');
                            var rTitle=document.getElementsByClassName('glimpse-product-title');
                            var rDate=document.getElementsByClassName('glimpse-raw-timestamp');
-
+                           console.log(document.getElementsByClassName('glimpse-product-title'))
                            var lnt=rTitle.length;
-                           for(var i=0;i<rTitle.length;i++){
-                             lnt--;
-                             console.log(lnt);
+                           console.log(rTitle.length);
+                           if(lnt!=0){
+                             for(var i=0;i<rTitle.length;i++){
+                               lnt--;
+                               console.log(lnt);
 
-                              reviewsContent.push({
-                               'title':rTitle[i].innerText,
-                               'date':rDate[i].innerText
-                              });
-                              console.log(reviewsContent);
-                               if(lnt<=0){
-                                 result['reviewsContent']=reviewsContent;
+                                reviewsContent.push({
+                                 'title':rTitle[i].innerText,
+                                 'date':rDate[i].innerText
+                                });
+                                console.log(reviewsContent);
+                                 if(lnt<=0){
+                                   result['reviewsContent']=reviewsContent;
 
-                               }
+                                 }
 
-                           }
-
+                             }
+                             }
                            bestdb.topReviewers(result);
                            console.log(JSON.stringify(result,null,2));
 
