@@ -8,7 +8,7 @@ const fs = require('fs-extra');
 const bestdb=require('./app/js/bestdb.js');
 
 ipcMain._maxListeners=200;
-console.log(ipcMain._maxListeners)
+//console.log(ipcMain._maxListeners)
 
 global.sharedObj = {myvar: "hellofrommainjs",
                     result:"1",
@@ -65,7 +65,7 @@ const BrowserWindow = electron.BrowserWindow
 /////////////////////////////
 
 
-let mainWin,bestSellersWin,stockWin,productWin,topReviewersWin;
+let mainWin,departmentWin,bestSellersWin,stockWin,productWin,topReviewersWin;
 
 function createWindow () {
   createMainWin();
@@ -90,8 +90,7 @@ function createMainWin () {
         experimentalCanvasFeatures:true,
         plugins: true,
         nodeIntegration: true,//这句是使用node 模块
-        //webSecurity: false,
-        //preload: path.join(__dirname, '../../inject/preload.js'),
+
       }
   })
 
@@ -122,14 +121,45 @@ function createBestSellersWin () {
         nodeIntegration: true,//这句是使用node 模块
       }
   })
-  //bestSellersWin.loadURL('https://www.amazon.com/Best-Sellers-Appliances/zgbs/appliances/ref=zg_bs_nav_0')
-
+ 
   bestSellersWin.loadURL(`file://${__dirname}/app/tpl/rank.html`)
 
   bestSellersWin.webContents.openDevTools()
 
   bestSellersWin.on('closed', function () {
     bestSellersWin = null
+  })
+}
+
+//
+
+function createDepartmentWin () {
+  departmentWin = new BrowserWindow({
+    frame:true,
+    resizable: true,
+    alwaysOnTop:true,
+    title:'bestSellers',
+    x:1,
+    y:1,
+    titleBarStyle:'hidden-inset',
+    closable:true,
+    movable:true,
+    width: 100,
+    height: 100,
+    webPreferences: {
+        experimentalFeatures:true,
+        plugins: true,
+        nodeIntegration: true,//这句是使用node 模块
+      }
+  })
+  //bestSellersWin.loadURL('https://www.amazon.com/Best-Sellers-Appliances/zgbs/appliances/ref=zg_bs_nav_0')
+
+  departmentWin.loadURL(`file://${__dirname}/app/tpl/department.html`)
+
+  departmentWin.webContents.openDevTools()
+
+  departmentWin.on('closed', function () {
+    departmentWin = null
   })
 }
 
@@ -391,7 +421,22 @@ ipcMain.on('catch_topReviewers',function (event, args) {
   };
 });
 
+ipcMain.on('catch',function (event, arg) {
+  console.log(arg);
+  if (departmentWin==null) {
+    createDepartmentWin();
+  }else{
+    departmentWin.reload();
+    //bestSellersWin.focusOnWebView();
+  };
 
+    global.sharedObj.dpf=arg;
+    global.sharedObj.type=arg[2];
+    global.sharedObj.count=arg[3];
+
+  event.sender.send('catch-bestseller',arg);
+
+});
 
 
 

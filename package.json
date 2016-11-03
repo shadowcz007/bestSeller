@@ -17,12 +17,11 @@
   "author": "shadow",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^1.4.3"
+    "electron": "^1.4.5"
   },
   "dependencies": {
     "later": "^1.2.0",
     "mongoose": "^4.6.4",
-    "nconf": "^0.8.4",
     "nodemailer": "^2.6.4"
   }
 }
