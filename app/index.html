@@ -81,35 +81,40 @@
 
           <div class="pane add" style="display:none" id="Page_setup">
             <button class="btn btn-large btn-primary start_email">EMAIL</button>
-              <hr>
-
-              <h5>100's rank</h5>
-              <ul class="list-group selectedRank" >
-              </ul>
-                <label>url</label>
-                <input type="url" class="form-control rankUrl" placeholder="url" >
-
-              <div class="form-actions">
-                <button class="btn btn-form btn-default">Stop</button>
-                <button class="btn btn-form btn-primary" id="rankStart">Start</button>
-              </div>
 
             <hr>
-              <ul class="list-group addlist" >
-              </ul>
-              <ul class="list-group look_product_list" >
-              </ul>
-              <button class="btn btn-large btn-primary" id="start_look_product">START LOOK PRODUCT</button>
+
 
           </div>
 
           <div class="pane" style="display:none" id="Page_departmentData">
+
+            <h5>100's rank</h5>
+            <ul class="list-group selectedRank" >
+            </ul>
+              <label>url</label>
+              <input type="url" class="form-control rankUrl" placeholder="url" >
+
+              <select class="form-control" id='rankStarSelect'>
+                <option>1-2</option>
+                <option>2-3</option>
+                <option>3-4</option>
+                <option>4-5</option>
+                <option>0-5</option>
+              </select>
+
+            <div class="form-actions">
+              <button class="btn btn-form btn-default">Stop</button>
+              <button class="btn btn-form btn-primary" id="rankStart">Start</button>
+              <button class="btn btn-form btn-primary" id="rankStar4">rankStar4</button>
+            </div>
+
               <ul class="list-group" id="departmentDataTitle"></ul>
               <h4><span class="icon icon-record" style="color:#57acf5"></span>BestSellers的决定因素</h4>
 
               <p>统计BestSellers产品的review、star、最小&最大price，进入榜单的次数，可见，review集中在1000左右，star在3星以上，价格集中在$10-30之间</p>
 
-              <div id="parallel" style="width:100%;height:100%;"></div>
+              <div id="parallel" style="width:100%;height:200%;"></div>
               <hr>
 
               <h4><span class="icon icon-record" style="color:#57acf5"></span>价格与销量的关系</h4>
@@ -124,7 +129,7 @@
               <h4><span class="icon icon-record" style="color:#57acf5"></span>热度</h4>
               <p>统计了出现在bestSellers榜单的次数，次数越多(>24)，表示商品质量及服务越优，可进一步研究其关键词、
                 <br>review内容等；次数越少(<24)，表示是新进入榜单的商品，可以研究其类似产品，跟卖or研发新品</p>
-              <div id="duration_pie" style="width:90%;height:50%;"></div>
+          <!--    <div id="duration_pie" style="width:90%;height:50%;"></div> !-->
               <div id="duration" style="width: 100%;height:100%;"></div>
 
               <hr>
@@ -135,7 +140,11 @@
 
           <div class="pane" style="display:none" id="Page_productData">
             <button class="btn btn-large btn-primary start_email">EMAIL</button>
-
+            <ul class="list-group addlist" >
+            </ul>
+            <ul class="list-group look_product_list" >
+            </ul>
+            <button class="btn btn-large btn-primary" id="start_look_product">START LOOK PRODUCT</button>
             <h3><span class="icon icon-record" style="color:#57acf5"></span>趋势</h3>
             <p>根据24小时的rank、review、star、最低价格来反应趋势</p>
             <ul class="list-group" id="PD_lineStack" ></ul>
