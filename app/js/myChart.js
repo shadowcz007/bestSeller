@@ -185,6 +185,81 @@ var myAxisLabel={
 					myChart2.setOption(option2);
 
 	}
+	function duration2(department,reviewSumData,priceSumData){
+	// 基于准备好的dom，初始化echarts实例
+
+
+	        var myChart = echarts.init(document.getElementById('duration')) ;
+
+		option = {
+		    tooltip: {
+		        trigger: 'axis',
+		        axisPointer: {
+		            type: 'shadow'
+		        }
+		    },
+		    legend: {
+		        data: department
+		    },
+				dataZoom: [
+					{
+							type: 'slider',
+							show: true,
+							xAxisIndex: [0],
+							start: 1,
+							end: 100
+					},
+					{
+							type: 'inside',
+							xAxisIndex: [0],
+							start: 1,
+							end: 100
+					},
+					{
+							type: 'slider',
+							show: true,
+							yAxisIndex: [0],
+							start: 1,
+							end: 100
+					},
+					{
+							type: 'inside',
+							yAxisIndex: [0],
+							start: 1,
+							end: 100
+					}
+			],
+			toolbox: mytoolBox,
+		    grid: {
+		        left: '3%',
+		        right: '4%',
+		        bottom: '3%',
+		        containLabel: true
+		    },
+		    xAxis: {
+		        type: 'value'
+		    },
+		    yAxis: {
+		        type: 'category',
+		        data: department
+		    },
+		    series: [
+		        {		name:'reviewSum',
+		            type: 'bar',
+		            data: reviewSumData
+		        },
+						{		name:'priceSum',
+		            type: 'bar',
+		            data: priceSumData
+		        },
+		    ]
+		};
+
+	        // 使用刚指定的配置项和数据显示图表。
+	        myChart.setOption(option);
+
+
+	}
 
 	function lineStack2(index,title,dataAll){
 	// 基于准备好的dom，初始化echarts实例
@@ -381,7 +456,7 @@ var myAxisLabel={
 
 
 
-function parallel(data,title,color){
+function parallel(data,title,color,typeData){
 	//	console.log(JSON.stringify(data));
 	//	console.log(title);
 		var myChart1 = echarts.init(document.getElementById('parallel'));
@@ -391,13 +466,13 @@ function parallel(data,title,color){
 		    {name: 'star', index: 3, text: 'star'},
 		    {name: 'priceMax', index: 4, text: 'priceMax'},
 				{name: 'priceMin', index: 5, text: 'priceMin'},
-		    {name: 'NewBest', index: 6, text: 'NewBest'}
+		    {name: 'department', index: 6, text: 'department'}
 		];
 
 		var lineStyle = {
 		    normal: {
 		        width: 2,
-		        opacity: 0.8
+		        opacity: 0.6
 		    }
 		};
 
@@ -410,13 +485,13 @@ function parallel(data,title,color){
 						selectedMode:'multiple',
 		        top: '0',
 						left:'4px',
-		        data: title,
+		        data: typeData,
 		        itemGap: 8,
 						textStyle:{
 							fontSize:10
 						}
 		    },
-				*/
+*/
 				toolbox: mytoolBox2,
 				tooltip: {
 						 padding: 10,
@@ -444,14 +519,21 @@ function parallel(data,title,color){
 		        {dim: 2, name: schema[2].text,min:0,max:5,minInterval: 1},
 		        {dim: 3, name: schema[3].text},
 						{dim: 4, name: schema[4].text},
-		        {dim: 5, name: schema[5].text,type: 'category', data: ['new', 'last']}
+		        {dim: 5, name: schema[5].text,type: 'category', data: typeData,axisLabel:{
+
+							formatter: function (value, index) {
+													let array=value.replace('-',' , ');
+
+											    return array;
+											}
+						}}
 		    ],
 
 		    parallel: {
 		        left: '36px',
-		        right: '36px',
+		        right: '300px',
 		        bottom: '36px',
-		        top: '12px'
+		        top: '88px'
 
 		    },
 		    series: data
@@ -459,14 +541,87 @@ function parallel(data,title,color){
 		  myChart1.setOption(option);
 	}
 
+function scatter(maxData,minData) {
+		var myChart1 = echarts.init(document.getElementById('scatter'));
+		option = {
+						tooltip : {
+								trigger: 'axis',
+								showDelay : 0,
+								axisPointer:{
+										show: true,
+										type : 'cross',
+										lineStyle: {
+												type : 'dashed',
+												width : 1
+										}
+								},
+								zlevel: 1
+						},
+						legend: {
+								data:['priceMax','priceMin']
+						},
+						toolbox: {
+								show : true,
+								feature : {
+										mark : {show: true},
+										dataZoom : {show: true},
+										dataView : {show: true, readOnly: false},
+										restore : {show: true},
+										saveAsImage : {show: true}
+								}
+						},
+						xAxis : [
+								{		name:'价格',
+										type : 'value',
+										scale:true,
 
+								}
+						],
+						yAxis : [
+								{		name:'销量/reviews',
+										type : 'value',
+										scale:true
+								}
+						],
+						series : [
+								{
+										name:'priceMax',
+										type:'scatter',
+										large: true,
+										symbolSize: 3,
+										data:maxData
+								},
+								{
+										name:'priceMin',
+										type:'scatter',
+										large: true,
+										symbolSize: 2,
+										data: minData
+								}
+						]
+						};
+
+						  myChart1.setOption(option);
+
+							var imgSrc = myChart1.getDataURL({
+							    pixelRatio: 1,
+							    backgroundColor: '#fff'
+							});
+							//console.log(document.getElementById(index+'_img'))
+							$('#scatter').after(`
+								<img src=`+imgSrc+` class='chartImg' style='display:none;width:90%;height: auto;'>
+								`)
+
+
+}
 
 module.exports = {
     lineStack: lineStack,
     lineStack2:lineStack2,
     parallel:parallel,
-    duration:duration
-
+    duration:duration,
+		duration2:duration2,
+		scatter:scatter
 
 
 };

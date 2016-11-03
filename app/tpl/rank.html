@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>lookProduct</title>
+    <title>bestSellers rank</title>
      <link rel="stylesheet" href="../css/photon.css">
   </head>
   <body>
@@ -10,16 +10,16 @@
  </body>
   <script>
 const path=require('path');
-const {remote,ipcRenderer} = require('electron');
-const bestdb=require(path.join(`${__dirname}`,'../js/bestdb.js'));
+const {remote} = require('electron');
 
 var obj=remote.getGlobal('sharedObj');
 
 window.$ = window.jQuery = require(path.join(`${__dirname}`,'../js/libs/jquery.min.js'));
+const rank=require(path.join(`${__dirname}`,'../js/rank.js'));
 
-const product=require(path.join(`${__dirname}`,'../js/product.js'));
 
-product.spider();
+rank.spider();
+
 
 </script>
 </html>
