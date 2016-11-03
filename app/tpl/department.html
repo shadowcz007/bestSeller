@@ -7,7 +7,7 @@
   </head>
   <body>
   <div class="indicator" ></div>
-  <div id="webviews"></div>  
+  <div id="webviews"></div>
   <div id="result"><br></div>
  </body>
   <script>
@@ -18,9 +18,9 @@ const {remote,ipcRenderer} = require('electron');
 var obj=remote.getGlobal('sharedObj');
 
 window.$ = window.jQuery = require(path.join(`${__dirname}`,'../js/libs/jquery.min.js'));
-var Catch=require(path.join(`${__dirname}`,'../js/catch.js'));
+var departmentLink=require(path.join(`${__dirname}`,'../js/departmentLink.js'));
 
-Catch.spider(obj.dpf);
+departmentLink.spider(obj.dpf);
 
 
 
