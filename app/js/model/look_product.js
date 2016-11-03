@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ScheMa=new Schema({
+  department:String,
+  data:String,
      title:String,
      img:String,
      link:String,
@@ -18,6 +20,7 @@ var ScheMa=new Schema({
      priceMaxs_lp:Array,
      star_lp:Number,
      stars_lp:Array,
+     color_lp:Array,
      size_lp:Array,
      isLooking:Boolean,
      time_lp:Date,

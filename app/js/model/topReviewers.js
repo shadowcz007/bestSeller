@@ -16,6 +16,7 @@ var ScheMa=new Schema({
 	   totalReviews:Number,
      percentHelpful:Number,
      link:String,
+     
      updated: {type: Date,default:Date.now}
 
    },{collection:'topReviewers'});//记得指定collection
