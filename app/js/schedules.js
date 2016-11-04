@@ -1,4 +1,7 @@
+
+
 'use strict';
+
 const path=require('path');
 const {remote,ipcRenderer} = require('electron');
 const later = require('later');
@@ -93,10 +96,17 @@ function lookProduct(urls){
 }
 
 function topReviewers(sf,st,type){
+		console.log(sf)
     ipcRenderer.send('catch_topReviewers',['https://www.amazon.com/review/top-reviewers/ref=cm_cr_tr_link_',sf,st,type]);
 }
 
+function tranformArray(array) {
+	console.log(JSON.stringify(array))
+  var c = JSON.stringify(array).replace(/\[|\]/g,'').split(",");
+	console.log(c.length)
+  return c;
 
+}
 module.exports = {
 
     start:start,

@@ -117,8 +117,9 @@ function prepareButton(buttonEl, toolsID) {
               case "DepartmentDataShow":
                       viewControl.departmentDataShow();
 
-                      $('#rankStar4').click(function(){
-                          dataShow.showDepartment2('3.5');
+                      $('#rankStar').click(function(){
+                          let val=$('#rankStarSelect').find("option:selected").val();
+                          dataShow.showDepartment2(val);
                       });
                       $("#rankStart").click(function(){
                           console.log("startCatch");
@@ -131,18 +132,34 @@ function prepareButton(buttonEl, toolsID) {
                       dataShow.showProduct();
 
                       $('#start_look_product').click(function(){
-                         let targetDOM=$('.look_product_list').children(),
-                             targetUrl=[],
-                             tln=targetDOM.length;
-                              console.log(targetDOM)
-                         for (var i = 0; i < targetDOM.length; i++) {
-                              tln--;
-                              $(targetDOM[i]).addClass("isLooking");
-                              targetUrl.push($(targetDOM[i]).attr('src'));
-                              if (tln<=0) {
-                                  schedules.lookProduct(targetUrl);
-                              } }
+                          bestdb.load("look_product","all",function (docs) {
+                              console.log(docs);
+                              let targetDOM=$('.look_product_list')[0],
+                                  targetUrl=[],
+                                  tln=docs.length;
+                                  $(targetDOM).addClass("isLooking");
+                              for (var i = 0; i < docs.length; i++) {
+                                   tln--;
+                                   targetUrl.push(docs[i].link);
+                                   if (tln<=0) {
+                                       schedules.lookProduct(targetUrl);
+                                   } }
+                          });
                       });
+
+                      $('#add_look_product').click(function(){
+                          let link=$('#add_lp_url').val();
+                          if (link) {
+                            //viewControl.addLPList({link:link},'.look_product_list');
+                            bestdb.lookProduct(link,"addList",{link:link})
+                            //viewControl.productDataShow();
+                          }else{
+                            alert('f')
+                          }
+
+                      });
+
+
                 break;
 
               case "topReviewers":

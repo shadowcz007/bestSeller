@@ -20,6 +20,8 @@ const {remote,ipcRenderer} = require('electron');
 const bestdb=require(path.join(__dirname, './bestdb.js'));
 const chart=require(path.join(__dirname, './myChart.js'));
 
+const viewControl=require(path.join(__dirname, './view/viewControl.js'));
+
 function showDepartment2(val) {
 
 	bestdb.load('rank',val,function (data) {
@@ -307,6 +309,7 @@ console.log(data[i].time.length+'~~~~~~~~~~~~~~~~~~');
 
 
 function showProduct() {
+
 	 bestdb.lookProduct('all','loadProduct',function (docs) {
 		 		//console.log(docs);
 
@@ -314,30 +317,14 @@ function showProduct() {
 					console.log(docs.length);
 				for (var i = 0; i < docs.length; i++) {
 						ln--;
-console.log(docs[i]);
+						console.log(docs[i]);
 						let ranks=docs[i].ranks_lp,
 								timeS=[],
 								rankS=[],
 								sln=ranks.length;
 
-						$('#PD_lineStack').append(
-							`<li class="list-group-item">
-									<img class="media-object pull-left" src=`+docs[i].img+` width="72" >
-									<div class="media-body">
-										<strong>`+'Product Title : '+docs[i].title+`</strong>
-										<p>`+'Looks : '+ranks.length+`</p>
-										<p>`+'Rank : '+docs[i].rank_lp+`</p>
-
-										<p>`+'First Date : '+docs[i].firstDate+`</p>
-										<p>`+'Update : '+docs[i].time_lp+`</p>
-										<p>`+'ASIN : '+docs[i].ASIN+`</p>
-										<p>`+'Keywords : '+docs[i].keywords+`</p>
-										<p>`+'Url : '+docs[i].link+`</p>
-
-									</div>
-									<div id=`+'PD_lineStack_'+i+'_img'+`></div>
-									<div id=`+'PD_lineStack_'+i+` class=lineStack></div>
-								</li>`);
+						viewControl.addLPList(docs[i],'#PD_lineStack');
+						viewControl.addChartDOM(i,'PD_lineStack','#PD_lineStack');
 
 						let series=[{'type':'line','data':[]},{'type':'line','data':[]},{'type':'line','data':[]},{'type':'line','data':[]}];
 

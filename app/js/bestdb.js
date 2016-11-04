@@ -12,6 +12,18 @@
 */
 /////////////////////////////
 
+// 降维，支持N维数组
+Array.prototype.dr = function(){
+    var that = this; // 不能给this赋值
+    for (var i = 0; i < that.length; i++) {
+        if(that[i] instanceof Array){
+            that = that.slice(0, i).concat(that[i], that.slice(i+1));
+            i--;
+        }
+    }
+
+    return that;
+}; 
 const fs=require('fs-extra');
 const path=require('path');
 const {remote,ipcRenderer} = require('electron');
@@ -49,15 +61,17 @@ function loadRank(callback) {
     var model= require(path.join(`${__dirname}`,'../js/model/department.js'));
 
     model.find({select:true}, function (err, docs) {
-          console.log(docs)
+        //  console.log(docs)
           return callback(docs);
 
         });
 };
 
 function loadRankOfProduct(dp,callback){
+//  console.log(dp)
   var model= require(path.join(`${__dirname}`,'../js/model/rank.js'));
-  model.find({department:dp},function (err,product) {
+  model.find({department:{$regex:dp, $options:'i'}},function (err,product) {
+    //console.log(product)
     return callback(product)
 
   })
@@ -234,7 +248,7 @@ function lookProduct(productData,type,result) {
 
            case "addList":
 
-              addList(productData);
+              addList(productData,result);
 
                break;
 
@@ -255,37 +269,51 @@ function lookProduct(productData,type,result) {
 
 
 
-    function addList(productData) {
-      lpModel.findOne({data:productData}, function (err, doc) {
+    function addList(productData,result) {
+      console.log(productData)
+      lpModel.findOne({link:productData}, function (err, doc) {
         // docs 此时只包含文档的部分键值
 
         if (!doc) {
           dpModel.findOne({data:productData}, function (err, doc2) {
             // docs 此时只包含文档的部分键值
-            let newDoc={ title:doc2.title,
-                        data:doc2.data,
-                        img:doc2.img,
-                        link:doc2.link,
-                        detail:doc2.detail,
-                        priceMax_new:doc2.priceMax_new,
-                        priceMin_new:doc2.priceMin_new,
-                        rank_new:doc2.rank_new,
-                        review_new:doc2.review_new,
-                        star_new:doc2.star_new,
-                        time_new:doc2.time_new,
-                     price:doc2.price,
-                     rank:doc2.rank,
-                     time:doc2.time,
-                     review:doc2.review};
+            if (doc2) {
+                let newDoc={ title:doc2.title,
+                            data:doc2.data,
+                            img:doc2.img,
+                            link:doc2.link,
+                            detail:doc2.detail,
+                            priceMax_new:doc2.priceMax_new,
+                            priceMin_new:doc2.priceMin_new,
+                            rank_new:doc2.rank_new,
+                            review_new:doc2.review_new,
+                            star_new:doc2.star_new,
+                            time_new:doc2.time_new,
+                         price:doc2.price,
+                         rank:doc2.rank,
+                         time:doc2.time,
+                         review:doc2.review};
 
-            console.log(newDoc);
-            lpModel.create(newDoc, function(error){
-                if(error) {
-                    console.log(error);
-                } else {
-                    console.log('save ok');
-                }
-            });
+                console.log(newDoc);
+                lpModel.create(newDoc, function(error){
+                    if(error) {
+                        console.log(error);
+                    } else {
+                        console.log('save ok');
+                    }
+                });
+              }else{
+                let newDoc={link:result.link};
+                console.log(newDoc)
+                lpModel.create(newDoc, function(error){
+                    if(error) {
+                        console.log(error);
+                    } else {
+                        console.log('save ok');
+
+                    }
+                });
+              };
           });
         }else{
           alert("已经添加关注了")
@@ -295,46 +323,66 @@ function lookProduct(productData,type,result) {
 
     function updateProduct(productData,type,result) {
       console.log('updateProduct');
-console.log(result);
-      let update_where = {data:productData.toLowerCase()};//更新条件
-
+      console.log(productData[0]);
       let update_data ={
+                link:result.url,
+                title:result.title,
                 keywords:result.keywords,
                 ASIN:result.ASIN,
                 firstDate:result.firstDate,
                 rank_lp:result.rank,
+                img:result.img,
                 time_lp:result.time,
-                review_lp:result.review,
-                star_lp:result.star,
-                priceMin_lp:result.priceMin,
-                priceMax_lp:result.priceMax,
+                review_lp:result.review|| 0,
+                star_lp:result.star|| 0,
+                priceMin_lp:result.priceMin|| 0,
+                priceMax_lp:result.priceMax|| 0,
                 size_lp:result.size,
                 color_lp:result.color
               },
           update_data2={
-                ranks_lp:{rank:result.rank,
+                ranks_lp:{rank:result.rank|| 0,
                           time:result.time},
-                reviews_lp:{review:result.review,
+                reviews_lp:{review:result.review|| 0,
                           time:result.time},
-                stars_lp:{star:result.star,
+                stars_lp:{star:result.star|| 0,
                           time:result.time},
-                priceMins_lp:{priceMin:result.priceMin,
+                priceMins_lp:{priceMin:result.priceMin|| 0,
                               time:result.time},
-                priceMaxs_lp:{priceMax:result.priceMax,
+                priceMaxs_lp:{priceMax:result.priceMax|| 0,
                               time:result.time}
+          };
 
-          };//更新
+      lpModel.findOne(productData[0], function (err, doc) {
+          if(doc){
+                let update_where = productData[0];//更新条件
+                lpModel.update(update_where,{$set:update_data,$push:update_data2},function(err){
+                        if(err){
+                            console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                            ipcRenderer.send('result',result.keywords+'~~error');
+                        }else{
+                            console.log('update success-----------'+result.keywords);
+                            ipcRenderer.send('result',result.keywords+'~~success');
+                        }
+                });
+          }else{
+                let update_where = productData[1];//更新条件
+                lpModel.update(update_where,{$set:update_data,$push:update_data2},function(err){
+                        if(err){
+                            console.log(err)
+                            console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                            ipcRenderer.send('result',result.keywords+'~~error');
+                        }else{
+                            console.log('update success-----------'+result.keywords);
+                            ipcRenderer.send('result',result.keywords+'~~success');
+                        }
+                });
 
-//{$set: {y:9},$push:{o:90}}
-      lpModel.update(update_where,{$set:update_data,$push:update_data2},function(err){
-              if(err){
-                  console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                  ipcRenderer.send('result',result.keywords+'~~error');
-              }else{
-                  console.log('update success-----------'+result.keywords);
-                  ipcRenderer.send('result',result.keywords+'~~success');
-              }
+
+          }
       });
+
+
 
     };
 
@@ -455,7 +503,7 @@ function topReviewers(result,callback) {
 
 
     }else{
-      model.find({bioExpander:{$eq: null}},function(err,docs){
+      model.find({},function(err,docs){
             return callback(docs);
       })
 
@@ -518,17 +566,12 @@ function updateDepartment(doc){
                                 console.log('update success-----------');
                             }
         });
-
-
-
-
-
       }
   })
-
-
-
 };
+
+
+
 
 module.exports = {
 

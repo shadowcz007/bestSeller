@@ -34,7 +34,7 @@ function spider() {
 
                   var result={};
                   if(document.getElementById('acrCustomerReviewText') && document.getElementById('reviewStarsLinkedCustomerReviews')){
-                    result['review']=document.getElementById('acrCustomerReviewText').innerText.replace(/customer.*|\\s/ig,'');
+                    result['review']=document.getElementById('acrCustomerReviewText').innerText.replace(/customer.*|\\s|,/ig,'');
                     result['star']=document.getElementById('reviewStarsLinkedCustomerReviews').innerText.replace(/out.*|\\s/ig,'');
 
                   }
@@ -115,9 +115,11 @@ function spider() {
                       console.log(result['firstDate']);
                     }
                   }
-                  let url00=document.URL;
+                  let url00=document.getElementsByTagName('link')[6].getAttribute('href');
                   result['url']=url00;
-                  result['title']=url00.replace(/.*.com\\/|\\/dp.*/ig,'');
+                  result['img']=document.getElementById('landingImage').getAttribute('src');
+                  result['data']=url00.replace(/.*.com\\/|\\/dp.*/ig,'').toLowerCase();
+                  result['title']=document.getElementById('productTitle').innerText;
                   for(var i=0;i<=trDOM.length-1;i++){
                   var str=trDOM[i].innerText;
                   var bTest=regBest.test(str),
@@ -145,7 +147,7 @@ function spider() {
                   }
                   console.log(result);
 
-                  bestdb.lookProduct(result['title'],'updateProduct',result);
+                  bestdb.lookProduct([{data:result['data']},{link:document.URL}],'updateProduct',result);
 
                   console.log(JSON.stringify(result,null,2));
 
