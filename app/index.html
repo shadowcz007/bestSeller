@@ -92,21 +92,22 @@
             <h5>100's rank</h5>
             <ul class="list-group selectedRank" >
             </ul>
+            <!--
               <label>url</label>
               <input type="url" class="form-control rankUrl" placeholder="url" >
-
+!-->
               <select class="form-control" id='rankStarSelect'>
-                <option>1-2</option>
-                <option>2-3</option>
-                <option>3-4</option>
-                <option>4-5</option>
-                <option>0-5</option>
+                <option value="0">0-5</option>
+                <option value="1">1-5</option>
+                <option value="2">2-5</option>
+                <option value="3">3-5</option>
+                <option value="4">4-5</option>
               </select>
 
             <div class="form-actions">
               <button class="btn btn-form btn-default">Stop</button>
               <button class="btn btn-form btn-primary" id="rankStart">Start</button>
-              <button class="btn btn-form btn-primary" id="rankStar4">rankStar4</button>
+              <button class="btn btn-form btn-primary" id="rankStar">rankStar</button>
             </div>
 
               <ul class="list-group" id="departmentDataTitle"></ul>
@@ -114,7 +115,7 @@
 
               <p>统计BestSellers产品的review、star、最小&最大price，进入榜单的次数，可见，review集中在1000左右，star在3星以上，价格集中在$10-30之间</p>
 
-              <div id="parallel" style="width:100%;height:200%;"></div>
+              <div id="parallel" style="width:100%;height:300%;"></div>
               <hr>
 
               <h4><span class="icon icon-record" style="color:#57acf5"></span>价格与销量的关系</h4>
@@ -132,19 +133,29 @@
           <!--    <div id="duration_pie" style="width:90%;height:50%;"></div> !-->
               <div id="duration" style="width: 100%;height:100%;"></div>
 
+<!--
               <hr>
+
               <h4><span class="icon icon-record" style="color:#57acf5"></span>趋势</h4>
               <p>根据24小时的rank、review、star、最低价格来反应趋势</p>
               <ul class="list-group" id="lineStack" ></ul>
+              !-->
           </div>
 
           <div class="pane" style="display:none" id="Page_productData">
             <button class="btn btn-large btn-primary start_email">EMAIL</button>
+            <button class="btn btn-large btn-primary" id="start_look_product">START LOOK PRODUCT</button>
             <ul class="list-group addlist" >
             </ul>
             <ul class="list-group look_product_list" >
             </ul>
-            <button class="btn btn-large btn-primary" id="start_look_product">START LOOK PRODUCT</button>
+
+            <div class="form-group" style="margin: 44px;">
+              <label>URL</label>
+              <input type="url" class="form-control" placeholder="URL" id='add_lp_url' required>
+              <button class="btn btn-large btn-primary" id="add_look_product" style="margin-top: 12px;">ADD</button>
+            </div>
+
             <h3><span class="icon icon-record" style="color:#57acf5"></span>趋势</h3>
             <p>根据24小时的rank、review、star、最低价格来反应趋势</p>
             <ul class="list-group" id="PD_lineStack" ></ul>
@@ -188,6 +199,7 @@
 </body>
 
 <script>
+
 window.$ = window.jQuery = require('./js/libs/jquery.min.js');
 require('./js/index.js');
 
