@@ -45,7 +45,6 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-
 /////////////////////////////////
 /*
 ** mainWin主窗口：分类浏览、抓取任务设定、数据可视化。。。
@@ -63,7 +62,6 @@ const BrowserWindow = electron.BrowserWindow
 **
 */
 /////////////////////////////
-
 
 let mainWin,departmentWin,bestSellersWin,stockWin,productWin,topReviewersWin;
 
@@ -121,7 +119,7 @@ function createBestSellersWin () {
         nodeIntegration: true,//这句是使用node 模块
       }
   })
- 
+
   bestSellersWin.loadURL(`file://${__dirname}/app/tpl/rank.html`)
 
   bestSellersWin.webContents.openDevTools()
@@ -271,8 +269,6 @@ function createTopReviewersWindow () {
 *
 
 */
-
-
 
 
 ipcMain.on('click-button', function (event, arg) {
@@ -439,20 +435,14 @@ ipcMain.on('catch',function (event, arg) {
 });
 
 
-
-app.on('ready', createWindow)
-
-
+app.on('ready', createWindow);
 app.on('window-all-closed', function () {
-
   if (process.platform !== 'darwin') {
     app.quit()
   }
-})
-
+});
 app.on('activate', function () {
-
   if (mainWin === null) {
     createWindow()
   }
-})
+});
