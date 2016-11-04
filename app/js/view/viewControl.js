@@ -8,78 +8,130 @@ function departmentDataShow(){
   $('#Page_topReviewersContent').hide();
   $('.department').hide();
 
-
-
   $('.selectedRank').html('');
 
+
+  window._URLS=[];
   bestdb.loadRank(function (docs) {
       console.log(docs);
-      let urlsToTran=[],lnlr=docs.length;
+
       for (var i = 0; i < docs.length; i++) {
-        lnlr--;
-        let linkd=docs[i].link;
 
-        urlsToTran.push(docs[i].links);
+        let urlsToTran=[],
+            doc=docs[i].children || '';
+            if (docs[i].links!=null) {
+                urlsToTran.push(docs[i].links);
+            }
 
-        $('.selectedRank').append(`
-          <li id=`+docs[i].data+` class='list-group-item' src=`+linkd+` count=`+docs[i].count+`>
-            <div class='media-body'>
-              <strong>`+docs[i].title+`</strong>
-              <p>`+'Looks : '+docs[i].count+`</p>
-              <p>`+'Number: '+linkd.length+`</p>
-              <p>`+'Update : '+docs[i].time+`</p>
-            </div>
-          </li>
-        `);
-        if(lnlr<=0){
-          let pd=docs[i].data;
-          console.log(docs.length)
+        let lnlr=doc.length;
+        for (let t = 0; t < doc.length; t++) {
+            lnlr--;
 
-            window._URLS=tranformArray(urlsToTran);
+            if (doc[t].links!=null) {
+                urlsToTran.push(doc[t].links);
+            };
 
-
-          bestdb.loadRankOfProduct(pd,function(e){
-              console.log(e)
-              $('#'+pd).after(`
-                      <p>`+'Numbers : '+e+`</p>
-              `);
-          });
-        };
+            if(lnlr<=0){
+              console.log(docs.length)
+              window._URLS.push(urlsToTran.dr());
+              _URLS=_URLS.dr()
+            };
+        }
+        dpBrief(docs[i],'.selectedRank');
       };
     });
 };
 
+function addLPList(obj,elem) {
+  obj.data=obj.data || 0;
+  obj.img=obj.img || 0;
+  obj.title=obj.title || obj.link.replace(/.*product\/|\/ref=.*/gi,'');
+  obj.ranks_lp=obj.ranks_lp || [];
+  obj.time_lp=obj.time_lp || new Date();
+
+  $(elem).append(`
+    <li class='list-group-item' src=`+obj.link+` data=`+obj.data+`>
+    <img class="media-object pull-left" src=`+obj.img+` width="72" >
+    <div class='media-body'>
+    <strong>`+'Product Title : '+obj.title+`</strong>
+    <p>`+'Looks : '+obj.ranks_lp.length+`</p>
+    <p>`+'Rank : '+obj.rank_lp+`</p>
+    <p>`+'First Date : '+obj.firstDate+`</p>
+    <p>`+'Update : '+obj.time_lp+`</p>
+    <p>`+'ASIN : '+obj.ASIN+`</p>
+    <p>`+'Keywords : '+obj.keywords+`</p>
+    <p>`+'Url : '+obj.link+`</p>
+    </div>
+    </li>`);
+}
+
+function addChartDOM(index,chartType,elem) {
+  $(elem).append(`
+      <div class='charts'>
+        <div id=`+chartType+'_'+index+'_img'+`></div>
+        <div id=`+chartType+'_'+index+` class=`+chartType+`></div>
+        </div>
+    `)
+}
+function addLPBrief(obj,elem) {
+  let title=[];
+  for (var i = 0; i < obj.length; i++) {
+      title.push('<br>'+obj[i].title);
+  }
+  $(elem).append(`
+    <li class='list-group-item'>
+    <div class='media-body'>
+    <strong>Product Title :</strong>
+    <p>`+title+`</p><br>
+    <strong>`+'Products : '+obj.length+`</strong>
+    </div>
+    </li>`);
+}
+
+function dpBrief(obj,elem) {
+  $(elem).append(`
+    <li id=`+obj.data+` class='list-group-item' src=`+obj.link+` count=`+obj.count+`>
+      <div class='media-body'>
+        <strong>`+obj.title+`</strong>
+        <p>`+'Looks : '+obj.count+`</p>
+        <p>`+'Children: '+obj.links.length+`</p>
+      </div>
+    </li>
+  `);
+
+  bestdb.loadRankOfProduct(obj.data,function(e){
+      console.log(e);
+      let g=e||'';
+      let count=g.length || 0;
+      $('#'+obj.data).append(`
+              <p>`+'Product Numbers : '+count+`</p>
+      `);
+  });
+}
+
+
+
 function productDataShow() {
+
   $('#Page_departmentData').hide();
   $('#Page_setup').hide();
   $('#Page_productData').show();
   $('#Page_topReviewersContent').hide();
-    $('.department').hide();
+  $('.department').hide();
+
+  $('#PD_lineStack').html('');
+  $('.look_product_list').html('');
 
 
-  //////////// load from db
+console.log(bestdb)
+
   bestdb.load("look_product","all",function (docs) {
       console.log(docs);
-      $('.look_product_list').html('');
-      for (var i = 0; i < docs.length; i++) {
-
-        $('.look_product_list').append(`
-          <li class='list-group-item' src=`+docs[i].link+` data=`+docs[i].title+`>
-          <img class="media-object pull-left" src=`+docs[i].img+` width="32" height="32">
-          <div class='media-body'>
-          <strong>`+docs[i].title+`</strong>
-          <p>`+'Looks : '+docs[i].ranks_lp.length+`</p>
-          <p>`+'Now : '+docs[i].rank_lp+`</p>
-          <p>`+'Update : '+docs[i].time_lp+`</p>
-
-          </div>
-          </li>`);
-      }
-
+      addLPBrief(docs,'.look_product_list');
 
   });
-}
 
+}
 
 
 
@@ -94,8 +146,12 @@ function tranformArray(array) {
   return c;
 
 }
+
+
   module.exports = {
        departmentDataShow:departmentDataShow,
-       productDataShow:productDataShow
+       productDataShow:productDataShow,
+       addLPList:addLPList,
+       addChartDOM:addChartDOM
 
   };
