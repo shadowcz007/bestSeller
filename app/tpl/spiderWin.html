@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+     <link rel="stylesheet" href="../css/photon.css">
+  </head>
+  <body style="overflow: scroll">
+    <div id='info'>
+
+    </div>
+ </body>
+  <script>
+const path=require('path');
+const {remote,ipcRenderer} = require('electron');
+
+
+var obj=remote.getGlobal('sharedObj');
+
+window.$ = window.jQuery = require(path.join(`${__dirname}`,'../js/libs/jquery.min.js'));
+
+ipcRenderer.on('spiderWin',function(event, args){
+  console.log(args)
+  $('#info').append(`
+    <strong>`+args+`</strong>
+    <p>`+new Date()+`</p>
+    `)
+
+});
+
+
+</script>
+</html>
