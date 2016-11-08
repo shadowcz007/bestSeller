@@ -15,9 +15,9 @@
             <nav class="nav-group">
             <br>
               <h5 class="nav-group-title">Tools</h5>
-              <span class="nav-group-item button-tools" id="Department">
+              <span class="nav-group-item button-tools" id="GetStarted">
                 <span class="icon icon-home"></span>
-                Department
+                Get started
               </span>
               <span class="nav-group-item button-tools" id="DepartmentDataShow">
                 <span class="icon icon-folder"></span>
@@ -35,17 +35,13 @@
                 <span class="icon icon-cog"></span>
                 Setup
               </span>
-             <br>
+             <br><!--
               <h5 class="nav-group-title">Import File</h5>
               <div id="holder">
                 Drag your file here
-              </div>
-                <br>
-                <h5 class="nav-group-title">Search for ...</h5>
-                  <li class="list-group list-group-header">
-                <input class="form-control" type="text" placeholder="best sell">
-             </li>
-             <!-- Large button group -->
+              </div><br>!-->
+
+             <!-- Large button group
               <div class="btn-group btn-add">
                 <button class="btn btn-large btn-default">
                   <span class="icon icon-heart"></span>
@@ -54,48 +50,24 @@
                 <button class="btn btn-large btn-default">
                   <span class="icon icon-star"></span>
                 </button>
-              </div>
+              </div>-->
             </nav>
           </div>
-
-        <div class="pane-sm pane department">
-            <h2 class="title">BestSellers</h2>
+        <div class="pane pane department" id="Page_GetStart">
             <ul class="list-group" id="dpf">
             </ul>
         </div>
-
-          <div class="pane department">
-              <h2 class="title">BestSellers</h2>
-              <div>
-
-                <button class="btn btn-mini btn-default">最新排名</button>
-                <button class="btn btn-mini btn-primary">排名变动</button>
-                <button class="btn btn-mini btn-positive">评论数</button>
-                <button class="btn btn-mini btn-negative">评分</button>
-                <button class="btn btn-mini btn-warning">价格</button>
-
-              </div>
-              <ul class="list-group" id="bestsellers">
-              </ul>
-          </div>
-
           <div class="pane add" style="display:none" id="Page_setup">
             <button class="btn btn-large btn-primary start_email">EMAIL</button>
-
             <hr>
-
-
           </div>
-
           <div class="pane" style="display:none" id="Page_departmentData">
-
-            <h5>100's rank</h5>
             <ul class="list-group selectedRank" >
             </ul>
-            <!--
-              <label>url</label>
-              <input type="url" class="form-control rankUrl" placeholder="url" >
-!-->
+            <button class="btn btn-form btn-default">Stop</button>
+            <button class="btn btn-form btn-primary" id="rankStart">Start</button>
+            <div id="Info_departmentData"></div>
+            <div id="dpDataShowControl" style="display:none">
               <select class="form-control" id='rankStarSelect'>
                 <option value="0">0-5</option>
                 <option value="1">1-5</option>
@@ -103,43 +75,22 @@
                 <option value="3">3-5</option>
                 <option value="4">4-5</option>
               </select>
-
-            <div class="form-actions">
-              <button class="btn btn-form btn-default">Stop</button>
-              <button class="btn btn-form btn-primary" id="rankStart">Start</button>
               <button class="btn btn-form btn-primary" id="rankStar">rankStar</button>
+                <ul class="list-group" id="departmentDataTitle"></ul>
+                <h4><span class="icon icon-record" style="color:#57acf5"></span>BestSellers的决定因素</h4>
+                <p>统计BestSellers产品的review、star、最小&最大price，进入榜单的次数，可见，review集中在1000左右，star在3星以上，价格集中在$10-30之间</p>
+                <div id="parallel" style="width:100%;height:300%;"></div>
+                <hr>
+                <h4><span class="icon icon-record" style="color:#57acf5"></span>价格与销量的关系</h4>
+                <p>价格与销量的关系</p>
+                <div id="scatter" style="width: 90%;height:50%;"></div>
+                <hr>
+                <h4><span class="icon icon-record" style="color:#57acf5"></span>热度</h4>
+                <p>统计了出现在bestSellers榜单的次数，次数越多(>24)，表示商品质量及服务越优，可进一步研究其关键词、
+                  <br>review内容等；次数越少(<24)，表示是新进入榜单的商品，可以研究其类似产品，跟卖or研发新品</p>
+                <div id="duration" style="width: 100%;height:100%;"></div>
             </div>
 
-              <ul class="list-group" id="departmentDataTitle"></ul>
-              <h4><span class="icon icon-record" style="color:#57acf5"></span>BestSellers的决定因素</h4>
-
-              <p>统计BestSellers产品的review、star、最小&最大price，进入榜单的次数，可见，review集中在1000左右，star在3星以上，价格集中在$10-30之间</p>
-
-              <div id="parallel" style="width:100%;height:300%;"></div>
-              <hr>
-
-              <h4><span class="icon icon-record" style="color:#57acf5"></span>价格与销量的关系</h4>
-              <p>价格与销量的关系</p>
-              <div id="scatter" style="width: 90%;height:50%;"></div>
-<hr><!--
-              <h4><span class="icon icon-record" style="color:#57acf5"></span>关键字</h4>
-              <p>关键词</p>
-              <iframe src="./tpl/wordCloud/index.html" width="100%" height="500" style='border: none;
-    width: 100%;'></iframe>
-              <hr>!-->
-              <h4><span class="icon icon-record" style="color:#57acf5"></span>热度</h4>
-              <p>统计了出现在bestSellers榜单的次数，次数越多(>24)，表示商品质量及服务越优，可进一步研究其关键词、
-                <br>review内容等；次数越少(<24)，表示是新进入榜单的商品，可以研究其类似产品，跟卖or研发新品</p>
-          <!--    <div id="duration_pie" style="width:90%;height:50%;"></div> !-->
-              <div id="duration" style="width: 100%;height:100%;"></div>
-
-<!--
-              <hr>
-
-              <h4><span class="icon icon-record" style="color:#57acf5"></span>趋势</h4>
-              <p>根据24小时的rank、review、star、最低价格来反应趋势</p>
-              <ul class="list-group" id="lineStack" ></ul>
-              !-->
           </div>
 
           <div class="pane" style="display:none" id="Page_productData">
@@ -192,7 +143,7 @@
 
 
       <footer class="toolbar toolbar-footer">
-        <h1 class="title">Footer</h1>
+        <h1 class="title">@FreeGarden</h1>
       </footer>
   </div>
 
