@@ -34,7 +34,7 @@ var stepByStep=function () {
   let webview=document.getElementById('tr'+s);
 console.log(webview)
   webview.addEventListener('dom-ready', function () {
-          webview.openDevTools();
+          //webview.openDevTools();
           webview.executeJavaScript(`
             const path=require('path');
             console.log(path.join('`+`${__dirname}`+`','../js/bestdb.js'));
@@ -79,6 +79,8 @@ console.log(webview)
               console.log(lns)
               let _TIME=22000+Math.random()*100000;
               console.log(_TIME/1000);
+              ipcRenderer.send('result',"catch topReviewers "+s+"  ok, next "+Math.ceil(_TIME/1000)+' second');
+
               setTimeout("stepByStep()",_TIME)
 
             }
@@ -125,7 +127,7 @@ function detail() {
 
             webview.addEventListener('did-stop-loading', function () {
 
-                    webview.openDevTools();
+                  //  webview.openDevTools();
                     webview.executeJavaScript(`
                       const path=require('path');
                       console.log(path.join('`+`${__dirname}`+`','../js/bestdb.js'));

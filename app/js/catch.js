@@ -7,8 +7,7 @@ const later = require('later');
 
 var obj=remote.getGlobal('sharedObj');
 
-var department=require(path.join(`${__dirname}`,'../js/department.js'));
-
+ 
 
 function stock(){
       console.log(arguments);
@@ -129,7 +128,7 @@ function webviewJS_Main(webview) {
 
 module.exports = {
 
-    target:obj.dpf,  
+    target:obj.dpf,
     stock:stock
 
 

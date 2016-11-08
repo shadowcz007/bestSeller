@@ -395,9 +395,9 @@ var myAxisLabel={
 	function lineStack(index,title,time,series){
 
 
-					console.log(JSON.stringify(title));
-					console.log(JSON.stringify(time));
-					console.log(JSON.stringify(series));
+					//console.log(JSON.stringify(title));
+				//	console.log(JSON.stringify(time));
+					//console.log(JSON.stringify(series));
 
 	        var myChart = echarts.init(document.getElementById(index));
           let title2=[];

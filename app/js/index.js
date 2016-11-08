@@ -30,7 +30,6 @@ const Menu = remote.Menu;
 
 const MenuItem = remote.MenuItem;
 
-const department=require(path.join(__dirname, './department.js'));
 
 const dataShow=require(path.join(__dirname, './datashow.js'));
 
@@ -44,7 +43,10 @@ var obj=remote.getGlobal('sharedObj');
 
 //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
 ///////init button
-dragFile();
+//dragFile();
+
+viewControl.init()
+
 
 
 
@@ -72,7 +74,7 @@ $('.start_email').click(function(){
 //////////////////////
 
 var toolsButtons=$('.button-tools');
-console.log("toolsBtns:-------"+ "/"+toolsButtons);
+//console.log("toolsBtns:-------"+ "/"+toolsButtons);
 
 for (let i = 0; i < toolsButtons.length; i++) {
     var toolsButton = toolsButtons[i];
@@ -90,28 +92,17 @@ function prepareButton(buttonEl, toolsID) {
               $(toolsButton).removeClass('active');
 		    }
         $(buttonEl).addClass('active');
-        console.log("click btn------"+toolsID);
+      //  console.log("click btn------"+toolsID);
         ipcRenderer.send('click-button', {"0":toolsID});
 
         switch(toolsID){
 
-              case "Department":
-                    $('.department').show();
-                    $('.add').hide();
-                    department.load("dpf");
+              case "GetStarted":
+                  viewControl.getStarted();
                 break;
 
               case "Setup":
-                    $('#Page_departmentData').hide();
-                    $('#Page_setup').show();
-                    $('#Page_productData').hide();
-                    $('#Page_topReviewersContent').hide();
-                    $('.department').hide();
-
-                break;
-
-              case "add":
-                    add();
+                  viewControl.setup();
                 break;
 
               case "DepartmentDataShow":
@@ -122,8 +113,10 @@ function prepareButton(buttonEl, toolsID) {
                           dataShow.showDepartment2(val);
                       });
                       $("#rankStart").click(function(){
-                          console.log("startCatch");
+                          $('#Info_departmentData').text("DepartmentData,start"+new Date());
+                          $('#rankStart').unbind("click");
                           schedules.rankStart(_URLS);
+
                       });
                 break;
 
@@ -163,11 +156,7 @@ function prepareButton(buttonEl, toolsID) {
                 break;
 
               case "topReviewers":
-                    $('#Page_departmentData').hide();
-                    $('#Page_setup').hide();
-                    $('#Page_productData').hide();
-                    $('#Page_topReviewersContent').show();
-                    $('.department').hide();
+                  viewControl.topReviewers()
                     //dataShow.showTReviewers();
 
                     $('#tpStart').click(function(){
@@ -206,203 +195,8 @@ function add(){
 
 }
 
-
-function dragFile(){
-      var holder = document.getElementById('holder');
-      holder.ondragover = function () {
-        return false;
-      };
-      holder.ondragleave = holder.ondragend = function () {
-        return false;
-      };
-      holder.ondrop = function (e) {
-        e.preventDefault();
-        var file = e.dataTransfer.files[0];
-        console.log('File you dragged here is', file.path);
-        return false;
-      };
-}
-
-
-
 function catch_confirm(dpName,dataID,fSrc,type,count){
     let fileName='AnyDepartment';
     console.log("OK!----start---catch New BestSellers");
     ipcRenderer.send('catch',[fSrc,dataID,type,count]);
 }
-
-function catch_sched_stock(){
-    let url=$('#stockURL').val();
-    later.date.localTime();
-            console.log("Now:"+new Date());
-    var sched = later.parse.recur().every(60).minute(),
-                t = later.setInterval(function() {
-                    console.log("运行一次--------------"+new Date());
-                    ipcRenderer.send('catch_stock',url);
-                }, sched);
-    setTimeout(function(){
-               t.clear();
-               console.log("Clear");
-            },604800*1000);
-    later.setTimeout(function() {}, sched)
-}
-
-var template = [
-  {
-    label: 'Edit',
-    submenu: [
-      {
-        label: 'Undo',
-        accelerator: 'CmdOrCtrl+Z',
-        role: 'undo'
-      },
-      {
-        label: 'Redo',
-        accelerator: 'Shift+CmdOrCtrl+Z',
-        role: 'redo'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Cut',
-        accelerator: 'CmdOrCtrl+X',
-        role: 'cut'
-      },
-      {
-        label: 'Copy',
-        accelerator: 'CmdOrCtrl+C',
-        role: 'copy'
-      },
-      {
-        label: 'Paste',
-        accelerator: 'CmdOrCtrl+V',
-        role: 'paste'
-      },
-      {
-        label: 'Select All',
-        accelerator: 'CmdOrCtrl+A',
-        role: 'selectall'
-      }
-    ]
-  },
-  {
-    label: 'View',
-    submenu: [
-      {
-        label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
-        click: function (item, focusedWindow) {
-          if (focusedWindow) focusedWindow.reload()
-        }
-      },
-      {
-        label: 'Toggle Full Screen',
-        accelerator: (function () {
-          return (process.platform === 'darwin') ? 'Ctrl+Command+F' : 'F11'
-        })(),
-        click: function (item, focusedWindow) {
-          if (focusedWindow) focusedWindow.setFullScreen(!focusedWindow.isFullScreen())
-        }
-      },
-      {
-        label: 'Toggle Developer Tools',
-        accelerator: (function () {
-          if (process.platform === 'darwin') {
-            return 'Alt+Command+I'
-          } else {
-            return 'Ctrl+Shift+I'
-          }
-        })(),
-        click: function (item, focusedWindow) {
-          if (focusedWindow) focusedWindow.toggleDevTools()
-        }
-      }
-    ]
-  },
-  {
-    label: 'Window',
-    role: 'window',
-    submenu: [
-      {
-        label: 'Minimize',
-        accelerator: 'CmdOrCtrl+M',
-        role: 'minimize'
-      },
-      {
-        label: 'Close',
-        accelerator: 'CmdOrCtrl+W',
-        role: 'close'
-      }
-    ]
-  },
-  {
-    label: 'Help',
-    role: 'help',
-    submenu: [
-      {
-        label: 'Learn More',
-        click: function () { require('electron').shell.openExternal('http://electron.atom.io') }
-      }
-    ]
-  }
-]
-
-if (process.platform === 'darwin') {
-  var name = require('electron').remote.app.getName()
-  template.unshift({
-    label: name,
-    submenu: [
-      {
-        label: 'About ' + name,
-        role: 'about'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Services',
-        role: 'services',
-        submenu: []
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Hide ' + name,
-        accelerator: 'Command+H',
-        role: 'hide'
-      },
-      {
-        label: 'Hide Others',
-        accelerator: 'Command+Alt+H',
-        role: 'hideothers'
-      },
-      {
-        label: 'Show All',
-        role: 'unhide'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Quit',
-        accelerator: 'Command+Q',
-        click: function () { app.quit() }
-      }
-    ]
-  })
-  // Window menu.
-  template[3].submenu.push(
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Bring All to Front',
-      role: 'front'
-    }
-  )
-}
-
-var menu = Menu.buildFromTemplate(template)
-Menu.setApplicationMenu(menu)

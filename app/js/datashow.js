@@ -314,10 +314,10 @@ function showProduct() {
 		 		//console.log(docs);
 
 				let ln=docs.length;
-					console.log(docs.length);
+					//console.log(docs.length);
 				for (var i = 0; i < docs.length; i++) {
 						ln--;
-						console.log(docs[i]);
+					//	console.log(docs[i]);
 						let ranks=docs[i].ranks_lp,
 								timeS=[],
 								rankS=[],
@@ -338,7 +338,7 @@ function showProduct() {
 								}
 								timeS.push(ranks[j].time);
 								if(sln<=0){
-										console.log(series)
+									//	console.log(series)
 										chart.lineStack('PD_lineStack_'+i,docs[i].data,timeS,series);
 
 								}

@@ -23,7 +23,7 @@ Array.prototype.dr = function(){
     }
 
     return that;
-}; 
+};
 const fs=require('fs-extra');
 const path=require('path');
 const {remote,ipcRenderer} = require('electron');
@@ -240,7 +240,7 @@ function search() {
 }
 
 function lookProduct(productData,type,result) {
-    console.log('__'+productData);
+    //console.log('__'+productData);
     var dpModel= require(path.join(`${__dirname}`,'../js/model/rank.js')),
         lpModel= require(path.join(`${__dirname}`,'../js/model/look_product.js'));
 
@@ -391,7 +391,7 @@ function lookProduct(productData,type,result) {
           switch (productData) {
             case 'all':
                 lpModel.find({}, function (err, docs) {
-                  console.log(docs)
+                //  console.log(docs)
                   result(docs);
                 });
 
@@ -520,7 +520,7 @@ function topReviewers(result,callback) {
 function loadDepartment(result){
   var model= require(path.join(`${__dirname}`,'../js/model/department.js'));
   model.find({},function(err,docs){
-    console.log(docs);
+    //console.log(docs);
     return result(docs)
   })
 };

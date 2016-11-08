@@ -13,6 +13,7 @@ let urls=creatUrls(obj.rankStart).reverse(),
     lns=urls.length;
  console.log(urls);
 
+
 function creatUrls(arg) {
   let pageNum=[1,2,3,4,5],urls=[];
   let link=arg[0];
@@ -42,7 +43,7 @@ console.log(s)
 console.log(webview)
 
   webview.addEventListener('dom-ready', function () {
-webview.openDevTools();
+    //webview.openDevTools();
           webview.executeJavaScript(`
             const path=require('path');
             console.log(path.join('`+`${__dirname}`+`','../js/bestdb.js'));
@@ -57,7 +58,7 @@ webview.openDevTools();
                   ln--;
                   var rank=html[i].getElementsByClassName("zg_rankDiv")[0].innerText.replace('.','');
                   var img;
-                  var link,review,price,title;
+                  var link,review,price,title,star;
                   if(html[i].getElementsByTagName("img")[0]){
                     img=html[i].getElementsByTagName("img")[0].getAttribute("src");
                   }
@@ -69,6 +70,21 @@ webview.openDevTools();
                     review=html[i].getElementsByClassName("zg_reviews")[0].innerText.replace(/ out of 5 stars |,/g,'');}
                   if(html[i].getElementsByClassName("zg_price")[0]){
                     price=html[i].getElementsByClassName("zg_price")[0].innerText;}
+
+                  if(html[i].getElementsByClassName("a-link-normal")[0]){
+                    link=html[i].getElementsByClassName("a-link-normal")[0].getAttribute("href").replace(/\\n|\\//ig,'');
+                    title=html[i].getElementsByClassName("a-link-normal")[0].innerText;
+                    if(html[i].getElementsByClassName("a-link-normal")[1]){
+                      star=html[i].getElementsByClassName("a-link-normal")[1].innerText.replace(/out.*|\\s/ig,'');
+                    }
+                    if(html[i].getElementsByClassName("a-link-normal")[2]){
+                      review=html[i].getElementsByClassName("a-link-normal")[2].innerText.replace(/,/ig,'');
+                    }
+                    if(html[i].getElementsByClassName("a-row")[0]){
+                    price=html[i].getElementsByClassName("a-row")[0].innerText.replace(/Prime/ig,'');
+                    }
+
+                  }
 
                     if(!review){
                      review='0';
@@ -90,7 +106,7 @@ webview.openDevTools();
                     "link":link,
                     "data":link.replace(/.*amazon\\.com\\/|\\/dp.*/g,''),
                     "review":review.replace(/.*\\(|\\)/g,''),
-                    "star":review.replace(/\\(.*/g,''),
+                    "star":star,
                     "priceMin":price.replace(/-.*|\\$|\\n|\\s/g,''),
                     "priceMax":price.replace(/.*-|\\$|\\n|\\s/g,'')
                   });
@@ -117,14 +133,15 @@ webview.openDevTools();
 
           `,false,function(){
 
-            console.log("catch topReviewers ok");
+          //  console.log("catch rank product ok");
             console.log(s+'~~~'+Date());
             s++;
             if (s<lns) {
               console.log(s)
               console.log(lns)
               let _TIME=4000+Math.random()*20000;
-              console.log(_TIME/1000);
+              ipcRenderer.send('result',"catch rank "+s+" product ok, next "+Math.ceil(_TIME/1000)+' second');
+              //console.log(_TIME/1000);
               setTimeout("stepByStep()",_TIME)
 
             }

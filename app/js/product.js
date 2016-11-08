@@ -22,9 +22,9 @@ function spider() {
               `);
 
           let webview=document.getElementById('lp'+s);
-          console.log(webview)
+          //console.log(webview)
           webview.addEventListener('dom-ready', function () {
-                  webview.openDevTools();
+                //  webview.openDevTools();
                   webview.executeJavaScript(`
                     const path=require('path');
                     console.log(path.join('`+`${__dirname}`+`','../js/bestdb.js'));
@@ -161,6 +161,8 @@ function spider() {
                       console.log(lns)
                       let _TIME=4000+Math.random()*10000;
                       console.log(_TIME/1000);
+                      ipcRenderer.send('result',"catch product "+s+"  ok, next "+Math.ceil(_TIME/1000)+' second');
+
                       setTimeout("stepByStep()",_TIME)
 
                     }

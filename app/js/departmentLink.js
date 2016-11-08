@@ -17,9 +17,9 @@ function spider() {
               `);
 
           let webview=document.getElementById('lp');
-          console.log(webview);
+          //console.log(webview);
           webview.addEventListener('dom-ready', function () {
-            webview.openDevTools();
+          //  webview.openDevTools();
           if (obj.type==0) {
             webview.executeJavaScript(`
               const remote = require('electron').remote;
@@ -72,7 +72,7 @@ function spider() {
                       result.push({
                               "data":link.replace(/.*\\/Best-Sellers-|\\/zgbs.*/ig,'').toLowerCase(),
                               "title":title,
-                              
+
                               "parent":parent,
                               "link":link,
                               "select":false
@@ -127,8 +127,15 @@ function spider() {
 
 };
 
+function dplink(dpName,dataID,fSrc,type,count){
+    let fileName='AnyDepartment';
+    console.log("OK!----start---catch New BestSellers");
+    ipcRenderer.send('catch',[fSrc,dataID,type,count]);
+}
+
 
 module.exports = {
-    spider:spider
+    spider:spider,
+    dplink:dplink
 
 };

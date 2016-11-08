@@ -60,15 +60,17 @@ function email() {
 
 	transporter.sendMail(mailOptions, function(error, info){
 	    if(error){
+					ipcRenderer.send('result',error);
 	        return console.log(error);
+
 	    }
-	    console.log('Message sent: ' + info.response);
+			ipcRenderer.send('result','Message sent: ' + info.response);
+	  	//console.log('Message sent: ' + info.response);
 	});
 }
 
 function rankStart(){
   let urls=arguments;
-  console.log("catch_rankStart--------------"+new Date());
   ipcRenderer.send('catch_rankStart',urls);
 }
 
@@ -78,6 +80,9 @@ function lookProduct(urls){
 
     var sched = later.parse.recur().every(60).minute(),
                 t = later.setInterval(function() {
+
+										ipcRenderer.send('result','lookProduct运行一次');
+
                     console.log("catch_lookProduct运行一次--------------"+new Date());
 										email(new Date(),"look product");
                     ipcRenderer.send('catch_lookProduct',urls);
@@ -89,6 +94,7 @@ function lookProduct(urls){
             },604800*2000);
 
     setTimeout(function() {
+				ipcRenderer.send('result',"catch_lookProduct立刻运行一次--------------");
       console.log("catch_lookProduct立刻运行一次--------------");
 			email(new Date(),"look product");
       ipcRenderer.send('catch_lookProduct',urls);
@@ -97,6 +103,7 @@ function lookProduct(urls){
 
 function topReviewers(sf,st,type){
 		console.log(sf)
+		
     ipcRenderer.send('catch_topReviewers',['https://www.amazon.com/review/top-reviewers/ref=cm_cr_tr_link_',sf,st,type]);
 }
 
