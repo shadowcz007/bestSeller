@@ -43,16 +43,18 @@ options = {
 mongoose.Promise = global.Promise;
 mongoose.connect(connectionString, options, function(err, res) {
   if(err) {
-    console.log('[mongoose log] Error connecting to: ' + connectionString + '. ' + err);
+  //  ipcRenderer.send('result','[mongoose log] Error connecting to: ' + connectionString + '. ' + err);
   } else {
-    console.log('[mongoose log] Successfully connected to: ' + connectionString);
+
+  //  ipcRenderer.send('result','[mongoose log] Successfully connected to: ' + connectionString);
   }
 });
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongoose connection error:'));
 db.once('open', function callback () {
-	console.log('mongoose open success');
+
+  //ipcRenderer.send('result','mongoose open success');
 });
 var Schema=mongoose.Schema;
 
@@ -110,13 +112,14 @@ function updateRank() {
     model.findOne(findData,function(err,doc){
           if (doc==null) {
             model.create(newData,function(){
-            console.log("-----------------db-create ok------------"+findData.data);
-            ipcRenderer.send('catch_rankStart_result',data.data+'~~success');
+
+            ipcRenderer.send('result',"-----------------db-create ok------------"+findData.data);
+
           });
 
           }else{
-            console.log(findData.data+"db已经存在---------------");
 
+            ipcRenderer.send('result',findData.data+"db已经存在---------------");
             let update_where = {data:data.data};//更新条件
             let update_data ={
                       rank:data.rank,
@@ -144,11 +147,13 @@ function updateRank() {
                                 };
             model.update(update_where,{$push:update_data,$set:update_data2},function(err){
                     if(err){
-                        console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!'+data.data);
-                        ipcRenderer.send('result',data.data+'~~update error');
+                        ipcRenderer.send('result','update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!'+data.data);
+                      //console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!'+data.data);
+
                     }else{
-                        console.log('update success-----------'+data.data);
-                        ipcRenderer.send('result',data.data+'~~success');
+                        //console.log('update success-----------'+data.data);
+
+                          ipcRenderer.send('result',data.data+'~~success');
                     }
             });
           };
@@ -169,7 +174,7 @@ function load(DP,val,callback){
 
       if(DP=='rank'){
           model.find({star_new:{$gt:val}}, function (err, docs) {
-            console.log(docs.length)
+          //  console.log(docs.length)
             return callback(docs)
           });
       };
@@ -198,7 +203,7 @@ function loadPath(dp,TEST_DIR,callback){
     .on('end', function () {
       item0=items[0];
       items=items.slice(1);
-      console.dir("load dir ----files-----------"+items) // => [ ... array of files]
+    //  console.dir("load dir ----files-----------"+items) // => [ ... array of files]
       let ln=items.length;
       for (var i = items.length - 1; i >= 0; i--) {
               ln--;
@@ -304,7 +309,7 @@ function lookProduct(productData,type,result) {
                 });
               }else{
                 let newDoc={link:result.link};
-                console.log(newDoc)
+                //console.log(newDoc)
                 lpModel.create(newDoc, function(error){
                     if(error) {
                         console.log(error);
@@ -430,7 +435,8 @@ function topReviewers(result,callback) {
               if (person === null) {
                   console.log(person);
                 model.create(result,function(){
-                  console.log("------------------create ok------------"+result);
+                //  console.log("------------------create ok------------"+result);
+                    ipcRenderer.send('result',"------------------create ok------------"+result);
                 });
 
               }else{
@@ -456,9 +462,9 @@ function topReviewers(result,callback) {
                                                       console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                                                   }else{
 
-                                                      console.log('update topReviewers detail------------')
-
-                                                      console.log('update success-----------'+result);
+                                                      //console.log('update topReviewers detail------------')
+                                                        ipcRenderer.send('result','update topReviewers detail------------'+result);
+                                                    //  console.log('update success-----------'+result);
                                                   }
                   });
 
@@ -481,9 +487,9 @@ function topReviewers(result,callback) {
                                         console.log(err)
                                           console.log('update error!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                                       }else{
-                                          console.log('update topReviewers all------------')
-
-                                          console.log('update success-----------'+result);
+                                        //  console.log('update topReviewers all------------')
+                                            ipcRenderer.send('result','update topReviewers all------------'+result);
+                                          //console.log('update success-----------'+result);
                                       }
                   });
 
