@@ -10,7 +10,9 @@
 
 @charset "UTF-8";
 
-
+.db{
+ color: #489df8 !important;
+}
 #topReviewersContent{
   padding: 24px;
 
